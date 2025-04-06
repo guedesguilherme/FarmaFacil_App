@@ -20,7 +20,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./public/assets/images/LogoFarmaFacil.png"
     },
     "plugins": [
       "expo-router",
