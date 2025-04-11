@@ -1,11 +1,10 @@
-import { StyleSheet, Text, View, BackHandler, Pressable, Alert } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Pressable, Alert, BackHandler } from 'react-native';
+import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 
-const homeCliente = () => {
-
+const homeLoja = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -23,22 +22,21 @@ const homeCliente = () => {
 
   useEffect(() => {
     const onBackPress = async () => {
-      const token = await AsyncStorage.getItem('token');
-      if (token) {
-        // Impede o retorno para telas anteriores
-        return true; // Bloqueia o botão de retorno
-      }
-      return false; // Permite o comportamento padrão
-    };
+        const token = await AsyncStorage.getItem("token")
+        if (token) {
+            // router.replace("/homeLoja");
+            return true
+        }
 
-    // Adiciona o listener para o botão de retorno
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+        return false
+    }
 
-    // Remove o listener ao desmontar o componente
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    };
-  }, []);
+    BackHandler.addEventListener('hardwareBackPress', onBackPress)
+
+    return() => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress)
+    }
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -47,10 +45,10 @@ const homeCliente = () => {
         <Text style={styles.logoutText}>Logout</Text>
       </Pressable>
     </View>
-  )
-}
+  );
+};
 
-export default homeCliente
+export default homeLoja;
 
 const styles = StyleSheet.create({
   container: {

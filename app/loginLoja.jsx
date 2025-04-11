@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,8 +8,8 @@ import {
   Alert,
 } from "react-native";
 import { useRouter, Link } from "expo-router";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function LoginLoja() {
   const [cnpj, setCnpj] = useState("");
@@ -28,7 +28,6 @@ export default function LoginLoja() {
     setError("");
 
     try {
-      // Envia as credenciais para a API
       const response = await fetch("https://api-cadastro-farmacias.onrender.com/farma/auth/login", {
         method: "POST",
         headers: {
@@ -40,17 +39,12 @@ export default function LoginLoja() {
       const data = await response.json();
 
       if (response.ok) {
-        // Login bem-sucedido
         Alert.alert("Sucesso", "Login realizado com sucesso!");
         const token = data.token;
 
-        // Armazena o token para autenticação futura
         await AsyncStorage.setItem("token", token);
-
-        // Redireciona para a página inicial ou protegida
         router.push("/homeLoja");
       } else {
-        // Exibe mensagem de erro retornada pela API
         setError(data.msg || "Erro ao realizar login.");
       }
     } catch (err) {

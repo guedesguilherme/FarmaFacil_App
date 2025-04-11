@@ -38,7 +38,7 @@ export default function Index() {
         padding: 18,
         marginTop: 35
       }}>
-        Seja bem-vind(a) ao FarmaFácil!
+        Seja bem-vindo(a) ao FarmaFácil!
       </Text>
 
       <View style={styles.containerButtons}>

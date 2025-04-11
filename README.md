@@ -21,10 +21,12 @@ O expo-router, método que gera rotas para o próprio app, se baseia no nome dos
 - Adicionar login social
 - Integrar com a api:
   - Cadastro de Clientes: FEITO
-  - Login de Clientes: A FAZER
+  - Login de Clientes: FEITO
   - Cadastro de Farmácias: FEITO
-  - Login de Farmácias: A FAZER
+  - Login de Farmácias: FEITO
   - Cadastro de produtos: A FAZER
+  - Exibir lojas: A FAZER
+  - Exibir produtos da loja: A FAZER
 <br />
 <br />
 - Ajustar redirecionamentos (Após login e após cadastro)
