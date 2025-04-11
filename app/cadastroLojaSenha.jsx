@@ -18,31 +18,45 @@ const CadastroLojaSenha = () => {
 
   const router = useRouter();
 
-  const { dados, setDados } = useCadastroLoja();
+  const { dados, limparDados } = useCadastroLoja();
 
   const handleSubmit = async () => {
     if (!password || !confirmPassword) {
       setError("Todos os campos são obrigatórios!");
-    } else if (password !== confirmPassword) {
+      return;
+    }
+
+    if (password !== confirmPassword) {
       setError("As senhas não coincidem!");
-    } else {
-      setError("");
-      setDados({ senha: password }); // Salva senha
+      return;
+    }
 
-      // Aqui você já tem todos os dados:
-      console.log("Dados completos:", dados);
+    setError("");
 
-      // Simulação de envio para a API
-      /*
-      const response = await fetch("https://sua-api.com/lojas", {
+    try {
+      // Envia os dados para a API
+      const response = await fetch("https://api-cadastro-farmacias.onrender.com/farma/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...dados, senha: password })
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...dados, senha: password, confirmasenha: confirmPassword }),
       });
-      */
 
-      // TODO: ADICIONAR ROTA DE REDIRECIONAMENTO APÓS CADASTRO
-      //router.push("");
+      const data = await response.json();
+
+      if (response.ok) {
+        // Cadastro bem-sucedido
+        Alert.alert("Sucesso", data.msg || "Loja cadastrada com sucesso!");
+        limparDados(); // Limpa os dados do contexto
+        router.push("/loginLoja"); // Redireciona para a tela de login
+      } else {
+        // Erro retornado pela API
+        setError(data.msg || "Erro ao cadastrar a loja.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Erro ao conectar com o servidor. Tente novamente mais tarde.");
     }
   };
 
@@ -100,15 +114,14 @@ const styles = StyleSheet.create({
   button: {
     width: "85%",
     padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
+    justifyContent: "center",
+    alignItems: "center",
     fontSize: 22,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#2f88ff",
-    backgroundColor: '#2f88ff',
-    marginTop: 20
+    backgroundColor: "#2f88ff",
+    marginTop: 20,
   },
   backButton: {
     padding: 10,
@@ -122,33 +135,21 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   containerInput: {
     marginLeft: 20,
     marginRight: 10,
-    marginBottom: 20
+    marginBottom: 20,
   },
   error: {
     fontSize: 18,
-    color: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
+    color: "red",
+    textAlign: "center",
     marginBottom: 10,
-    textAlign: 'center'
   },
-  links: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 30,
-    gap: 20,
-  }
-})
+});
 
-
-export default CadastroLojaSenha
+export default CadastroLojaSenha;

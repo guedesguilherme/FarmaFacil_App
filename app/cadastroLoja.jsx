@@ -19,17 +19,17 @@ const CadastroLoja = () => {
   const [nome, setNome] = useState('')
   const [cnpj, setCnpj] = useState('')
   const [email, setEmail] = useState('')
-  const [nomeRede, setNomeRede] = useState('')
+  const [rede, setRede] = useState('')
   const [error, setError] = useState('')
 
   const router = useRouter()
 
   const { setDados } = useCadastroLoja();
   const handleSubmit = () => {
-    if (!cnpj || !nome || !nomeRede || !email) {
+    if (!cnpj || !nome || !rede || !email) {
       setError("Todos os campos são obrigatórios!");
     } else {
-      setDados({ cnpj, nome, nomeRede, email }); // Salva dados no contexto
+      setDados({ cnpj, nome, rede, email }); // Salva dados no contexto
       setError("");
       router.push('/cadastroLojaEndereco');
     }
@@ -84,8 +84,8 @@ const CadastroLoja = () => {
         <Text>Insira o nome da rede da sua loja:</Text>
         <TextInput
           style={styles.input}
-          value={nomeRede}
-          onChangeText={setNomeRede} // Atualiza o estado 'nomeRede'
+          value={rede}
+          onChangeText={setRede} // Atualiza o estado 'Rede'
         />
       </View>
       <View style={styles.containerInput}>

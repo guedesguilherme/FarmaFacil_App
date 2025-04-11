@@ -19,10 +19,17 @@ O expo-router, método que gera rotas para o próprio app, se baseia no nome dos
 ## O que falta? (TODO) 📝
 
 - Adicionar login social
-- Integrar com a api - Login/Cad (Loja e cliente)
+- Integrar com a api:
+  - Cadastro de Clientes: FEITO
+  - Login de Clientes: A FAZER
+  - Cadastro de Farmácias: FEITO
+  - Login de Farmácias: A FAZER
+  - Cadastro de produtos: A FAZER
+<br />
+<br />
 - Ajustar redirecionamentos (Após login e após cadastro)
 - Ajustes no design - Web
 
 #### - FUTUROS/NÃO-PRIORIDADE:
-- Trabalhar nos componentes Link e Button
+- Trabalhar na componentização dos elementos das páginas
 
