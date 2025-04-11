@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useCadastroLoja } from "../context/CadastroLojaContext";
+import { useCadastroLoja } from "../../../context/CadastroLojaContext";
 
 const CadastroLojaEndereco = () => {
   const [cep, setCep] = useState("");
@@ -54,7 +54,7 @@ const CadastroLojaEndereco = () => {
     } else {
       setDados({ cep, rua, bairro, numero, uf, cidade }); // Salva dados no contexto
       setError("");
-      router.push("/cadastroLojaSenha");
+      router.push("/auth/loja/cadastroLojaSenha");
     }
   };
 

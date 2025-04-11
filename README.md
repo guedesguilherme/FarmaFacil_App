@@ -2,13 +2,15 @@
 
 ## Por onde começar?
 ### /app 📱 Estrutura geral do app (componentes e telas)
+  - ### /app/auth 🔐 Estrutura geral de autenticação para os usuários
+  - ### /app/views 👁️ Páginas em geral
 ### /context ⚒️ Ferramentas nativas para a API
 ### /assets 🖼️🔠 Imagens e fontes
 ### /scripts 🗒️ Backup do código de alguns componentes
 
 ---------------------------
 
-## Importante‼️ - Rotas ↔️
+## ‼️Importante‼️ - Rotas ↔️
 
 O expo-router, método que gera rotas para o próprio app, se baseia no nome dos arquivos para criar as rotas. Ou seja:
 
@@ -18,19 +20,33 @@ O expo-router, método que gera rotas para o próprio app, se baseia no nome dos
 
 ## O que falta? (TODO) 📝
 
+### Farmácia:
+- Integrar com a api:  
+  - Cadastro de produtos (farmácia)
+  - Editar dados do produto (farmácia)
+  - Deletar produtos (farmácia)
+  - Exibir produtos da loja (para cliente e farmacia)
+  - Editar dados da loja
+  - Mostrar pedidos da loja
+
+### Cliente:
+
 - Adicionar login social
-- Integrar com a api:
-  - Cadastro de Clientes: FEITO
-  - Login de Clientes: FEITO
-  - Cadastro de Farmácias: FEITO
-  - Login de Farmácias: FEITO
-  - Cadastro de produtos: A FAZER
-  - Exibir lojas: A FAZER
-  - Exibir produtos da loja: A FAZER
+- Integrar com a api:    
+  - Exibir lojas
+  - Exibir produtos da loja (para cliente e farmacia)
+  - Editar dados do usuário
+  - Deletar usuário (farmácia e cliente)
+  - Adicionar carrinho de compras
+  - Manipular carrinho (inserir e ou remover produtos)  
+  - Mostrar detalhes do produto da loja (para cliente e farmacia)
 <br />
 <br />
-- Ajustar redirecionamentos (Após login e após cadastro)
+
+### Outros:
 - Ajustes no design - Web
+- Ajustes na navegação do usuário (Exemplo: usuário logado **NÃO PODE** ter acesso à tela de login nem à de cadastro)
+- Usuário deletado não pode ter acesso à plataforma
 
 #### - FUTUROS/NÃO-PRIORIDADE:
 - Trabalhar na componentização dos elementos das páginas

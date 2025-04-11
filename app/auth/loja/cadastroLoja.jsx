@@ -13,7 +13,7 @@ import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useCadastroLoja } from "../context/CadastroLojaContext";
+import { useCadastroLoja } from "../../../context/CadastroLojaContext";
 
 const CadastroLoja = () => {
   const [nome, setNome] = useState('')
@@ -31,7 +31,7 @@ const CadastroLoja = () => {
     } else {
       setDados({ cnpj, nome, rede, email }); // Salva dados no contexto
       setError("");
-      router.push('/cadastroLojaEndereco');
+      router.push('/auth/loja/cadastroLojaEndereco');
     }
   };
 
@@ -115,12 +115,12 @@ const CadastroLoja = () => {
       </View>
 
       <View style={styles.links}>
-        <Link href="/loginLoja"
+        <Link href="/auth/loja/loginLoja"
           style={{ fontSize: 18, color: '#2f88ff', textDecorationLine: 'underline' }}
         >
           Já tenho cadastro
         </Link>
-        <Link href="/loginCliente"
+        <Link href="/auth/cliente/loginCliente"
           style={{ fontSize: 18, color: '#2f88ff', textDecorationLine: 'underline' }}
         >
           Sou um cliente

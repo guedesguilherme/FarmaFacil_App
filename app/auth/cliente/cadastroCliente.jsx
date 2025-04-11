@@ -14,7 +14,7 @@ import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Entypo from "@expo/vector-icons/Entypo";
-import GoogleAuth from "./components/GoogleAuth";
+import GoogleAuth from "../../components/GoogleAuth";
 
 //TODO: Adicionar botão do google
 export default function Index() {
@@ -60,7 +60,7 @@ export default function Index() {
             if (response.ok) {
                 // Cadastro bem-sucedido
                 Alert.alert("Sucesso", data.msg || "Usuário cadastrado com sucesso!");
-                router.push("/homeCliente"); // Redireciona para a página de login
+                router.push("/views/cliente/loginCliente"); // Redireciona para a página de login
             } else {
                 // Erro retornado pela API
                 setError(data.msg || "Erro ao cadastrar usuário.");
@@ -143,7 +143,7 @@ export default function Index() {
 
             <View style={styles.links}>
                 <Link
-                    href="/loginCliente"
+                    href="/auth/cliente/loginCliente"
                     style={{
                         fontSize: 18,
                         color: "#2f88ff",
@@ -153,7 +153,7 @@ export default function Index() {
                     Já tenho cadastro
                 </Link>
                 <Link
-                    href="/loginLoja"
+                    href="/auth/loja/loginLoja"
                     style={{
                         fontSize: 18,
                         color: "#2f88ff",

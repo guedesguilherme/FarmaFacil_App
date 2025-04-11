@@ -45,7 +45,7 @@ export default function Index() {
         <Text style={{ fontSize: 22, marginBottom: 20, fontWeight: 'bold' }} >Quem é você?</Text>
 
         <Pressable
-          onPress={() => router.push('/loginCliente')}
+          onPress={() => router.push('/auth/cliente/loginCliente')}
           style={[styles.button, styles.secondaryButton]}
         >
           <Text style={{ fontSize: 18, color: "#fff" }}>Sou um cliente</Text>
@@ -53,7 +53,7 @@ export default function Index() {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push('/loginLoja')}
+          onPress={() => router.push('/auth/loja/loginLoja')}
           style={[styles.button]}
         >
           <Text style={{ fontSize: 18 }}>Sou uma loja</Text>
@@ -125,4 +125,3 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   }
 })
-

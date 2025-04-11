@@ -4,7 +4,7 @@ interface DadosCadastroLoja {
   nome: string;
   cnpj: string;
   email: string;
-  nomeRede: string;
+  rede: string;
   cep: string;
   rua: string;
   bairro: string;

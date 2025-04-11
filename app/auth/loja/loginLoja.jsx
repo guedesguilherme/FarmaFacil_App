@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,11 @@ import {
   Alert,
 } from "react-native";
 import { useRouter, Link } from "expo-router";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import GoogleAuth from "./components/GoogleAuth.tsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
-export default function LoginCliente() {
+export default function LoginLoja() {
+  const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +20,7 @@ export default function LoginCliente() {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    if (!email || !password) {
+    if (!cnpj || !email || !password) {
       setError("Todos os campos são obrigatórios!");
       return;
     }
@@ -28,29 +28,25 @@ export default function LoginCliente() {
     setError("");
 
     try {
-      // Envia as credenciais para a API
-      const response = await fetch("https://api-cadastro-farmacias.onrender.com/usuarios/auth/login", {
+      const response = await fetch("https://api-cadastro-farmacias.onrender.com/farma/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, senha: password }),
+        body: JSON.stringify({ cnpj, email, senha: password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Login bem-sucedido
         Alert.alert("Sucesso", "Login realizado com sucesso!");
-        const token = data.token;
+        const { token, farma_id } = data;
 
-        // Armazena o token para autenticação futura
+        console.log(data)
         await AsyncStorage.setItem("token", token);
-
-        // Redireciona para a página inicial ou protegida
-        router.push("/homeCliente");
+        await AsyncStorage.setItem("lojaId", farma_id);
+        router.push("/views/loja/homeLoja");
       } else {
-        // Exibe mensagem de erro retornada pela API
         setError(data.msg || "Erro ao realizar login.");
       }
     } catch (err) {
@@ -86,8 +82,18 @@ export default function LoginCliente() {
           fontWeight: "bold",
         }}
       >
-        Login - Clientes
+        Login - Lojas
       </Text>
+      <View style={styles.containerInput}>
+        <Text style={{ fontSize: 16 }}>CNPJ da sua loja:</Text>
+        <TextInput
+          style={styles.input}
+          value={cnpj}
+          onChangeText={setCnpj}
+          keyboardType="numeric"
+        />
+      </View>
+
       <View style={styles.containerInput}>
         <Text style={{ fontSize: 16 }}>Seu e-mail:</Text>
         <TextInput
@@ -109,14 +115,9 @@ export default function LoginCliente() {
         />
       </View>
 
-      {error ? (
-        <Text style={styles.error}>{error}</Text>
-      ) : null}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <View style={[styles.buttonContainer]}>
-        {/* Google Login */}
-        <GoogleAuth />
-
         <Pressable style={[styles.button]} onPress={handleSubmit}>
           <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}>
             Entrar
@@ -126,7 +127,7 @@ export default function LoginCliente() {
 
       <View style={styles.links}>
         <Link
-          href="/cadastroCliente"
+          href="/auth/loja/cadastroLoja"
           style={{
             fontSize: 18,
             color: "#2f88ff",
@@ -136,14 +137,14 @@ export default function LoginCliente() {
           Não tenho cadastro
         </Link>
         <Link
-          href="/loginLoja"
+          href="/auth/cliente/loginCliente"
           style={{
             fontSize: 18,
             color: "#2f88ff",
             textDecorationLine: "underline",
           }}
         >
-          Sou uma loja
+          Sou um Cliente
         </Link>
       </View>
     </View>

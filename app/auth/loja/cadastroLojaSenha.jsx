@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useCadastroLoja } from "../context/CadastroLojaContext";
+import { useCadastroLoja } from "../../../context/CadastroLojaContext";
 
 const CadastroLojaSenha = () => {
   const [password, setPassword] = useState('');
@@ -49,7 +49,7 @@ const CadastroLojaSenha = () => {
         // Cadastro bem-sucedido
         Alert.alert("Sucesso", data.msg || "Loja cadastrada com sucesso!");
         limparDados(); // Limpa os dados do contexto
-        router.push("/loginLoja"); // Redireciona para a tela de login
+        router.push("/auth/loja/loginLoja"); // Redireciona para a tela de login
       } else {
         // Erro retornado pela API
         setError(data.msg || "Erro ao cadastrar a loja.");

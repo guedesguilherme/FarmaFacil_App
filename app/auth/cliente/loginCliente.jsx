@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,11 @@ import {
   Alert,
 } from "react-native";
 import { useRouter, Link } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import GoogleAuth from "../../components/GoogleAuth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function LoginLoja() {
-  const [cnpj, setCnpj] = useState("");
+export default function LoginCliente() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +20,7 @@ export default function LoginLoja() {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    if (!cnpj || !email || !password) {
+    if (!email || !password) {
       setError("Todos os campos são obrigatórios!");
       return;
     }
@@ -28,23 +28,29 @@ export default function LoginLoja() {
     setError("");
 
     try {
-      const response = await fetch("https://api-cadastro-farmacias.onrender.com/farma/auth/login", {
+      // Envia as credenciais para a API
+      const response = await fetch("https://api-cadastro-farmacias.onrender.com/usuarios/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cnpj, email, senha: password }),
+        body: JSON.stringify({ email, senha: password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        // Login bem-sucedido
         Alert.alert("Sucesso", "Login realizado com sucesso!");
         const token = data.token;
 
+        // Armazena o token para autenticação futura
         await AsyncStorage.setItem("token", token);
-        router.push("/homeLoja");
+
+        // Redireciona para a página inicial ou protegida
+        router.push("/views/cliente/homeCliente");
       } else {
+        // Exibe mensagem de erro retornada pela API
         setError(data.msg || "Erro ao realizar login.");
       }
     } catch (err) {
@@ -80,18 +86,8 @@ export default function LoginLoja() {
           fontWeight: "bold",
         }}
       >
-        Login - Lojas
+        Login - Clientes
       </Text>
-      <View style={styles.containerInput}>
-        <Text style={{ fontSize: 16 }}>CNPJ da sua loja:</Text>
-        <TextInput
-          style={styles.input}
-          value={cnpj}
-          onChangeText={setCnpj}
-          keyboardType="numeric"
-        />
-      </View>
-
       <View style={styles.containerInput}>
         <Text style={{ fontSize: 16 }}>Seu e-mail:</Text>
         <TextInput
@@ -113,9 +109,14 @@ export default function LoginLoja() {
         />
       </View>
 
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {error ? (
+        <Text style={styles.error}>{error}</Text>
+      ) : null}
 
       <View style={[styles.buttonContainer]}>
+        {/* Google Login */}
+        <GoogleAuth />
+
         <Pressable style={[styles.button]} onPress={handleSubmit}>
           <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}>
             Entrar
@@ -125,7 +126,7 @@ export default function LoginLoja() {
 
       <View style={styles.links}>
         <Link
-          href="/cadastroLoja"
+          href="/auth/cliente/cadastroCliente"
           style={{
             fontSize: 18,
             color: "#2f88ff",
@@ -135,14 +136,14 @@ export default function LoginLoja() {
           Não tenho cadastro
         </Link>
         <Link
-          href="/loginCliente"
+          href="/auth/loja/loginLoja"
           style={{
             fontSize: 18,
             color: "#2f88ff",
             textDecorationLine: "underline",
           }}
         >
-          Sou um Cliente
+          Sou uma loja
         </Link>
       </View>
     </View>
