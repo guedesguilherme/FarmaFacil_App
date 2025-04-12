@@ -31,7 +31,7 @@ const homeLoja = () => {
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', onBackPress)
     }
-  }, [])
+  }, [])  
 
   return (
     <Tab.Navigator>

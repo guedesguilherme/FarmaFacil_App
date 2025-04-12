@@ -10,11 +10,11 @@ import {
 import React, { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const adicionarProduto = () => {
   const router = useRouter();
-
-  const [farmacia, setFarmacia] = useState("");
+  
   const [nome, setNome] = useState("");
   const [nome_quimico, setNomeQuimico] = useState("");
   const [preco, setPreco] = useState("");
@@ -26,8 +26,8 @@ const adicionarProduto = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
-    if (
-      !farmacia ||
+    const farma_id = await AsyncStorage.getItem("lojaId")
+    if (      
       !nome ||
       !nome_quimico ||
       !preco ||
@@ -37,12 +37,15 @@ const adicionarProduto = () => {
       !label
     ) {
       setError("Todos os campos são obrigatórios!");
+    } else if (!farma_id) {
+      setError("Sua sessão expirou ou você não está autenticado! Faça login e tente novamente.")
     }
-
+    
     setError("");
-    setIsLoading(true);
+    setIsLoading(true);    
+    console.log(farma_id)
 
-    try {
+    try {      
       const response = await fetch(
         "https://api-cadastro-farmacias.onrender.com/produtos/auth/register",
         {
@@ -51,7 +54,7 @@ const adicionarProduto = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            farmacia,
+            farmacia: farma_id,
             nome,
             nome_quimico,
             preco,
@@ -84,7 +87,7 @@ const adicionarProduto = () => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => router.navigate('views/loja/homeLoja')}
           style={styles.backButton}
         >
           <AntDesign name="arrowleft" size={24} color="#2f88ff" />
@@ -99,16 +102,10 @@ const adicionarProduto = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="Nome da Farmácia"
-          value={farmacia}
-          onChangeText={setFarmacia}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Nome do Produto"
+          placeholder="Nome do produto"
           value={nome}
           onChangeText={setNome}
-        />
+        />        
         <TextInput
           style={styles.input}
           placeholder="Nome Químico"

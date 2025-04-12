@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, FlatList, ActivityIndicator, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -6,32 +13,38 @@ const Produtos = () => {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchProdutos = async () => {
+  const getProdutos = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
-      const lojaId = await AsyncStorage.getItem('lojaId'); // Recupera o id da loja
-      if (!token || !lojaId) {
-        Alert.alert('Erro', 'Usuário não autenticado.');
+      const farma_id = await AsyncStorage.getItem('lojaId');
+
+      if (!farma_id) {
+        Alert.alert(
+          'Erro',
+          'ID da farmácia não encontrado. Faça login novamente.'
+        );
+        setLoading(false);
         return;
       }
-  
-      const response = await fetch(`https://api-cadastro-farmacias.onrender.com/produtos/farmacia/${lojaId}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-  
+
+      const response = await fetch(
+        `https://api-cadastro-farmacias.onrender.com/produtos/farmacia/${farma_id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        setProdutos(data.produtos || []); // Define os produtos retornados pela API
+        setProdutos(data);
       } else {
-        Alert.alert('Erro', data.msg || 'Erro ao buscar os produtos.');
+        Alert.alert('Erro', data.message || 'Erro ao carregar produtos');
       }
     } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
+      console.log(error);
       Alert.alert('Erro', 'Não foi possível carregar os produtos.');
     } finally {
       setLoading(false);
@@ -39,7 +52,7 @@ const Produtos = () => {
   };
 
   useEffect(() => {
-    fetchProdutos();
+    getProdutos();
   }, []);
 
   if (loading) {
@@ -53,15 +66,18 @@ const Produtos = () => {
 
   return (
     <View style={styles.container}>
-      
       {produtos.length > 0 ? (
         <FlatList
           data={produtos}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <View style={styles.produtoItem}>
               <Text style={styles.produtoNome}>{item.nome}</Text>
               <Text style={styles.produtoPreco}>R$ {item.preco.toFixed(2)}</Text>
+              <Text style={styles.produtoInfo}>Quantidade: {item.quantidade}</Text>
+              <Text style={styles.produtoInfo}>Validade: {item.validade}</Text>
+              <Text style={styles.produtoInfo}>Lote: {item.lote}</Text>
+              <Text style={styles.produtoInfo}>Categoria: {item.label}</Text>
             </View>
           )}
         />
@@ -87,8 +103,9 @@ const styles = StyleSheet.create({
   },
   produtoItem: {
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    marginBottom: 10,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 8,
   },
   produtoNome: {
     fontSize: 18,
@@ -97,10 +114,16 @@ const styles = StyleSheet.create({
   produtoPreco: {
     fontSize: 16,
     color: '#2f88ff',
+    marginBottom: 4,
+  },
+  produtoInfo: {
+    fontSize: 14,
+    color: '#555',
   },
   emptyText: {
     textAlign: 'center',
     fontSize: 18,
     color: '#999',
+    marginTop: 50,
   },
 });
