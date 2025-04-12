@@ -2,20 +2,22 @@ import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
-  View,
-  Pressable,
+  View,  
   TextInput,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { useRouter, Link } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { ActivityIndicator } from "react-native-web";
 
 export default function LoginLoja() {
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter();
 
@@ -26,6 +28,7 @@ export default function LoginLoja() {
     }
 
     setError("");
+    setIsLoading(true)
 
     try {
       const response = await fetch("https://api-cadastro-farmacias.onrender.com/farma/auth/login", {
@@ -52,12 +55,14 @@ export default function LoginLoja() {
     } catch (err) {
       console.error(err);
       setError("Erro ao conectar com o servidor. Tente novamente mais tarde.");
+    } finally {
+      setIsLoading(false)
     }
   };
 
   return (
     <View>
-      <Pressable
+      <TouchableOpacity
         onPress={() => router.push("/")}
         style={{
           padding: 10,
@@ -73,7 +78,7 @@ export default function LoginLoja() {
       >
         <AntDesign name="arrowleft" size={24} color="#2f88ff" />
         <Text style={{ fontSize: 18 }}>Voltar à Home</Text>
-      </Pressable>
+      </TouchableOpacity>
       <Text
         style={{
           fontSize: 24,
@@ -93,7 +98,6 @@ export default function LoginLoja() {
           keyboardType="numeric"
         />
       </View>
-
       <View style={styles.containerInput}>
         <Text style={{ fontSize: 16 }}>Seu e-mail:</Text>
         <TextInput
@@ -104,7 +108,6 @@ export default function LoginLoja() {
           keyboardType="email-address"
         />
       </View>
-
       <View style={styles.containerInput}>
         <Text style={{ fontSize: 16 }}>Sua senha:</Text>
         <TextInput
@@ -118,11 +121,20 @@ export default function LoginLoja() {
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <View style={[styles.buttonContainer]}>
-        <Pressable style={[styles.button]} onPress={handleSubmit}>
-          <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}>
-            Entrar
-          </Text>
-        </Pressable>
+
+        <TouchableOpacity
+          style={[styles.button, isLoading && styles.buttonDisabled]}
+          onPress={handleSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#FFF" />
+          ) : (
+            <Text style={{color: "#FFF", fontSize: 18, fontWeight: "bold"}}>
+              Login
+            </Text>
+          )}
+        </TouchableOpacity>        
       </View>
 
       <View style={styles.links}>

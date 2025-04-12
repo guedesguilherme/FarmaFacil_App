@@ -4,7 +4,7 @@ import {
   Text,
   View,
   TextInput,
-  Pressable,
+  TouchableOpacity,
   Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -60,13 +60,13 @@ const CadastroLojaEndereco = () => {
 
   return (
     <View>
-      <Pressable
+      <TouchableOpacity
         onPress={() => router.back()}
         style={styles.backButton}
       >
         <AntDesign name="arrowleft" size={24} color="#2f88ff" />
         <Text style={{ fontSize: 18 }}>Voltar</Text>
-      </Pressable>
+      </TouchableOpacity>
 
       <Text style={styles.titulo}>Cadastro - Endereço da Loja</Text>
 
@@ -135,11 +135,11 @@ const CadastroLojaEndereco = () => {
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.button} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}>
             Próxima
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   );

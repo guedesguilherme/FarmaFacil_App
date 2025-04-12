@@ -4,20 +4,21 @@ import {
   Text,
   View,
   TextInput,
-  Pressable,
+  TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useCadastroLoja } from "../../../context/CadastroLojaContext";
 
 const CadastroLojaSenha = () => {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
 
   const router = useRouter();
-
   const { dados, limparDados } = useCadastroLoja();
 
   const handleSubmit = async () => {
@@ -32,43 +33,48 @@ const CadastroLojaSenha = () => {
     }
 
     setError("");
+    setIsLoading(true); // Ativa o estado de carregamento
 
     try {
-      // Envia os dados para a API
-      const response = await fetch("https://api-cadastro-farmacias.onrender.com/farma/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...dados, senha: password, confirmasenha: confirmPassword }),
-      });
+      const response = await fetch(
+        "https://api-cadastro-farmacias.onrender.com/farma/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...dados,
+            senha: password,
+            confirmasenha: confirmPassword,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        // Cadastro bem-sucedido
         Alert.alert("Sucesso", data.msg || "Loja cadastrada com sucesso!");
         limparDados(); // Limpa os dados do contexto
         router.push("/auth/loja/loginLoja"); // Redireciona para a tela de login
       } else {
-        // Erro retornado pela API
         setError(data.msg || "Erro ao cadastrar a loja.");
       }
     } catch (err) {
       console.error(err);
       setError("Erro ao conectar com o servidor. Tente novamente mais tarde.");
+    } finally {
+      setIsLoading(false); // Desativa o estado de carregamento
     }
   };
 
   return (
     <View>
-      <Pressable
-        onPress={() => router.back()}
-        style={styles.backButton}
-      >
+      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <AntDesign name="arrowleft" size={24} color="#2f88ff" />
         <Text style={{ fontSize: 18 }}>Voltar</Text>
-      </Pressable>
+      </TouchableOpacity>
+
       <View style={styles.containerInput}>
         <Text>Insira uma senha:</Text>
         <TextInput
@@ -90,14 +96,19 @@ const CadastroLojaSenha = () => {
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <View style={[styles.buttonContainer]}>
-        <Pressable
-          style={[styles.button]}
+        <TouchableOpacity
+          style={[styles.button, isLoading && styles.buttonDisabled]}
           onPress={handleSubmit}
+          disabled={isLoading} // Desativa o botão enquanto está carregando
         >
-          <Text style={{ color: "#FFF", fontSize: 18, fontWeight: 'bold' }}>
-            Cadastrar
-          </Text>
-        </Pressable>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#FFF" />
+          ) : (
+            <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}>
+              Cadastrar
+            </Text>
+          )}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -106,10 +117,10 @@ const CadastroLojaSenha = () => {
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    borderColor: '#2f88ff',
-    backgroundColor: '#fff',
+    borderColor: "#2f88ff",
+    backgroundColor: "#fff",
     borderRadius: 8,
-    width: '95%',
+    width: "95%",
   },
   button: {
     width: "85%",
@@ -122,6 +133,9 @@ const styles = StyleSheet.create({
     borderColor: "#2f88ff",
     backgroundColor: "#2f88ff",
     marginTop: 20,
+  },
+  buttonDisabled: {
+    backgroundColor: "#a0c4ff", // Cor mais clara para indicar desativado
   },
   backButton: {
     padding: 10,

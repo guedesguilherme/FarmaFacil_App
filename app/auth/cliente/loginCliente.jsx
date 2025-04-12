@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
   TextInput,
   Alert,
 } from "react-native";
@@ -11,11 +11,13 @@ import { useRouter, Link } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import GoogleAuth from "../../components/GoogleAuth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ActivityIndicator } from "react-native-web";
 
 export default function LoginCliente() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter();
 
@@ -26,6 +28,7 @@ export default function LoginCliente() {
     }
 
     setError("");
+    setIsLoading(true)
 
     try {
       // Envia as credenciais para a API
@@ -48,7 +51,7 @@ export default function LoginCliente() {
         await AsyncStorage.setItem("token", token);
 
         // Redireciona para a página inicial ou protegida
-        router.push("/views/cliente/homeCliente");
+        router.navigate("/views/cliente/homeCliente");
       } else {
         // Exibe mensagem de erro retornada pela API
         setError(data.msg || "Erro ao realizar login.");
@@ -56,12 +59,14 @@ export default function LoginCliente() {
     } catch (err) {
       console.error(err);
       setError("Erro ao conectar com o servidor. Tente novamente mais tarde.");
+    } finally {
+      setIsLoading(false)
     }
   };
 
   return (
     <View>
-      <Pressable
+      <TouchableOpacity
         onPress={() => router.push("/")}
         style={{
           padding: 10,
@@ -77,7 +82,7 @@ export default function LoginCliente() {
       >
         <AntDesign name="arrowleft" size={24} color="#2f88ff" />
         <Text style={{ fontSize: 18 }}>Voltar à Home</Text>
-      </Pressable>
+      </TouchableOpacity>
       <Text
         style={{
           fontSize: 24,
@@ -117,11 +122,19 @@ export default function LoginCliente() {
         {/* Google Login */}
         <GoogleAuth />
 
-        <Pressable style={[styles.button]} onPress={handleSubmit}>
-          <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}>
-            Entrar
-          </Text>
-        </Pressable>
+        <TouchableOpacity
+          style={[styles.button, isLoading && styles.buttonDisabled]}
+          onPress={handleSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#FFF" />
+          ) : (
+            <Text style={{color: "#FFF", fontSize: 18, fontWeight: "bold"}}>
+              Login
+            </Text>
+          )}
+        </TouchableOpacity>       
       </View>
 
       <View style={styles.links}>
