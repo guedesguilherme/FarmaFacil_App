@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Alert, BackHandler, Settings } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Alert, BackHandler, Settings, TouchableOpacity } from 'react-native';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -14,19 +14,6 @@ const Tab = createBottomTabNavigator()
 
 const homeLoja = () => {
   const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      // Remove o token do AsyncStorage
-      await AsyncStorage.removeItem('token');
-      Alert.alert('Logout', 'Você saiu com sucesso!');
-      // Redireciona para a tela inicial
-      router.replace('/');
-    } catch (error) {
-      console.error('Erro ao fazer logout:', error);
-      Alert.alert('Erro', 'Não foi possível sair. Tente novamente.');
-    }
-  };
 
   useEffect(() => {
     const onBackPress = async () => {
@@ -54,6 +41,16 @@ const homeLoja = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="store" color={color} size={size} />
+          ),
+          headerTitle:  "Seus produtos:",
+          headerRight: () => (
+            <TouchableOpacity 
+              onPress={() => router.push('/views/loja/adicionarProduto')}
+              style={styles.btnAddProduto}
+            >
+              Adicionar produto
+              <FontAwesome name="plus" size={24} color="#2f88ff" />
+            </TouchableOpacity>
           )
         }}
       />
@@ -66,9 +63,12 @@ const homeLoja = () => {
           )
         }}
       />
-      <Tab.Screen name="Configurações" component={SettingsLoja} options={{
-        tabBarIcon: ({ color, size }) => (
-          <FontAwesome name="gear" size={size} color={color} />
+      <Tab.Screen 
+        name="Configurações"
+        component={SettingsLoja}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="gear" size={size} color={color} />
         ),
       }} />
     </Tab.Navigator>
@@ -98,4 +98,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  btnAddProduto: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+    borderWidth: 1,
+    borderColor: "#2f88ff",
+    borderRadius: 8,
+    padding: 10,
+    fontFamily: 'Arial', //Temporário
+    fontWeight: 'bold',
+    width: 200
+  }
 });

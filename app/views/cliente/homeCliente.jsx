@@ -1,11 +1,17 @@
-import { StyleSheet, Text, View, BackHandler, Pressable, Alert } from 'react-native'
-import React from 'react'
+import { 
+  StyleSheet,
+  Text,
+  View,
+  BackHandler,    
+  TouchableOpacity,
+  Alert,  
+} from 'react-native'
+import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect } from 'react';;
 
-const homeCliente = () => {
-
+const homeCliente = () => {  
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -42,10 +48,10 @@ const homeCliente = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bem-vindo à Home da Loja</Text>
-      <Pressable style={styles.logoutButton} onPress={handleLogout}>
+      <Text style={styles.title}>Bem-vindo à Home do cliente</Text>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Logout</Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   )
 }

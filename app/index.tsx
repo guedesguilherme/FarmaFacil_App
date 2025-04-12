@@ -3,10 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
@@ -16,18 +15,6 @@ export const options = {
 
 export default function Index() {
   const router = useRouter();
-
-  useEffect(() => {
-    const checkIfUserIsLoggedIn = async () => {
-      const token = await AsyncStorage.getItem('authToken');
-      if (token) {
-        // Se o token existir, redireciona para a rota protegida
-        router.replace('/plataformaCliente');
-      }
-    };
-
-    checkIfUserIsLoggedIn();
-  }, []);
 
   return (
     <View>
@@ -44,21 +31,21 @@ export default function Index() {
       <View style={styles.containerButtons}>
         <Text style={{ fontSize: 22, marginBottom: 20, fontWeight: 'bold' }} >Quem é você?</Text>
 
-        <Pressable
+        <TouchableOpacity
           onPress={() => router.push('/auth/cliente/loginCliente')}
           style={[styles.button, styles.secondaryButton]}
         >
           <Text style={{ fontSize: 18, color: "#fff" }}>Sou um cliente</Text>
           <AntDesign name="user" size={22} color="white" />
-        </Pressable>
+        </TouchableOpacity>
 
-        <Pressable
+        <TouchableOpacity
           onPress={() => router.push('/auth/loja/loginLoja')}
           style={[styles.button]}
         >
           <Text style={{ fontSize: 18 }}>Sou uma loja</Text>
           <FontAwesome5 name="store-alt" size={22} color="black" />
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   );
