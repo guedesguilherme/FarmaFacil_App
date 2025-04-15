@@ -5,13 +5,20 @@ import {
   FlatList,
   ActivityIndicator,
   Alert,
+  Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useIsFocused } from '@react-navigation/native';
 
 const Produtos = () => {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const isFocused = useIsFocused()
+  const router = useRouter();
 
   const getProdutos = async () => {
     try {
@@ -55,6 +62,11 @@ const Produtos = () => {
     getProdutos();
   }, []);
 
+  function saveId(nome, id) {
+    AsyncStorage.setItem(nome, id)
+    router.push('/views/loja/editarProduto')
+  }
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -72,12 +84,21 @@ const Produtos = () => {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <View style={styles.produtoItem}>
-              <Text style={styles.produtoNome}>{item.nome}</Text>
-              <Text style={styles.produtoPreco}>R$ {item.preco.toFixed(2)}</Text>
-              <Text style={styles.produtoInfo}>Quantidade: {item.quantidade}</Text>
-              <Text style={styles.produtoInfo}>Validade: {item.validade}</Text>
-              <Text style={styles.produtoInfo}>Lote: {item.lote}</Text>
-              <Text style={styles.produtoInfo}>Categoria: {item.label}</Text>
+              <View>
+                <Text style={styles.produtoNome}>{item.nome}</Text>
+                <Text style={styles.produtoPreco}>R$ {item.preco.toFixed(2)}</Text>
+                <Text style={styles.produtoInfo}>Quantidade: {item.quantidade}</Text>
+                <Text style={styles.produtoInfo}>Validade: {item.validade}</Text>
+                <Text style={styles.produtoInfo}>Lote: {item.lote}</Text>
+                <Text style={styles.produtoInfo}>Categoria: {item.label}</Text>                
+              </View>
+              <View>
+                <Pressable
+                  onPress={() => saveId("produtoId", item._id)}
+                >
+                  <FontAwesome name="pencil" size={24} color="black" />
+                </Pressable>
+              </View>
             </View>
           )}
         />
@@ -102,6 +123,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   produtoItem: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',    
     padding: 16,
     marginBottom: 10,
     backgroundColor: '#f2f2f2',
