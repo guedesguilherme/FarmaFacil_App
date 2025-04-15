@@ -14,6 +14,18 @@ import { useEffect } from 'react';;
 const homeCliente = () => {  
   const router = useRouter();
 
+  const [lojas, setLojas] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  const getLojas = async () => {
+    try {
+      const response = await fetch(
+        `htt`
+      )
+    } catch (error) {} finally {}
+  }
+
   const handleLogout = async () => {
     try {
       // Remove o token do AsyncStorage

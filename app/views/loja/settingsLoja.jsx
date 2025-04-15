@@ -1,74 +1,114 @@
-import { StyleSheet, Text, View, Pressable, Alert, BackHandler } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator, StyleSheet, ScrollView, Alert, Button } from 'react-native';
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
+
+const API_URL = 'https://api-cadastro-farmacias.onrender.com';
 
 const SettingsLoja = () => {
+  const [farmacia, setFarmacia] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchFarmacia = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('token');
+        const storedId = await AsyncStorage.getItem('lojaId');
+
+        if (!storedToken || !storedId) {
+          setErro('Token ou ID da farmácia não encontrado.');
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get(`${API_URL}/farma/${storedId}`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
+
+        setFarmacia(response.data.farma);
+      } catch (err) {
+        console.error(err);
+        setErro('Erro ao carregar informações da farmácia.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFarmacia();
+  }, []);
 
   const handleLogout = async () => {
     try {
-      // Remove o token do AsyncStorage
       await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('lojaId');
       Alert.alert('Logout', 'Você saiu com sucesso!');
-      // Redireciona para a tela inicial
-      router.replace('/');
+      router.navigate('/');
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
       Alert.alert('Erro', 'Não foi possível sair. Tente novamente.');
     }
   };
 
-  useEffect(() => {
-    const onBackPress = async () => {
-        const token = await AsyncStorage.getItem("token")
-        if (token) {
-            // router.replace("/settings");
-            return true
-        }
+  if (loading) {
+    return <ActivityIndicator size="large" color="#2a9d8f" style={styles.loading} />;
+  }
 
-        return false
-    }
-
-    BackHandler.addEventListener('hardwareBackPress', onBackPress)
-
-    return() => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress)
-    }
-  }, [])
+  if (erro) {
+    return <Text style={styles.error}>{erro}</Text>;
+  }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Bem-vindo à Home da Loja</Text>
-      <Pressable style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutText}>Logout</Text>
-      </Pressable>
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>{farmacia.nome}</Text>
+      <Text style={styles.item}><Text style={styles.label}>CNPJ:</Text> {farmacia.cnpj}</Text>
+      <Text style={styles.item}><Text style={styles.label}>Rede:</Text> {farmacia.rede}</Text>
+      <Text style={styles.item}><Text style={styles.label}>Email:</Text> {farmacia.email}</Text>
+      <Text style={styles.item}><Text style={styles.label}>Endereço:</Text> {`${farmacia.rua}, Nº ${farmacia.numero}, ${farmacia.bairro}`}</Text>
+      <Text style={styles.item}><Text style={styles.label}>CEP:</Text> {farmacia.cep}</Text>
+      <Text style={styles.item}><Text style={styles.label}>Cidade/UF:</Text> {`${farmacia.cidade} - ${farmacia.uf}`}</Text>
+
+      <View style={styles.logoutButton}>
+        <Button title="Sair da conta" onPress={handleLogout} color="#e63946" />
+      </View>
+    </ScrollView>
   );
 };
 
-export default SettingsLoja;
-
 const styles = StyleSheet.create({
-  container: {
+  loading: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  container: {
+    padding: 20,
+    backgroundColor: '#f0f0f0',
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 16,
+    color: '#264653',
+  },
+  item: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  label: {
+    fontWeight: 'bold',
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 20,
   },
   logoutButton: {
-    padding: 10,
-    backgroundColor: '#2f88ff',
-    borderRadius: 8,
-  },
-  logoutText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+    marginTop: 30,
+  }
 });
+
+export default SettingsLoja;

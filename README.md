@@ -21,11 +21,9 @@ O expo-router, método que gera rotas para o próprio app, se baseia no nome dos
 ## O que falta? (TODO) 📝
 
 ### Farmácia🏪:
-- Integrar com a api:  
-  - Cadastro de produtos (farmácia)
+- Integrar com a api:    
   - Editar dados do produto (farmácia)
-  - Deletar produtos (farmácia)
-  - Exibir produtos da loja (para cliente e farmacia)
+  - Deletar produtos (farmácia)  
   - Editar dados da loja
   - Mostrar pedidos da loja
 
@@ -33,7 +31,7 @@ O expo-router, método que gera rotas para o próprio app, se baseia no nome dos
 - Adicionar login social
 - Integrar com a api:    
   - Exibir lojas
-  - Exibir produtos da loja (para cliente e farmacia)
+  - Exibir produtos da loja
   - Editar dados do usuário
   - Deletar usuário (farmácia e cliente)
   - Adicionar carrinho de compras

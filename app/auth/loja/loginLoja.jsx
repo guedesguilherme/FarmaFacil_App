@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
-  View,  
+  View,
   TextInput,
   Alert,
   TouchableOpacity,
@@ -10,15 +10,16 @@ import {
 import { useRouter, Link } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { ActivityIndicator } from "react-native-web";
+import { ActivityIndicator } from "react-native";
+import { useIsFocused } from '@react-navigation/native';
 
 export default function LoginLoja() {
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false);
+  const isFocused = useIsFocused(); // Verifica se o componente está focado
   const router = useRouter();
 
   const handleSubmit = async () => {
@@ -28,7 +29,7 @@ export default function LoginLoja() {
     }
 
     setError("");
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const response = await fetch("https://api-cadastro-farmacias.onrender.com/farma/auth/login", {
@@ -45,10 +46,13 @@ export default function LoginLoja() {
         Alert.alert("Sucesso", "Login realizado com sucesso!");
         const { token, farma_id } = data;
 
-        console.log(data)
         await AsyncStorage.setItem("token", token);
         await AsyncStorage.setItem("lojaId", farma_id);
-        router.push("/views/loja/homeLoja");
+
+        // Navega apenas se o componente estiver focado
+        if (isFocused) {
+          router.push("/views/loja/homeLoja");
+        }
       } else {
         setError(data.msg || "Erro ao realizar login.");
       }
@@ -56,7 +60,7 @@ export default function LoginLoja() {
       console.error(err);
       setError("Erro ao conectar com o servidor. Tente novamente mais tarde.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -130,11 +134,11 @@ export default function LoginLoja() {
           {isLoading ? (
             <ActivityIndicator size="small" color="#FFF" />
           ) : (
-            <Text style={{color: "#FFF", fontSize: 18, fontWeight: "bold"}}>
+            <Text style={{ color: "#FFF", fontSize: 18, fontWeight: "bold" }}>
               Login
             </Text>
           )}
-        </TouchableOpacity>        
+        </TouchableOpacity>
       </View>
 
       <View style={styles.links}>

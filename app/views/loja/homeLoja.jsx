@@ -9,10 +9,9 @@ import Pedidos from './pedidos';
 import SettingsLoja from './settingsLoja';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-
 const Tab = createBottomTabNavigator()
 
-const homeLoja = () => {
+const HomeLoja = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -75,7 +74,7 @@ const homeLoja = () => {
   );
 };
 
-export default homeLoja;
+export default HomeLoja;
 
 const styles = StyleSheet.create({
   container: {
