@@ -73,7 +73,7 @@ const SettingsLoja = () => {
       <Text style={styles.item}><Text style={styles.label}>Cidade/UF:</Text> {`${farmacia.cidade} - ${farmacia.uf}`}</Text>
 
       <View style={styles.logoutButton}>
-        <Button title="Sair da conta" onPress={handleLogout} color="#e63946" />
+        <Button title="Sair da conta" onPress={handleLogout} color="#2f88ff" />
       </View>
     </ScrollView>
   );
@@ -85,8 +85,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
+    flex: 1,
     padding: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 22,
@@ -107,7 +108,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   logoutButton: {
-    marginTop: 30,
+    width: '100%',
+    marginRight: 15, 
+    bottom: 0,
   }
 });
 
