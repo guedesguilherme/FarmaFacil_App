@@ -25,7 +25,7 @@ const EditarProduto = () => {
     label: "",
   });
   const [loading, setLoading] = useState(true);
-  const [erro, setErro] = useState(null);
+  const [erro, setErro] = useState('');
   const router = useRouter();
 
   useEffect(() => {

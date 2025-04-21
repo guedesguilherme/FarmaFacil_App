@@ -1,43 +1,28 @@
-import { 
+import {
   StyleSheet,
   Text,
   View,
-  BackHandler,    
+  Pressable,
+  Alert,
+  BackHandler,
+  Settings,
   TouchableOpacity,
-  Alert,  
-} from 'react-native'
-import React, { useState } from 'react'
+  TextInput,
+} from 'react-native';
+import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { useEffect } from 'react';;
+import { useEffect } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+const Tab = createBottomTabNavigator()
+import ProdutosCliente from './produtosCliente';
+import PedidosCliente from './pedidosCliente';
+import SettingsCliente from './settingsCliente';
+import Carrinho from './carrinho';
 
-const homeCliente = () => {  
-  const router = useRouter();
-
-  const [lojas, setLojas] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-
-  const getLojas = async () => {
-    try {
-      const response = await fetch(
-        `htt`
-      )
-    } catch (error) {} finally {}
-  }
-
-  const handleLogout = async () => {
-    try {
-      // Remove o token do AsyncStorage
-      await AsyncStorage.removeItem('token');
-      Alert.alert('Logout', 'Você saiu com sucesso!');
-      // Redireciona para a tela inicial
-      router.replace('/');
-    } catch (error) {
-      console.error('Erro ao fazer logout:', error);
-      Alert.alert('Erro', 'Não foi possível sair. Tente novamente.');
-    }
-  };
+const homeCliente = () => {
 
   useEffect(() => {
     const onBackPress = async () => {
@@ -59,15 +44,73 @@ const homeCliente = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Bem-vindo à Home do cliente</Text>
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutText}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+
+    <Tab.Navigator>
+      {/* Catálogo de produtos: */}
+      <Tab.Screen
+        name="catalogo"
+        component={ProdutosCliente}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="store" color={color} size={size} />
+          ),
+          tabBarLabel: 'Catálogo',
+          headerTitle: "Catálogo de produtos",
+          headerRight: () => (
+            <View style={styles.rightHeaderContainer}>
+              <TextInput
+                placeholder='Pesquisar produto...'
+                style={styles.searchInput}
+              />
+              <FontAwesome 
+                name="shopping-cart"                                
+                style={styles.cartIcon}
+              />
+            </View>
+            )
+        }}
+      />
+
+      <Tab.Screen
+        name="seus-pedidos"
+        component={PedidosCliente}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="clipboard-check" color={color} size={size} />
+          ),
+          headerTitle: "Seus pedidos",
+          tabBarLabel: 'Seus pedidos',
+          headerRight: () => (
+          <View style={styles.rightHeaderContainer}>
+            <TextInput
+              placeholder='Pesquisar produto...'
+              style={styles.searchInput}
+            />
+            <FontAwesome 
+              name="shopping-cart"               
+              style={styles.cartIcon}
+            />
+          </View>
+          )
+        }}
+      />
+
+      <Tab.Screen
+        name="settings"
+        component={SettingsCliente}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="gear" color={color} size={size} />
+          ),
+          tabBarLabel: 'Configurações',
+          headerTitle: "Configurações",          
+        }}
+      />
+
+    </Tab.Navigator>
+
   )
 }
-
 export default homeCliente
 
 const styles = StyleSheet.create({
@@ -81,14 +124,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  logoutButton: {
-    padding: 10,
-    backgroundColor: '#2f88ff',
-    borderRadius: 8,
+  rightHeaderContainer: {
+    marginRight: 35,
+    display: 'flex',
+    flexDirection: 'row',    
+    gap: 10,
+    alignItems: 'center',
   },
-  logoutText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+  searchInput: {
+    borderWidth: 1.5,
+    borderRadius: 15,
+    borderColor: '#2f88ff',
+    padding: 8,
+    width: 250
+  },
+  cartIcon: {
+    borderWidth: 0,
+    backgroundColor: '#2f88ff',
+    padding: 8,
+    fontSize: 20,    
+    color: '#FFF',
+    borderRadius: 10,
+    width: 55,
+    display: 'flex',
+    justifyContent: 'center',
   },
 });

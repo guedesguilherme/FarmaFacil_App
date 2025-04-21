@@ -4,8 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Produtos from './produtos';
-import Pedidos from './pedidos';
+import ProdutosLoja from './produtosLoja';
+import PedidosLoja from './pedidosLoja';
 import SettingsLoja from './settingsLoja';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -35,8 +35,8 @@ const HomeLoja = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Produtos"
-        component={Produtos}
+        name="ProdutosLoja"
+        component={ProdutosLoja}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="store" color={color} size={size} />
@@ -54,8 +54,8 @@ const HomeLoja = () => {
         }}
       />
       <Tab.Screen
-        name="Pedidos"
-        component={Pedidos}
+        name="PedidosLoja"
+        component={PedidosLoja}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="clipboard-check" size={size} color={color} />
@@ -63,12 +63,13 @@ const HomeLoja = () => {
         }}
       />
       <Tab.Screen 
-        name="Configurações"
+        name="settings"
         component={SettingsLoja}
         options={{
+          headerTitle: 'Configurações',
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="gear" size={size} color={color} />
-        ),
+        ),        
       }} />
     </Tab.Navigator>
   );

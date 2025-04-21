@@ -55,7 +55,7 @@ const SettingsLoja = () => {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#2a9d8f" style={styles.loading} />;
+    return <ActivityIndicator size="large" color="#2f88ff" style={styles.loading} />;
   }
 
   if (erro) {
@@ -72,7 +72,14 @@ const SettingsLoja = () => {
       <Text style={styles.item}><Text style={styles.label}>CEP:</Text> {farmacia.cep}</Text>
       <Text style={styles.item}><Text style={styles.label}>Cidade/UF:</Text> {`${farmacia.cidade} - ${farmacia.uf}`}</Text>
 
-      <View style={styles.logoutButton}>
+      <View style={{display: 'flex', flexDirection: 'column', gap: 15}}>
+        
+        <Button 
+          title="Editar suas informações"
+          color="#2f88ff"           
+          onPress={() => router.push('/views/loja/editarLoja')}
+        />             
+        
         <Button title="Sair da conta" onPress={handleLogout} color="#2f88ff" />
       </View>
     </ScrollView>
@@ -106,12 +113,7 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     marginTop: 20,
-  },
-  logoutButton: {
-    width: '100%',
-    marginRight: 15, 
-    bottom: 0,
-  }
+  },  
 });
 
 export default SettingsLoja;
