@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useRouter, Link } from "expo-router";
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useCadastroLoja } from "../../../context/CadastroLojaContext";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const CadastroLoja = () => {
   const [nome, setNome] = useState('')
@@ -18,13 +18,16 @@ const CadastroLoja = () => {
   const [error, setError] = useState('')  
 
   const router = useRouter()
-
-  const { setDados } = useCadastroLoja();
+  
   const handleSubmit = () => {
     if (!cnpj || !nome || !rede || !email) {
       setError("Todos os campos são obrigatórios!");      
     } else {
-      setDados({ cnpj, nome, rede, email }); // Salva dados no contexto
+      // setDados({ cnpj, nome, rede, email }); // Salva dados no contexto
+      AsyncStorage.setItem('cnpj', cnpj)
+      AsyncStorage.setItem('rede', rede)
+      AsyncStorage.setItem('nome', nome)
+      AsyncStorage.setItem('email', email)
       setError("");      
       router.push('/auth/loja/cadastroLojaEndereco');
     }

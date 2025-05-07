@@ -11,6 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useCadastroLoja } from "../../../context/CadastroLojaContext";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const CadastroLojaSenha = () => {
   const [password, setPassword] = useState("");
@@ -19,23 +20,46 @@ const CadastroLojaSenha = () => {
   const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
 
   const router = useRouter();
-  const { dados, limparDados } = useCadastroLoja();
-
   const handleSubmit = async () => {
     if (!password || !confirmPassword) {
       setError("Todos os campos são obrigatórios!");
       return;
     }
-
+  
     if (password !== confirmPassword) {
       setError("As senhas não coincidem!");
       return;
     }
-
+  
     setError("");
-    setIsLoading(true); // Ativa o estado de carregamento
-
+    setIsLoading(true);
+  
     try {
+      const [
+        cnpj, rede, nome, email,
+        cep, rua, bairro, numero,
+        uf, cidade
+      ] = await Promise.all([
+        AsyncStorage.getItem('cnpj'),
+        AsyncStorage.getItem('rede'),
+        AsyncStorage.getItem('nome'),
+        AsyncStorage.getItem('email'),
+        AsyncStorage.getItem('cep'),
+        AsyncStorage.getItem('rua'),
+        AsyncStorage.getItem('bairro'),
+        AsyncStorage.getItem('numero'),
+        AsyncStorage.getItem('uf'),
+        AsyncStorage.getItem('cidade'),
+      ]);
+  
+      const dados = {
+        cnpj, rede, nome, email,
+        cep, rua, bairro, numero,
+        uf, cidade,
+        senha: password,
+        confirmasenha: confirmPassword
+      };
+  
       const response = await fetch(
         "https://api-cadastro-farmacias.onrender.com/farma/auth/register",
         {
@@ -43,20 +67,16 @@ const CadastroLojaSenha = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            ...dados,
-            senha: password,
-            confirmasenha: confirmPassword,
-          }),
+          body: JSON.stringify(dados),
         }
       );
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         Alert.alert("Sucesso", data.msg || "Loja cadastrada com sucesso!");
-        limparDados(); // Limpa os dados do contexto
-        router.push("/auth/loja/loginLoja"); // Redireciona para a tela de login
+        await AsyncStorage.clear();
+        router.push("/auth/loja/loginLoja");
       } else {
         setError(data.msg || "Erro ao cadastrar a loja.");
       }
@@ -64,10 +84,10 @@ const CadastroLojaSenha = () => {
       console.error(err);
       setError("Erro ao conectar com o servidor. Tente novamente mais tarde.");
     } finally {
-      setIsLoading(false); // Desativa o estado de carregamento
+      setIsLoading(false);
     }
   };
-
+  
   return (
     <View>
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>

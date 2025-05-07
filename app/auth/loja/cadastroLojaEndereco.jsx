@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useCadastroLoja } from "../../../context/CadastroLojaContext";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const CadastroLojaEndereco = () => {
   const [cep, setCep] = useState("");
@@ -44,15 +44,19 @@ const CadastroLojaEndereco = () => {
         Alert.alert("Erro ao buscar o CEP");
       }
     }
-  };
-
-  const { setDados } = useCadastroLoja();
+  };  
 
   const handleSubmit = () => {
     if (!cep || !rua || !bairro || !numero || !uf || !cidade) {
       setError("Todos os campos são obrigatórios!");
     } else {
-      setDados({ cep, rua, bairro, numero, uf, cidade }); // Salva dados no contexto
+      AsyncStorage.setItem('cep', cep)
+      AsyncStorage.setItem('rua', rua)
+      AsyncStorage.setItem('bairro', bairro)
+      AsyncStorage.setItem('numero', numero)
+      AsyncStorage.setItem('uf', uf)
+      AsyncStorage.setItem('cidade', cidade)
+      // setDados({ cep, rua, bairro, numero, uf, cidade }); // Salva dados no contexto
       setError("");
       router.push("/auth/loja/cadastroLojaSenha");
     }
