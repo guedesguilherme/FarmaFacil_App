@@ -6,7 +6,7 @@ import {
   FlatList,
 } from 'react-native'
 import api from "../../../src/services/api";
-import Produtos from "./Produtos";
+import Produtos from "../../../src/components/Produto";
 import { ActivityIndicator } from "react-native";
 
 export default function HomeCliente() {
@@ -37,8 +37,7 @@ export default function HomeCliente() {
     )
   } else {    
     return (
-      <View style={styles.container}>
-        <Text>Produtos:</Text>
+      <View style={styles.container}>        
         <FlatList
           data={produtos}          
           keyExtractor={item => String(item._id)}

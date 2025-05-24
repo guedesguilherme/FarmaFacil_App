@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import "../global.css";
 import { router } from "expo-router";
 import { PrimaryButton, SecondaryButton } from "../src/components/ButtonsComponent";
