@@ -4,18 +4,23 @@
     "slug": "FarmaFacil",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/LogoFarmaFacil.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.farmafacil.FarmaFacil",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/LogoFarmaFacil.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.farmafacil.FarmaFacil"
     },
     "web": {
       "bundler": "metro",
@@ -27,15 +32,30 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/LogoFarmaFacil.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.149491902490-s2u7hv0hqfbm6odt8m3bp5svicrtafo4"
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a1f53d56-ed1f-4164-92e1-7fa891e00645"
+      }
+    },
+    "owner": "farmafacil"
   }
 }
