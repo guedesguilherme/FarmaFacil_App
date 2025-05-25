@@ -1,6 +1,7 @@
 import { TouchableOpacity, Text } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { router } from 'expo-router';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Heading1 } from './TextComponent';
 
 export const PrimaryButton = ({ children, className = '', ...props }) => (
@@ -61,7 +62,7 @@ export const FillButton = ({ children, className = '', ...props }) => (
 )
 
 export const ReturnButton = () => (
-  <TouchableOpacity 
+  <TouchableOpacity
     className='
       w-[50%]
       border-2
@@ -79,5 +80,28 @@ export const ReturnButton = () => (
   >
     <AntDesign name='left' size={25} color='#2f88ff' />
     <Text className='text-2xl font-bold'>Voltar</Text>
+  </TouchableOpacity>
+)
+
+export const PagamentoPix = ({ produtoId }) => (
+  <TouchableOpacity
+    className='
+      w-[90%]
+      border-2
+      border-primaryBlue 
+      rounded-lg 
+      flex-row
+      items-center
+      justify-center
+      p-3
+      gap-5
+      bg-white     
+    '
+    onPress={() => {console.log(produtoId), router.push({ pathname: '/pages/Produtos/FinalizarCompra', params: { id: produtoId }})}}
+  >
+    <FontAwesome6 name='pix' size={45} color='#2ebdaf' />
+    <Heading1>
+      Pagar via PIX
+    </Heading1>
   </TouchableOpacity>
 )

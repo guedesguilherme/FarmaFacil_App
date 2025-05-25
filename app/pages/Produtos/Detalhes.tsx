@@ -1,6 +1,6 @@
-import { ActivityIndicator, StyleSheet, Text, View, Image } from "react-native";
+import { ActivityIndicator, Text, View, Image } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, router, } from "expo-router";
 import api from "@/src/services/api";
 import { Heading1, Heading2 } from "@/src/components/TextComponent";
 import { FillButton, PrimaryButton, ReturnButton } from "@/src/components/ButtonsComponent";
@@ -28,11 +28,9 @@ const Detalhes = () => {
         <ActivityIndicator color="#2f88ff" size={45} />
       </View>
     );
-  } else {
-    console.log(informacoes.produto);
-    console.log(informacoes.produto.imagem_url)
+  } else {    
     return (
-      <View style={styles.container}>
+      <View className='m-5 flex-col'>
         <View className='gap-5'>
           <ReturnButton />
           <Heading1>
@@ -65,7 +63,7 @@ const Detalhes = () => {
           {/* Preço + btnComprar */}
           <View className='flex-row justify-between items-center'>
             <Heading1>R$ {parseFloat(informacoes.produto.preco).toFixed(2)}</Heading1>
-            <FillButton>
+            <FillButton onPress={() => router.push({ pathname: '/pages/Produtos/Pagamento', params: { id: informacoes.produto._id } })}>
               <AntDesign name='shoppingcart' size={24} color='#FFFF' />
               <Heading1 className='color-white'>
                 Comprar
@@ -81,11 +79,3 @@ const Detalhes = () => {
 };
 
 export default Detalhes;
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 10,
-    flexDirection: 'column',
-  },
-
-});
