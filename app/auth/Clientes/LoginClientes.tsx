@@ -1,74 +1,52 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View } from "react-native";
 import "../../../global.css";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import {
   PrimaryButton,
+  ReturnButton,
   SecondaryButton,
 } from "../../../src/components/ButtonsComponent";
 import {
-  BodyText,
+  InputComponent
+} from '../../../src/components/InputComponent'
+import {  
   ErrorText,
   LinkText,
-  Heading1,
-  Heading2,
+  Heading1,  
 } from "../../../src/components/TextComponent";
-import Feather from "@expo/vector-icons/Feather";
 
 const LoginClientes = () => {
   return (
-    <View style={styles.container}>
+    <View className='flex-1 bg-white'>
 
-      <Heading1>
-        <Text>Login - Clientes</Text>
-      </Heading1>     
-
-      <View style={styles.form}>
-        <View style={styles.inputArea}>
-          <Heading2>
-            <Text>E-mail:</Text>
-          </Heading2>
-          <TextInput style={styles.textInput} />
-        </View>
-        <View style={styles.inputArea}>
-          <Heading2>
-            <Text>Senha:</Text>
-          </Heading2>
-          <TextInput style={styles.textInput} />
-        </View>
-
-        <PrimaryButton onPress={() => router.navigate('/pages/Clientes/HomeClientes')}>
-          <Text>Logar</Text>
-        </PrimaryButton>
+      <ReturnButton className='m-5' />
+      <View className='mt-10'>
+        <Heading1 className='text-center'>
+          Login - Clientes
+        </Heading1>
       </View>
 
-      <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
-        <LinkText>
-          <Text>Não tenho cadastro</Text>
-        </LinkText>
-      </SecondaryButton>
+      <View className='flex-col gap-5 ml-5 mr-5 mt-10'>
+        <InputComponent label='E-mail:' />
+        <InputComponent label='Senha' />
+
+        <View className='flex-col gap-5 items-center mt-5'>
+          <PrimaryButton onPress={() => router.navigate('/pages/Clientes/HomeClientes')}>
+            <Heading1>
+              Logar
+            </Heading1>
+          </PrimaryButton>
+
+          <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
+            <Heading1>
+              Não tenho cadastro
+            </Heading1>
+          </SecondaryButton>
+        </View>
+
+      </View>
     </View>
   );
 };
 
 export default LoginClientes;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  form: {
-    width: "80%",
-    gap: 20,
-    alignItems: "center",
-  },
-  inputArea: {
-    width: "100%",
-  },
-  textInput: {
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "#2f88ff",
-  },
-});

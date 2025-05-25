@@ -61,9 +61,9 @@ export const FillButton = ({ children, className = '', ...props }) => (
   </TouchableOpacity>
 )
 
-export const ReturnButton = () => (
+export const ReturnButton = ({ className='' }) => (
   <TouchableOpacity
-    className='
+    className={`
       w-[50%]
       border-2
       border-primaryBlue 
@@ -73,7 +73,8 @@ export const ReturnButton = () => (
       p-2
       gap-5
       bg-white
-    '
+      ${className}
+    `}
     onPress={
       () => router.back()
     }
