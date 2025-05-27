@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 
 const GenericContainer = ({ children, className = '' }) => {
     return (
@@ -19,6 +19,21 @@ export const ButtonsArea = ({ children, className='' }) => (
     <View className={`items-center justify-center flex-col gap-5 mb-10 ${className}`}>
         {children}
     </View>
+)
+
+export const BorderContainer = ({ children, className='' }) => (
+    <ScrollView 
+        className={`
+            m-5
+            p-5
+            border-2
+            border-primaryBlue
+            rounded-lg
+            ${className}
+        `}
+    >
+        ${children}
+    </ScrollView>
 )
 
 export default GenericContainer
