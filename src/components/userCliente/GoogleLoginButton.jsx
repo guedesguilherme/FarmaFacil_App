@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { GoogleSignin, GoogleSigninButton, isSuccessResponse, isErrorWithCode, statusCodes } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
+import { saveSecureItem } from "../../../utils/secureStore"
 
 const GoogleLoginButton = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,8 +22,29 @@ const GoogleLoginButton = () => {
 
       if (isSuccessResponse(response)) {
         const { idToken, user } = response.data;
-        const { name, email, photo } = user;
-        console.log(name, email, photo);
+
+        //console.log(idToken)
+
+          // Envia o token para sua API
+        const apiResponse = await fetch('https://api-cadastro-farmacias.onrender.com/usuarios/auth/google', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ idToken }),
+        });
+
+        const data = await apiResponse.json();
+
+        if (!apiResponse.ok) {
+        throw new Error(data.msg || 'Erro na autenticação com Google');
+        }
+
+        //await saveSecureItem(data.token)
+        //await saveSecureItem(data.user.id)
+        console.log(data.user.id)
+        console.log(data.token)
+
         router.navigate("/pages/Clientes/HomeClientes");
       } else {
         alert("Não foi possível realizar a autentificação pelo Google");
@@ -40,7 +62,7 @@ const GoogleLoginButton = () => {
             console.log(error.code);
         }
       } else {
-        console.log("Um erro aconteceu.");
+        console.log(error);
       }
     } finally {
       setIsSubmitting(false);
