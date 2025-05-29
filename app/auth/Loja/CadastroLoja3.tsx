@@ -3,7 +3,7 @@ import React from 'react'
 import GenericContainer, { Form, ButtonsArea } from '../../../src/components/ViewComponents'
 import { PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent'
 import { Heading1 } from '@/src/components/TextComponent'
-import { InputComponent } from '@/src/components/InputComponent'
+import { TextInputComponent } from '@/src/components/TextInputComponents'
 
 const CadastroLoja3 = () => {
   return (
@@ -15,8 +15,8 @@ const CadastroLoja3 = () => {
         </Heading1>
 
         <Form>
-            <InputComponent label='Senha:' />
-            <InputComponent label='Repita a senha:' />
+            <TextInputComponent label='Senha:' />
+            <TextInputComponent label='Repita a senha:' />
             
             <ButtonsArea>
                 <PrimaryButton>

@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import GenericContainer from '@/src/components/ViewComponents'
 
 const MeusPedidos = () => {
   return (
-    <View>
+    <GenericContainer>
       <Text>MeusPedidos</Text>
-    </View>
+    </GenericContainer>
   )
 }
 

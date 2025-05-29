@@ -7,8 +7,8 @@ import {
   SecondaryButton,
 } from "../../../src/components/ButtonsComponent";
 import {
-  InputComponent
-} from '../../../src/components/InputComponent'
+  TextInputComponent
+} from '../../../src/components/TextInputComponents'
 import {
   ErrorText,
   LinkText,
@@ -27,8 +27,8 @@ const LoginClientes = () => {
 
 
       <Form>
-        <InputComponent label='E-mail:' />
-        <InputComponent label='Senha' />
+        <TextInputComponent label='E-mail:' />
+        <TextInputComponent label='Senha' />
 
         <ButtonsArea>
           <PrimaryButton onPress={() => router.navigate('/pages/Clientes/HomeClientes')}>

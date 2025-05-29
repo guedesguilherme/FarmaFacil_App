@@ -3,7 +3,7 @@ import React from 'react'
 import { PrimaryButton, ReturnButton, SecondaryButton } from '@/src/components/ButtonsComponent'
 import { Heading1 } from '@/src/components/TextComponent'
 import GenericContainer, { Form, ButtonsArea } from '@/src/components/ViewComponents'
-import { InputComponent } from '@/src/components/InputComponent'
+import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { useRouter } from 'expo-router'
 
 const CadastroClientes = () => {
@@ -16,10 +16,10 @@ const CadastroClientes = () => {
       </Heading1>
 
       <Form>
-        <InputComponent label='Nome:' />
-        <InputComponent label='E-mail:' />
-        <InputComponent label='Senha:' />        
-        <InputComponent label='Repita sua senha:' />
+        <TextInputComponent label='Nome:' />
+        <TextInputComponent label='E-mail:' />
+        <TextInputComponent label='Senha:' />        
+        <TextInputComponent label='Repita sua senha:' />
         <ButtonsArea>
           <PrimaryButton>
             <Heading1>

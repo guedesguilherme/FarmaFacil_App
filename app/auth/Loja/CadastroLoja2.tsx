@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { Heading1 } from '@/src/components/TextComponent'
-import { DisabledInputComponent, InputComponent } from '@/src/components/InputComponent'
+import { DisabledTextInputComponent, TextInputComponent } from '@/src/components/TextInputComponents'
 import { ReturnButton, PrimaryButton, SecondaryButton } from '@/src/components/ButtonsComponent'
 import { useRouter } from 'expo-router'
 import GenericContainer, { Form, ButtonsArea } from '@/src/components/ViewComponents'
@@ -18,12 +18,12 @@ const CadastroLoja2 = () => {
 
             <ScrollView>
                 <Form>
-                    <InputComponent label='CEP:' maxLength={8} />
-                    <DisabledInputComponent label='Rua:' />
-                    <DisabledInputComponent label='Bairro:' />
-                    <InputComponent label='Número:' />
-                    <DisabledInputComponent label='Estado:' />
-                    <DisabledInputComponent label='Cidade:' />
+                    <TextInputComponent label='CEP:' maxLength={8} />
+                    <DisabledTextInputComponent label='Rua:' />
+                    <DisabledTextInputComponent label='Bairro:' />
+                    <TextInputComponent label='Número:' />
+                    <DisabledTextInputComponent label='Estado:' />
+                    <DisabledTextInputComponent label='Cidade:' />
 
 
                     <ButtonsArea>

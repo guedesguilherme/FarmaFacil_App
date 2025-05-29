@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { PrimaryButton, ReturnButton, SecondaryButton } from '@/src/components/ButtonsComponent'
 import { Heading1 } from '@/src/components/TextComponent'
-import { InputComponent } from '@/src/components/InputComponent'
+import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { useRouter } from 'expo-router'
 import GenericContainer, { ButtonsArea, Form } from '@/src/components/ViewComponents'
 
@@ -17,10 +17,10 @@ const CadastroLoja1 = () => {
       </Heading1>
 
       <Form>
-        <InputComponent label='Nome da sua loja:' />
-        <InputComponent label='CNPJ da sua loja:' />
-        <InputComponent label='E-mail da sua loja:' />
-        <InputComponent label='Rede da sua loja:' />
+        <TextInputComponent label='Nome da sua loja:' />
+        <TextInputComponent label='CNPJ da sua loja:' />
+        <TextInputComponent label='E-mail da sua loja:' />
+        <TextInputComponent label='Rede da sua loja:' />
 
         <ButtonsArea>
           <PrimaryButton onPress={() => router.push('/auth/Loja/CadastroLoja2')}>

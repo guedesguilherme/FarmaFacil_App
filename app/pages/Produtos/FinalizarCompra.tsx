@@ -11,7 +11,8 @@ import { Image } from 'react-native'
 import { PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent'
 import { Heading1, Heading2 } from '@/src/components/TextComponent'
 import * as Clipboard from 'expo-clipboard'
-import { useLocalSearchParams, router } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import GenericContainer from '@/src/components/ViewComponents'
 
 const FinalizarCompra = () => {
 
@@ -30,11 +31,13 @@ const FinalizarCompra = () => {
         setCopiedText(text);
     };
 
+    const router = useRouter()
+
     return (
-        <View className='flex-1 m-5 '>
-            <ReturnButton />
+        <GenericContainer>
+            <ReturnButton className='m-5' />
             <View
-                className='flex-col mt-10'
+                className='flex-col mt-5'
             >
                 <Heading1 className='text-center mb-3'>
                     Pagamento
@@ -58,6 +61,8 @@ const FinalizarCompra = () => {
                         border-2 
                         p-2
                         mt-2.5
+                        ml-5 
+                        mr-5
                         border-primaryBlue
                         rounded-lg                                                
                     '
@@ -71,40 +76,33 @@ const FinalizarCompra = () => {
                 </ScrollView>
 
             </View>
-            <View
-                className='
-                    mt-52
-                    gap-3 
-                    justify-center 
-                    items-center
-                '
+            <View className='flex-1 justify-end mb-5'
             >
-                <PrimaryButton
-                    onPress={
-                        () => {
+                <View className='justify-center items-center gap-3'>
+                    <PrimaryButton
+                        onPress={() => {
                             copyToClipboard(),
                                 Alert.alert('Copiado', 'Chave pix copiada com sucesso!'),
                                 router.push({
                                     pathname: '/pages/Produtos/MensagemFinal',
                                     params: { id: id }
                                 })
+                            }
                         }
-                    }
-                >
-                    <Heading1>
-                        Copiar código pix
-                    </Heading1>
-                </PrimaryButton>
-                <PrimaryButton onPress={fetchCopiedText}>
-                    <Heading1 className='text-center'>
-                        Compartilhar código pix
-                    </Heading1>
-                </PrimaryButton>
+                    >
+                        <Heading1>
+                            Copiar código pix
+                        </Heading1>
+                    </PrimaryButton>
+                    <PrimaryButton onPress={fetchCopiedText}>
+                        <Heading1 className='text-center'>
+                            Compartilhar código pix
+                        </Heading1>
+                    </PrimaryButton>
+                </View>
             </View>
-        </View>
+        </GenericContainer>
     )
 }
 
 export default FinalizarCompra
-
-const styles = StyleSheet.create({})

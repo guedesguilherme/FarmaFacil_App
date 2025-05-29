@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 import { Heading1, Heading2 } from '@/src/components/TextComponent'
+import GenericContainer from '@/src/components/ViewComponents'
+import { PrimaryButton } from '@/src/components/ButtonsComponent'
 
 const MensagemFinal = () => {
 
@@ -22,24 +24,29 @@ const MensagemFinal = () => {
 
     if (loading) {
         return (
-            <View className='flex-1 items-center justify-center'>
+            <GenericContainer className='justify-center items-center'>
                 <ActivityIndicator 
                 size={45}
                     color='#2f88ff'
                 />
-            </View>
+            </GenericContainer>
         )
     } else {
         console.log(informacoes.produto)
         return (
-            <View className='flex-1 justify-center items-center'>
-                <Heading1>
+            <GenericContainer className='justify-center items-center gap-2'>
+                <Heading1 className=''>
                     Sucesso!
                 </Heading1>
-                <Heading2>
+                <Heading2 className=''>
                     Já estamos separando {informacoes.produto.nome} pra você!
                 </Heading2>
-            </View>
+                <PrimaryButton>
+                    <Heading1 className='font-bold'>
+                        Acompanhar
+                    </Heading1>
+                </PrimaryButton>
+            </GenericContainer>
         )
     }
 }

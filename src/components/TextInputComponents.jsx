@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 import React from 'react'
 
-export const InputComponent = ({ className='', label, ...props }) => (
-    <View>
+export const TextInputComponent = ({ className='', label, ...props }) => (
+    <View className={`flex-col gap-2 ${className}`}>
         <Text
             className='
                 font-bold
@@ -17,13 +17,16 @@ export const InputComponent = ({ className='', label, ...props }) => (
                 border-primaryBlue
                 border-2
                 rounded-lg
+                p-2
+                font-bold
+                text-lg
             '
             {...props} 
         />
     </View>
 )
 
-export const DisabledInputComponent = ({ className='', label, ...props }) => (
+export const DisabledTextInputComponent = ({ className='', label, ...props }) => (
     <View>
         <Text
             className='
