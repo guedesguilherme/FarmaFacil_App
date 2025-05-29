@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ActivityIndicator, Alert } from "react-native";
 import "../../../global.css";
 import { router } from "expo-router";
 import {
@@ -25,13 +25,12 @@ const LoginClientes = () => {
         Login - Clientes
       </Heading1>
 
-
       <Form>
         <TextInputComponent label='E-mail:' />
         <TextInputComponent label='Senha' />
 
         <ButtonsArea>
-          <PrimaryButton onPress={() => router.navigate('/pages/Clientes/HomeClientes')}>
+          <PrimaryButton>
             <Heading1>
               Logar
             </Heading1>

@@ -1,4 +1,4 @@
-import { StyleSheet, ActivityIndicator, Alert, ScrollView } from 'react-native'
+import { ActivityIndicator, Alert, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { PrimaryButton, ReturnButton, SecondaryButton } from '@/src/components/ButtonsComponent'
 import { Heading1 } from '@/src/components/TextComponent'
@@ -18,6 +18,15 @@ const CadastroClientes = () => {
   const [loading, setLoading] = useState(false)
 
   const router = useRouter()
+
+  const clearCampos = () => {
+    setLoading(false)
+    setNome('')
+    setEmail('')
+    setSenha('')
+    setConfirmaSenha('')
+    setError('')
+  }
 
   const enviarInformacoes = async () => {
     setError('') // Clear previous error
@@ -50,12 +59,9 @@ const CadastroClientes = () => {
 
       console.log(response.data)
       Alert.alert('Sucesso', 'Usuário criado com sucesso!')
-      setLoading(false)
-      setNome('')
-      setEmail('')
-      setSenha('')
-      setConfirmaSenha('')
-      setError('')
+
+      clearCampos()
+
       router.push('/auth/Clientes/LoginClientes')
     } catch (error: any) {
       console.log(error)
@@ -103,5 +109,3 @@ const CadastroClientes = () => {
 }
 
 export default CadastroClientes
-
-const styles = StyleSheet.create({})
