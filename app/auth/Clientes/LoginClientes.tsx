@@ -34,7 +34,7 @@ const LoginClientes = () => {
         <TextInputComponent label='Senha' />
 
         <ButtonsArea>
-          <PrimaryButton onPress={() => router.push('/pages/Clientes/HomeClientes')}>
+          <PrimaryButton onPress={router.push('/pages/Clientes/HomeClientes')}>
             <Heading1>
               Logar
             </Heading1>

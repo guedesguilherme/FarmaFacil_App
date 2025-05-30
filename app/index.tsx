@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import "../global.css";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { PrimaryButton, SecondaryButton } from "../src/components/ButtonsComponent";
 import { Heading1 } from "../src/components/TextComponent";
 
 export default function Home() {
-
-  const router = useRouter()
-
   return (
     <View className='justify-around items-center flex-1 bg-white'>
       <Heading1>
