@@ -8,7 +8,11 @@ const api = axios.create({
 })
 
 export const viacep = axios.create({
-    baseURL: 'https://viacep.com.br/ws'
+    baseURL: 'https://viacep.com.br/ws/'
+})
+
+export const validarCnpj = axios.create({
+    baseURL: 'https://publica.cnpj.ws/cnpj/'
 })
 
 export default api
