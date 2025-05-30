@@ -42,6 +42,9 @@ export const DisabledTextInputComponent = ({ className='', label, ...props }) =>
                 border-primaryBlue
                 border-2
                 rounded-lg
+                font-bold
+                p-2
+                text-lg
             '
             editable={false}
             {...props} 

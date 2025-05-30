@@ -33,10 +33,10 @@ const CadastroClientes = () => {
 
     if (!nome || !email || !senha || !confirmasenha) {
       setError('Todos os campos são obrigatórios!')
+      Alert.alert('Há campos em branco', error)
       return
     }
-
-    const regex = ''
+    
     if (!email.includes('@')) {
       setError('O e-mail inserido não é válido!')
       return
@@ -96,7 +96,7 @@ const CadastroClientes = () => {
             )}
           </PrimaryButton>
 
-          <SecondaryButton>
+          <SecondaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')}>
             <Heading1>
               Já tenho cadastro
             </Heading1>

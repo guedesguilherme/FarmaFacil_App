@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  View,
-  Text,
   StyleSheet,  
   FlatList,
 } from 'react-native'
@@ -47,9 +45,3 @@ export default function HomeCliente() {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  }
-})

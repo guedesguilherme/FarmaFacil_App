@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { PrimaryButton, ReturnButton, SecondaryButton } from '@/src/components/ButtonsComponent'
 import { Heading1 } from '@/src/components/TextComponent'
 import { TextInputComponent } from '@/src/components/TextInputComponents'
@@ -7,7 +6,14 @@ import { useRouter } from 'expo-router'
 import GenericContainer, { ButtonsArea, Form } from '@/src/components/ViewComponents'
 
 const CadastroLoja1 = () => {
+
+  const [nome, setNome] = useState('')
+  const [cnpj, setCnpj] = useState('')
+  const [email, setEmail] = useState('')
+  const [nomeRede, setNomeRede] = useState('')
+
   const router = useRouter()
+  
   return (
     <GenericContainer>
       <ReturnButton className='m-5' />
@@ -35,7 +41,7 @@ const CadastroLoja1 = () => {
           </SecondaryButton>
         </ButtonsArea>
       </Form>
-      
+
     </GenericContainer>
   )
 }

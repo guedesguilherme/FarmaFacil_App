@@ -1,6 +1,7 @@
+import React, { useState, useEffect } from 'react'
 import { ActivityIndicator, Alert } from "react-native";
 import "../../../global.css";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import {
   PrimaryButton,
   ReturnButton,
@@ -10,13 +11,16 @@ import {
   TextInputComponent
 } from '../../../src/components/TextInputComponents'
 import {
-  ErrorText,
-  LinkText,
+  ErrorText,  
   Heading1,
 } from "../../../src/components/TextComponent";
 import GenericContainer, { Form, ButtonsArea } from "@/src/components/ViewComponents";
+import { viacep } from '@/src/services/api.js'
 
-const LoginClientes = () => {
+const LoginClientes = () => { 
+
+  const router = useRouter()
+
   return (
     <GenericContainer>
       <ReturnButton className='m-5' />
@@ -30,7 +34,7 @@ const LoginClientes = () => {
         <TextInputComponent label='Senha' />
 
         <ButtonsArea>
-          <PrimaryButton>
+          <PrimaryButton onPress={router.push('/pages/Clientes/HomeClientes')}>
             <Heading1>
               Logar
             </Heading1>
