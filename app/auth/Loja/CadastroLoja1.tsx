@@ -5,7 +5,7 @@ import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { useRouter } from 'expo-router'
 import GenericContainer, { ButtonsArea, Form } from '@/src/components/ViewComponents'
 import { validarCnpj } from '@/src/services/api'
-import { Text, ActivityIndicator, Alert, ScrollView } from 'react-native'
+import { ActivityIndicator, Alert, ScrollView } from 'react-native'
 
 const CadastroLoja1 = () => {
 
