@@ -72,7 +72,6 @@ export const ReturnButton = ({ className='' }) => (
       w-[50%]
       flex-row
       items-center
-      p-2
       gap-5
       bg-white
       ${className}

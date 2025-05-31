@@ -33,13 +33,14 @@ const LoginClientes = () => {
         <TextInputComponent label='E-mail:' />
         <TextInputComponent label='Senha' />
 
-        <PrimaryButton onPress={() => router.push('/pages/Clientes/HomeClientes')}>
-            Logar
-        </PrimaryButton>
-        <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
-            Não tenho cadastro
-        </SecondaryButton>
-
+        <ButtonsArea className='mt-4'>
+          <PrimaryButton onPress={() => router.push('/pages/Clientes/HomeClientes')}>
+              Logar
+          </PrimaryButton>
+          <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
+              Não tenho cadastro
+          </SecondaryButton>
+        </ButtonsArea>
       </Form>
     </GenericContainer>
   );

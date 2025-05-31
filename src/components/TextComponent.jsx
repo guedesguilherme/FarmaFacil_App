@@ -29,7 +29,7 @@ export const Heading1 = ({ children, className = '', ...props }) => (
 
 export const Heading2 = ({ children, className = '', ...props }) => (
   <BaseText 
-    className={`text-2xl font-poppins_bold ${className}`} 
+    className={`text-2xl font-poppins_semibold ${className}`} 
     {...props}
   >
     {children}
