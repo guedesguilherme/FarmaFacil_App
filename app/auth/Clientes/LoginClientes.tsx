@@ -29,23 +29,16 @@ const LoginClientes = () => {
         Login - Clientes
       </Heading1>
 
-      <Form>
+      <Form> 
         <TextInputComponent label='E-mail:' />
         <TextInputComponent label='Senha' />
 
-        <ButtonsArea>
-          <PrimaryButton onPress={() => router.push('/pages/Clientes/HomeClientes')}>
-            <Heading1>
-              Logar
-            </Heading1>
-          </PrimaryButton>
-
-          <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
-            <Heading1>
-              Não tenho cadastro
-            </Heading1>
-          </SecondaryButton>
-        </ButtonsArea>
+        <PrimaryButton onPress={() => router.push('/pages/Clientes/HomeClientes')}>
+            Logar
+        </PrimaryButton>
+        <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
+            Não tenho cadastro
+        </SecondaryButton>
 
       </Form>
     </GenericContainer>
