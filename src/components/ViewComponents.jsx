@@ -3,14 +3,14 @@ import { View, Text, ScrollView } from 'react-native'
 
 const GenericContainer = ({ children, className = '' }) => {
     return (
-        <View className={`flex-1 bg-white ${className} `}>
+        <View className={`flex-1 p-6 bg-white ${className} `}>
             {children}
         </View>
     )
 }
 
 export const Form = ({ children, className = '' }) => (
-    <View className={`mt-5 ml-5 mr-5 flex-col gap-5 ${className}`}>
+    <View className={`flex-col gap-5 items-center ${className}`}>
         {children}
     </View>
 )

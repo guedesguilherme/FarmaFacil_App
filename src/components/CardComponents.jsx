@@ -1,7 +1,8 @@
 import { View, Text, Image, TouchableOpacity, } from 'react-native'
 import React from 'react'
-import { Heading1, Heading2 } from './TextComponent'
+import { BodyText, DescText, Heading1, Heading2 } from './TextComponent'
 import Entypo from '@expo/vector-icons/Entypo'
+import { PrimaryButton } from './ButtonsComponent'
 
 export const GenericCard = ({ label1, label2, label3 /*imgUrl*/ }) => (
     <TouchableOpacity
@@ -69,5 +70,33 @@ export const SecondaryCard = ({ label1, label2, label3 }) => (
 
         <Entypo name='chevron-right' size={45} color='#000' />
     </TouchableOpacity>
+)
+
+export const CardHomeLoja = ({ CardHeader, CardItem1, CardDesc1, CardItem2, CardDesc2 }) => (
+    <View
+        className='
+        bg-white
+        border-primaryBlue
+        border-2
+        p-5
+        items-center
+        justify-between
+        mb-5
+        mx-[20px]
+        w-[80%] max-w-[300px] 
+        max-h-[335px]
+        rounded-lg
+        '
+    >
+
+        <Heading1>{CardHeader}</Heading1>
+        <Heading2>{CardItem1}</Heading2>
+        <BodyText>{CardDesc1}</BodyText>
+        <Heading2>{CardItem2}</Heading2>
+        <BodyText>{CardDesc2}</BodyText>
+
+        <PrimaryButton>Gerenciar Estoque</PrimaryButton>
+
+    </View>
 )
 
