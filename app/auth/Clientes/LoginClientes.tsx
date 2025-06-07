@@ -16,17 +16,12 @@ import {
 } from "../../../src/components/TextComponent";
 import GenericContainer, { Form, ButtonsArea } from "@/src/components/ViewComponents";
 import { viacep } from '@/src/services/api.js'
+import GoogleLoginButton from '../../../src/components/userCliente/GoogleLoginButton'
 
 const LoginClientes = () => { 
 
   const router = useRouter()
 
-<<<<<<< HEAD
-import GoogleLoginButton from '../../../src/components/userCliente/GoogleLoginButton'
-
-const LoginClientes = () => {
-=======
->>>>>>> main
   return (
     <GenericContainer>
       <ReturnButton className='m-5' />
@@ -35,20 +30,15 @@ const LoginClientes = () => {
         Login - Clientes
       </Heading1>
 
-      <Form> 
-      <Form> 
+      <Form>
         <TextInputComponent label='E-mail:' />
         <TextInputComponent label='Senha' />
-
-<<<<<<< HEAD
-      <Form>
-        <InputComponent label='E-mail:' />
-        <InputComponent label='Senha' />
 
         <ButtonsArea>
           <PrimaryButton onPress={() => router.navigate('/pages/Clientes/HomeClientes')}>
             <Heading1>
               Logar
+            </Heading1>  
           </PrimaryButton>
           <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
               Não tenho cadastro
@@ -56,14 +46,6 @@ const LoginClientes = () => {
 
           <GoogleLoginButton/>
         </ButtonsArea>
-=======
-        <PrimaryButton onPress={() => router.push('/pages/Clientes/HomeClientes')}>
-            Logar
-        </PrimaryButton>
-        <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
-            Não tenho cadastro
-        </SecondaryButton>
->>>>>>> main
 
       </Form>
     </GenericContainer>
