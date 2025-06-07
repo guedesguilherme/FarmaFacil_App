@@ -16,7 +16,7 @@ export const Form = ({ children, className = '' }) => (
 )
 
 export const ButtonsArea = ({ children, className = '' }) => (
-    <View className={`items-center justify-center flex-col gap-5 mb-10 ${className}`}>
+    <View className={`items-center justify-center flex-col gap-5 mb-10 w-full ${className}`}>
         {children}
     </View>
 )

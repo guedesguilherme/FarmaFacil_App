@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, } from 'react-native'
 import React from 'react'
-import { BodyText, DescText, Heading1, Heading2 } from './TextComponent'
+import { BodyText, DescText, Heading1, Heading2, Heading3 } from './TextComponent'
 import Entypo from '@expo/vector-icons/Entypo'
 import { PrimaryButton } from './ButtonsComponent'
 
@@ -72,31 +72,31 @@ export const SecondaryCard = ({ label1, label2, label3 }) => (
     </TouchableOpacity>
 )
 
-export const CardHomeLoja = ({ CardHeader, CardItem1, CardDesc1, CardItem2, CardDesc2 }) => (
+export const CardHomeLoja = ({ CardHeader, CardItem1, CardDesc1, CardItem2, CardDesc2, ButtonDesc }) => (
     <View
         className='
         bg-white
         border-primaryBlue
         border-2
         p-5
-        items-center
         justify-between
-        mb-5
         mx-[20px]
-        w-[80%] max-w-[300px] 
+        w-full 
         max-h-[335px]
         rounded-lg
         '
     >
+        <View className='items-start'>
+            <Heading2 className='mb-6'>{CardHeader}</Heading2>
+            <Heading3>{CardItem1}</Heading3>
+            <BodyText className='color-slate-500'>{CardDesc1}</BodyText>
+            <Heading3 className='mt-2'>{CardItem2}</Heading3>
+            <BodyText className='color-slate-500'>{CardDesc2}</BodyText>
+        </View>
 
-        <Heading1>{CardHeader}</Heading1>
-        <Heading2>{CardItem1}</Heading2>
-        <BodyText>{CardDesc1}</BodyText>
-        <Heading2>{CardItem2}</Heading2>
-        <BodyText>{CardDesc2}</BodyText>
-
-        <PrimaryButton>Gerenciar Estoque</PrimaryButton>
-
+        <View className='items-center mt-7'>
+            <PrimaryButton>{ButtonDesc}</PrimaryButton>
+        </View>
     </View>
 )
 

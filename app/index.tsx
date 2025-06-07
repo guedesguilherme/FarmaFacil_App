@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import "../global.css";
 import { router } from "expo-router";
 import { PrimaryButton, SecondaryButton } from "../src/components/ButtonsComponent";
-import GenericContainer from "@/src/components/ViewComponents";
+import GenericContainer, { ButtonsArea } from "@/src/components/ViewComponents";
 import { Heading1, Heading2, LinkText } from "../src/components/TextComponent";
 
 export default function Home() {
@@ -10,23 +10,25 @@ export default function Home() {
     <GenericContainer className='justify-evenly items-center bg-white'>
       <Image source={require('../assets/images/LogoFarmaFacil.png')} style={{ width: 120, height: 120 }} />
       
-      <Heading1>
+      <Heading1 className="text-center">
         Bem vindo(a) ao FarmaFácil!
       </Heading1>
 
-      <Heading2>
-        <Text>Você tem cadastro?</Text>
+      <Heading2 className="text-center">
+        <Text>Você possui cadastro em nosso aplicativo?</Text>
       </Heading2>
 
-      <PrimaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')} >
-          Sim, sou cliente.
-      </PrimaryButton>
+      <ButtonsArea>
+        <PrimaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')} >
+            Sim, sou cliente.
+        </PrimaryButton>
 
-      <SecondaryButton onPress={() => router.push('/auth/Loja/LoginLoja')}>
-        Não, quero me cadastrar!
-      </SecondaryButton>
+        <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
+          Não, quero me cadastrar!
+        </SecondaryButton>
+      </ButtonsArea>
 
-      <LinkText>
+      <LinkText onPress={() => router.push('/auth/Loja/LoginLoja')}>
         Sou proprietário de uma farmácia.
       </LinkText>
       

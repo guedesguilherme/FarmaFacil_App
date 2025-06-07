@@ -36,6 +36,7 @@ const LoginClientes = () => {
       </Heading1>
 
       <Form> 
+      <Form> 
         <TextInputComponent label='E-mail:' />
         <TextInputComponent label='Senha' />
 
@@ -48,13 +49,9 @@ const LoginClientes = () => {
           <PrimaryButton onPress={() => router.navigate('/pages/Clientes/HomeClientes')}>
             <Heading1>
               Logar
-            </Heading1>
           </PrimaryButton>
-
           <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
-            <Heading1>
               Não tenho cadastro
-            </Heading1>
           </SecondaryButton>
 
           <GoogleLoginButton/>
