@@ -11,7 +11,7 @@ const HomeLojas = () => {
 
       <Heading1>Bem vindo</Heading1>
 
-      <SecondaryButton className='mt-8'>
+      <SecondaryButton className=''>
         Adicionar Novo Produto
       </SecondaryButton>
 
@@ -20,8 +20,17 @@ const HomeLojas = () => {
         CardItem1="Produtos em estoque" 
         CardDesc1="10"
         CardItem2="Produtos com menos unidades"
-        CardDesc2="Dipirona">
+        CardDesc2="Dipirona"
+        ButtonDesc="Gerenciar Estoque">
+      </CardHomeLoja>
 
+      <CardHomeLoja 
+        CardHeader="Gerencie seus pedidos" 
+        CardItem1="Pedidos concluídos" 
+        CardDesc1="10"
+        CardItem2="Peidos pendentes"
+        CardDesc2="Dipirona"
+        ButtonDesc="Gerenciar Pedidos">
       </CardHomeLoja>
     </GenericContainer>
   )

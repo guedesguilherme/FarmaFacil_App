@@ -36,6 +36,15 @@ export const Heading2 = ({ children, className = '', ...props }) => (
   </BaseText>
 );
 
+export const Heading3 = ({ children, className = '', ...props }) => (
+  <BaseText 
+    className={`text-xl font-poppins_medium ${className}`} 
+    {...props}
+  >
+    {children}
+  </BaseText>
+);
+
 // text-base font-medium text-slate-600 
 
 export const BodyText = ({ children, className = '', ...props }) => (
