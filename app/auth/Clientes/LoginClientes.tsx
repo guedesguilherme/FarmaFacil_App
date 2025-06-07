@@ -21,6 +21,12 @@ const LoginClientes = () => {
 
   const router = useRouter()
 
+<<<<<<< HEAD
+import GoogleLoginButton from '../../../src/components/userCliente/GoogleLoginButton'
+
+const LoginClientes = () => {
+=======
+>>>>>>> main
   return (
     <GenericContainer>
       <ReturnButton className='m-5' />
@@ -33,12 +39,34 @@ const LoginClientes = () => {
         <TextInputComponent label='E-mail:' />
         <TextInputComponent label='Senha' />
 
+<<<<<<< HEAD
+      <Form>
+        <InputComponent label='E-mail:' />
+        <InputComponent label='Senha' />
+
+        <ButtonsArea>
+          <PrimaryButton onPress={() => router.navigate('/pages/Clientes/HomeClientes')}>
+            <Heading1>
+              Logar
+            </Heading1>
+          </PrimaryButton>
+
+          <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
+            <Heading1>
+              Não tenho cadastro
+            </Heading1>
+          </SecondaryButton>
+
+          <GoogleLoginButton/>
+        </ButtonsArea>
+=======
         <PrimaryButton onPress={() => router.push('/pages/Clientes/HomeClientes')}>
             Logar
         </PrimaryButton>
         <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
             Não tenho cadastro
         </SecondaryButton>
+>>>>>>> main
 
       </Form>
     </GenericContainer>
