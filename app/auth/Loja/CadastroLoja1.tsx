@@ -1,13 +1,65 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { PrimaryButton, ReturnButton, SecondaryButton } from '@/src/components/ButtonsComponent'
 import { Heading1 } from '@/src/components/TextComponent'
-import { InputComponent } from '@/src/components/InputComponent'
+import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { useRouter } from 'expo-router'
 import GenericContainer, { ButtonsArea, Form } from '@/src/components/ViewComponents'
+import { validarCnpj } from '@/src/services/api'
+import { ActivityIndicator, Alert, ScrollView } from 'react-native'
+
+import { saveSecureItem } from '../../../utils/secureStore'
 
 const CadastroLoja1 = () => {
+
+  const [nome, setNome] = useState('')
+  const [cnpj, setCnpj] = useState('')
+  const [email, setEmail] = useState('')
+  const [nomeRede, setNomeRede] = useState('')
+  const [loading, setLoading] = useState(false)
+
   const router = useRouter()
+
+  const check = async () => {
+    const cnpjNumerico = cnpj.replace(/\D/g, '');
+    try {
+      const response = await validarCnpj.get(`${cnpjNumerico}`)
+      console.log(cnpjNumerico)
+
+      if (response.status === 200) {        
+        return true
+      }
+
+    } catch (erro) {
+      Alert.alert('Erro', `Não foi possível encontrar o cnpj informado.`)
+      return false
+    }
+  }
+
+  const navigate = async () => {
+
+    if (!nome || !cnpj || !email || !nomeRede) {
+      Alert.alert('Campos em branco', 'Todos os campos são obrigatórios')
+      return
+    }
+
+    setLoading(true)
+
+    const valido = await check()
+
+    if (valido) {
+      // router.push('/auth/Loja/CadastroLoja2')
+      // setNome('')
+      // setCnpj('')
+      // setEmail('')
+      // setNomeRede('')
+      await saveSecureItem('cadastroLojaParte1', { nome, cnpj, email, nomeRede})
+      router.push('/auth/Loja/CadastroLoja2')
+      setLoading(false)
+    }
+
+    setLoading(false)
+  }
+
   return (
     <GenericContainer>
       <ReturnButton className='m-5' />
@@ -17,16 +69,40 @@ const CadastroLoja1 = () => {
       </Heading1>
 
       <Form>
-        <InputComponent label='Nome da sua loja:' />
-        <InputComponent label='CNPJ da sua loja:' />
-        <InputComponent label='E-mail da sua loja:' />
-        <InputComponent label='Rede da sua loja:' />
+        <ScrollView className='h-[55%]'>
+          <TextInputComponent
+            label='Nome da sua loja:'
+            value={nome}
+            onChangeText={setNome}
+            className='mb-3'
+          />
+          <TextInputComponent
+            label='CNPJ da sua loja:'
+            value={cnpj}
+            onChangeText={setCnpj}
+            className='mb-3'
+            keyboardType='numeric'
+          />
+          <TextInputComponent
+            label='E-mail da sua loja:'
+            value={email}
+            onChangeText={setEmail}
+            className='mb-3'
+          />
+          <TextInputComponent
+            label='Rede da sua loja:'
+            value={nomeRede}
+            onChangeText={setNomeRede}
+          />
 
+        </ScrollView>
         <ButtonsArea>
-          <PrimaryButton onPress={() => router.push('/auth/Loja/CadastroLoja2')}>
-            <Heading1>
-              Próxima
-            </Heading1>
+          <PrimaryButton onPress={navigate}>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Heading1>Próxima</Heading1>
+            )}
           </PrimaryButton>
           <SecondaryButton>
             <Heading1>
@@ -35,7 +111,7 @@ const CadastroLoja1 = () => {
           </SecondaryButton>
         </ButtonsArea>
       </Form>
-      
+
     </GenericContainer>
   )
 }

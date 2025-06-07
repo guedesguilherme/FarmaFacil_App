@@ -7,8 +7,8 @@ import {
   SecondaryButton,
 } from "../../../src/components/ButtonsComponent";
 import {
-  InputComponent
-} from '../../../src/components/InputComponent'
+  TextInputComponent
+} from '../../../src/components/TextInputComponents'
 import {
   ErrorText,
   LinkText,
@@ -28,8 +28,8 @@ const LoginLoja = () => {
 
 
       <Form>
-        <InputComponent label='CNPJ' />
-        <InputComponent label='Senha' />
+        <TextInputComponent label='CNPJ' />
+        <TextInputComponent label='Senha' />
 
         <ButtonsArea>
           <PrimaryButton onPress={() => router.push('/pages/Lojas/HomeLojas')}>

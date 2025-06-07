@@ -3,7 +3,7 @@ import React from 'react'
 import { Tabs } from 'expo-router'
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Foundation from '@expo/vector-icons/Foundation';
 
 const Layout = () => {
   return (
@@ -15,14 +15,14 @@ const Layout = () => {
                     title: 'Home',
                     tabBarIcon: ({color}) => <Entypo size={28} name="home" color={color} />,
                 }}
-            />
+            />          
             <Tabs.Screen 
-                name='PedidosLoja'
-                options={{        
+                name='Pedidos'
+                options={{ 
                     title: 'Pedidos',
-                    tabBarIcon: ({ color }) => <FontAwesome5 size={28} name="store" color={color} />,
+                    tabBarIcon: ({color}) => <Foundation size={28} name='clipboard-notes' color={color} />
                 }}
-            />
+            />              
             <Tabs.Screen 
                 name='ConfiguracoesLoja'
                 options={{                    
@@ -33,15 +33,22 @@ const Layout = () => {
             <Tabs.Screen 
                 name='EditarDadosLoja'
                 options={{                    
-                    href:null,
-                    tabBarIcon: ({color}) => <FontAwesome6 size={28} name="gear" color={color} />,
+                    href:null,                    
                 }}
             />
+            <Tabs.Screen 
+                name='ProdutosLoja'
+                options={{                    
+                    href:null,                    
+                }}
+            />                                    
+            <Tabs.Screen 
+                name='LinkToPedidos'
+                options={{ href:null }}
+            />            
         </Tabs>
     </React.Fragment>
   )
 }
 
 export default Layout
-
-const styles = StyleSheet.create({})

@@ -5,6 +5,7 @@ import api from "@/src/services/api";
 import { Heading1, Heading2 } from "@/src/components/TextComponent";
 import { FillButton, PrimaryButton, ReturnButton } from "@/src/components/ButtonsComponent";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import GenericContainer, { DetalhesCompra } from "@/src/components/ViewComponents";
 
 const Detalhes = () => {
   const { id } = useLocalSearchParams();
@@ -28,24 +29,15 @@ const Detalhes = () => {
         <ActivityIndicator color="#2f88ff" size={45} />
       </View>
     );
-  } else {    
+  } else {
     return (
-      <View className='m-5 flex-col'>
-        <View className='gap-5'>
-          <ReturnButton />
-          <Heading1>
-            Comprar este produto
-          </Heading1>
-        </View>
+      <GenericContainer>
+        <ReturnButton className='m-5' />
+        <Heading1 className='text-center'>
+          Comprar este produto:
+        </Heading1>
 
-        <View className='
-            border-2
-            border-primaryBlue
-            rounded-lg
-            mt-3
-            p-3
-            h-[75%]
-          '
+        <DetalhesCompra
         >
           <View className='justify-center items-center'>
             <Image
@@ -70,10 +62,10 @@ const Detalhes = () => {
               </Heading1>
             </FillButton>
           </View>
-        </View>
+        </DetalhesCompra>
 
 
-      </View>
+      </GenericContainer>
     );
   }
 };

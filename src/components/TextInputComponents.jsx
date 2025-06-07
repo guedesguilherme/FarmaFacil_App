@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 import React from 'react'
 
-export const InputComponent = ({ className='', label, ...props }) => (
-    <View>
+export const TextInputComponent = ({ className='', label, ...props }) => (
+    <View className={`flex-col w-full mx-5 ${className}`}>
         <Text
             className='
-                font-bold
+                font-poppins_bold
                 text-xl
             '
         >
@@ -17,13 +17,16 @@ export const InputComponent = ({ className='', label, ...props }) => (
                 border-primaryBlue
                 border-2
                 rounded-lg
+                p-2
+                font-poppins_semibold
+                text-lg
             '
             {...props} 
         />
     </View>
 )
 
-export const DisabledInputComponent = ({ className='', label, ...props }) => (
+export const DisabledTextInputComponent = ({ className='', label, ...props }) => (
     <View>
         <Text
             className='
@@ -39,6 +42,9 @@ export const DisabledInputComponent = ({ className='', label, ...props }) => (
                 border-primaryBlue
                 border-2
                 rounded-lg
+                font-bold
+                p-2
+                text-lg
             '
             editable={false}
             {...props} 

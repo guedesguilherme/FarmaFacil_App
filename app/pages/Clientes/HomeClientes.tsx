@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
-  View,
-  Text,
   StyleSheet,  
   FlatList,
 } from 'react-native'
 import api from "../../../src/services/api";
 import Produtos from "../../../src/components/Produto";
 import { ActivityIndicator } from "react-native";
+import GenericContainer from "@/src/components/ViewComponents";
 
 export default function HomeCliente() {
 
@@ -26,31 +25,23 @@ export default function HomeCliente() {
 
   if (loading === true) { 
     return (
-      <View
-        style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}
-      >
+      <GenericContainer className='justify-center items-center flex-1'>
         <ActivityIndicator 
           color='#2f88ff'
           size={45}
         />
-      </View>
+      </GenericContainer>
     )
   } else {    
     return (
-      <View style={styles.container}>        
+      <GenericContainer>        
         <FlatList
           data={produtos}          
           keyExtractor={item => String(item._id)}
           renderItem={({ item }) => <Produtos data={item} />}
         >
         </FlatList>        
-      </View>
+      </GenericContainer>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  }
-})
