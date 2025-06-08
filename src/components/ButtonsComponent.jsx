@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, Image } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { router } from 'expo-router';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
@@ -107,3 +107,39 @@ export const PagamentoPix = ({ produtoId }) => (
     </Heading1>
   </TouchableOpacity>
 )
+
+export const GoogleButton = ({
+  children = 'Entrar com Google',
+  className = '',
+  disabled = false,
+  ...props
+}) => (
+  <TouchableOpacity
+    className={`
+      w-full 
+      mx-4 
+      bg-white 
+      border-2 border-primaryBlue
+      py-[13px] 
+      rounded-lg 
+      flex-row
+      items-center 
+      justify-center
+      gap-3
+      ${disabled ? 'opacity-50' : ''}
+      ${className}
+    `}
+    activeOpacity={0.7}
+    disabled={disabled}
+    {...props}
+  >
+    <Image
+      source={require('../../assets/images/google-icon-1.png')}
+      style={{ width: 20, height: 20 }}
+      resizeMode="contain"
+    />
+    <Text className="text-xl font-poppins_semibold text-primaryBlue">
+      {children}
+    </Text>
+  </TouchableOpacity>
+);

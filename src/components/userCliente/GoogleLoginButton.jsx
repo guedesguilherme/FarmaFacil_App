@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
+import { TouchableOpacity, Text, View, StyleSheet, Image } from "react-native";
 import { GoogleSignin, GoogleSigninButton, isSuccessResponse, isErrorWithCode, statusCodes } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
 import { saveSecureItem } from "../../../utils/secureStore"
+import {
+  PrimaryButton,
+  ReturnButton,
+  SecondaryButton,
+  GoogleButton
+} from "../../../src/components/ButtonsComponent";
 
 const GoogleLoginButton = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,13 +77,28 @@ const GoogleLoginButton = () => {
   };
 
   return (
-    <GoogleSigninButton
-      size={GoogleSigninButton.Size.Wide}
-      color={GoogleSigninButton.Color.Dark}
-      onPress={handleGoogleSignIn}
-      disabled={isSubmitting}
-    />
+    // <GoogleSigninButton
+    //   size={GoogleSigninButton.Size.Wide}
+    //   color={GoogleSigninButton.Color.Dark}
+    //   onPress={handleGoogleSignIn}
+    //   disabled={isSubmitting}
+    // />  
+    // <TouchableOpacity style={styles.button} onPress={handleGoogleSignIn} disabled={isSubmitting}>
+    //   <Image source={require('../../../assets/images/google-icon.png')} style={styles.icon} />
+    //   
+    // </TouchableOpacity>
+    <GoogleButton onPress={handleGoogleSignIn} disabled={isSubmitting}>
+
+    </GoogleButton>
+
+
   );
 };
+const styles = StyleSheet.create({
+  icon: {
+    width: 20,
+    height: 20,
+  }
+});
 
 export default GoogleLoginButton;
