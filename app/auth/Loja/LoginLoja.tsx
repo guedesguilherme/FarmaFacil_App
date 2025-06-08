@@ -20,16 +20,22 @@ const LoginLoja = () => {
   const router = useRouter()
   return (
     <GenericContainer>
-      <ReturnButton className='' />
+      <ReturnButton className='mb-5' />
 
-      <Heading1 className='text-center'>
-        Login - Lojas
+      <Heading1 className='text-center mb-5'>
+        Entre na sua conta
       </Heading1>
 
 
       <Form>
-        <TextInputComponent label='CNPJ' />
-        <TextInputComponent label='Senha' />
+        <TextInputComponent 
+          label='CNPJ' 
+          placeholder="Insira o CNPJ da sua empresa"
+        />
+        <TextInputComponent 
+          label='Senha' 
+          placeholder="Insira a senha da sua conta"
+        />
         
           <PrimaryButton onPress={() => router.push('/pages/Lojas/HomeLojas')}>
               Login

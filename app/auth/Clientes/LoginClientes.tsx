@@ -23,19 +23,25 @@ const LoginClientes = () => {
 
   return (
     <GenericContainer>
-      <ReturnButton className='m-5' />
+      <ReturnButton className='mb-5' />
 
       <Heading1 className='text-center'>
         Login - Clientes
       </Heading1>
 
-      <Form> 
-        <TextInputComponent label='E-mail:' />
-        <TextInputComponent label='Senha' />
+      <Form>
+        <TextInputComponent 
+          label='E-mail:'  
+          placeholder="Insira o e-mail cadastrado" 
+        />
+        <TextInputComponent 
+          label='Senha' 
+          placeholder="Insira a sua senha"
+        />
 
-        <ButtonsArea className='mt-4'>
-          <PrimaryButton onPress={() => router.push('/pages/Clientes/HomeClientes')}>
-              Logar
+        <ButtonsArea>
+          <PrimaryButton onPress={() => router.navigate('/pages/Clientes/HomeClientes')}>
+              Logar 
           </PrimaryButton>
           <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
               Não tenho cadastro

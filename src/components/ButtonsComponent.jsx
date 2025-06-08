@@ -72,7 +72,7 @@ export const ReturnButton = ({ className='' }) => (
       w-[50%]
       flex-row
       items-center
-      gap-5
+      gap-1
       bg-white
       ${className}
     `}
@@ -81,7 +81,7 @@ export const ReturnButton = ({ className='' }) => (
     }
   >
     <AntDesign name='left' size={25} color='#2f88ff' />
-    <Text className='text-2xl font-poppins_bold'>Voltar</Text>
+    <Text className='text-xl font-poppins_medium'>Voltar</Text>
   </TouchableOpacity>
 )
 

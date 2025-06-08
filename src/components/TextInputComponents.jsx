@@ -1,53 +1,47 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native'
+import { Text, View, TextInput } from 'react-native'
 import React from 'react'
 
-export const TextInputComponent = ({ className='', label, ...props }) => (
-    <View className={`flex-col w-full mx-5 ${className}`}>
-        <Text
-            className='
-                font-poppins_bold
-                text-xl
-            '
-        >
-            {label}
-        </Text>
-        <TextInput
-            className='
-                bg-white
-                border-primaryBlue
-                border-2
-                rounded-lg
-                p-2
-                font-poppins_semibold
-                text-lg
-            '
-            {...props} 
-        />
-    </View>
+export const TextInputComponent = ({ className = '', label, placeholder, ...props }) => (
+  <View className={`flex-col w-full mx-5 ${className}`}>
+    <Text className='font-poppins_bold text-xl'>
+      {label}
+    </Text>
+    <TextInput
+      placeholder={placeholder || label}
+      className='
+        bg-white
+        border-primaryBlue
+        border-2
+        rounded-lg
+        p-2
+        font-poppins_medium
+        text-lg
+      '
+      {...props}
+    />
+  </View>
 )
 
-export const DisabledTextInputComponent = ({ className='', label, ...props }) => (
-    <View>
-        <Text
-            className='
-                font-bold
-                text-xl
-            '
-        >
-            {label}
-        </Text>
-        <TextInput
-            className='
-                bg-gray-200
-                border-primaryBlue
-                border-2
-                rounded-lg
-                font-bold
-                p-2
-                text-lg
-            '
-            editable={false}
-            {...props} 
-        />
-    </View>
+export const DisabledTextInputComponent = ({ className = '', label, placeholder, ...props }) => (
+  <View className={`flex-col w-full mx-5 ${className}`}>
+    <Text className="font-poppins_bold text-xl text-gray-600">
+      {label}
+    </Text>
+    <TextInput
+      placeholder={placeholder || label}
+      editable={false}
+      className="
+        bg-gray-100
+        border-2
+        border-primaryBlue-200
+        rounded-lg
+        p-2
+        text-gray-500
+        font-poppins_medium
+        text-lg
+      "
+      {...props}
+    />
+  </View>
 )
+

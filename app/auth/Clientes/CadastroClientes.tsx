@@ -1,12 +1,20 @@
-import { ActivityIndicator, Alert, ScrollView } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { PrimaryButton, ReturnButton, SecondaryButton } from '@/src/components/ButtonsComponent'
-import { Heading1 } from '@/src/components/TextComponent'
+import { ActivityIndicator, Alert } from 'react-native'
+import React, { useState } from 'react'
+import {
+  PrimaryButton,
+  ReturnButton,
+  SecondaryButton
+} from '@/src/components/ButtonsComponent'
+import {
+  Heading1,
+  ErrorText,
+  Heading2
+} from '@/src/components/TextComponent'
 import GenericContainer, { Form, ButtonsArea } from '@/src/components/ViewComponents'
 import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { useRouter } from 'expo-router'
 import api from '@/src/services/api'
-import { Heading2 } from '@/src/components/TextComponent'
+import GoogleLoginButton from '@/src/components/userCliente/GoogleLoginButton'
 
 const CadastroClientes = () => {
 
@@ -29,14 +37,14 @@ const CadastroClientes = () => {
   }
 
   const enviarInformacoes = async () => {
-    setError('') // Clear previous error
+    setError('')
 
     if (!nome || !email || !senha || !confirmasenha) {
       setError('Todos os campos são obrigatórios!')
-      Alert.alert('Há campos em branco', error)
+      Alert.alert('Há campos em branco', 'Todos os campos devem ser preenchidos.')
       return
     }
-    
+
     if (!email.includes('@')) {
       setError('O e-mail inserido não é válido!')
       return
@@ -57,14 +65,10 @@ const CadastroClientes = () => {
         confirmasenha
       })
 
-      console.log(response.data)
       Alert.alert('Sucesso', 'Usuário criado com sucesso!')
-
       clearCampos()
-
       router.push('/auth/Clientes/LoginClientes')
     } catch (error: any) {
-      console.log(error)
       setError(error.response?.data?.msg || 'Erro ao cadastrar!')
       Alert.alert('Erro', `Erro ao cadastrar:\n${error.response?.data?.msg}`)
     } finally {
@@ -74,37 +78,64 @@ const CadastroClientes = () => {
 
   return (
     <GenericContainer>
-      <ReturnButton className='m-5' />
+      <ReturnButton className="mb-5" />
 
-      <Heading1 className='text-center'>
+      <Heading1 className="text-center mb-12">
         Cadastro de Clientes
       </Heading1>
 
       <Form>
-        <ScrollView>
-          <TextInputComponent value={nome} onChangeText={setNome} label='Nome:' />
-          <TextInputComponent value={email} onChangeText={setEmail} label='E-mail:' />
-          <TextInputComponent value={senha} secureTextEntry onChangeText={setSenha} label='Senha:' />
-          <TextInputComponent value={confirmasenha} onChangeText={setConfirmaSenha} label='Repita sua senha:' />
-        </ScrollView>
-        
+        <TextInputComponent
+          label="Nome:"
+          placeholder="Digite seu nome completo"
+          value={nome}
+          onChangeText={setNome}
+        />
+
+        <TextInputComponent
+          label="E-mail:"
+          placeholder="Digite seu melhor e-mail"
+          value={email}
+          onChangeText={setEmail}
+        />
+
+        <TextInputComponent
+          label="Senha:"
+          placeholder="Crie uma senha"
+          secureTextEntry
+          value={senha}
+          onChangeText={setSenha}
+        />
+
+        <TextInputComponent
+          label="Repita sua senha:"
+          placeholder="Confirme sua senha"
+          value={confirmasenha}
+          onChangeText={setConfirmaSenha}
+        />
+
+        {!!error && (
+          <ErrorText className="text-center my-2">
+            {error}
+          </ErrorText>
+        )}
+
+        <ButtonsArea className='mt-5'>
           <PrimaryButton onPress={enviarInformacoes} disabled={loading}>
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Heading1>Cadastrar</Heading1>
+              "Cadastrar"
             )}
           </PrimaryButton>
 
           <SecondaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')}>
-            <Heading1>
-              Já tenho cadastro
-            </Heading1>
+            Já tenho cadastro
           </SecondaryButton>
 
-
+          <GoogleLoginButton />
+        </ButtonsArea>
       </Form>
-
     </GenericContainer>
   )
 }

@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import { PrimaryButton, ReturnButton, SecondaryButton } from '@/src/components/ButtonsComponent'
-import { Heading1 } from '@/src/components/TextComponent'
+import { 
+  Heading1,
+  ErrorText,
+  Heading2,
+  Heading3
+ } from '@/src/components/TextComponent'
 import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { useRouter } from 'expo-router'
 import GenericContainer, { ButtonsArea, Form } from '@/src/components/ViewComponents'
@@ -12,6 +17,7 @@ const CadastroLoja1 = () => {
   const [nome, setNome] = useState('')
   const [cnpj, setCnpj] = useState('')
   const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
   const [nomeRede, setNomeRede] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -58,56 +64,62 @@ const CadastroLoja1 = () => {
 
   return (
     <GenericContainer>
-      <ReturnButton className='m-5' />
+      <ReturnButton className="mb-5" />
 
-      <Heading1 className='text-center'>
+      <Heading1 className="text-center mb-12">
         Cadastro de Lojas
       </Heading1>
 
       <Form>
-        <ScrollView className='h-[55%]'>
-          <TextInputComponent
-            label='Nome da sua loja:'
-            value={nome}
-            onChangeText={setNome}
-            className='mb-3'
-          />
-          <TextInputComponent
-            label='CNPJ da sua loja:'
-            value={cnpj}
-            onChangeText={setCnpj}
-            className='mb-3'
-            keyboardType='numeric'
-          />
-          <TextInputComponent
-            label='E-mail da sua loja:'
-            value={email}
-            onChangeText={setEmail}
-            className='mb-3'
-          />
-          <TextInputComponent
-            label='Rede da sua loja:'
-            value={nomeRede}
-            onChangeText={setNomeRede}
-          />
+        <TextInputComponent
+          label="Nome da sua loja:"
+          placeholder="Digite o nome fantasia da loja"
+          value={nome}
+          onChangeText={setNome}
+        />
 
-        </ScrollView>
-        <ButtonsArea>
-          <PrimaryButton onPress={navigate}>
+        <TextInputComponent
+          label="CNPJ da sua loja:"
+          placeholder="Digite o CNPJ da loja"
+          value={cnpj}
+          onChangeText={setCnpj}
+          keyboardType="numeric"
+        />
+
+        <TextInputComponent
+          label="E-mail da sua loja:"
+          placeholder="Digite o e-mail da loja"
+          value={email}
+          onChangeText={setEmail}
+        />
+
+        <TextInputComponent
+          label="Rede da sua loja:"
+          placeholder="Digite o nome da rede (se houver)"
+          value={nomeRede}
+          onChangeText={setNomeRede}
+        />
+
+        {!!error && (
+          <ErrorText className="text-center my-2">
+            {error}
+          </ErrorText>
+        )}
+
+        <ButtonsArea className="mt-5">
+          <PrimaryButton onPress={navigate} disabled={loading}>
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Heading1>Próxima</Heading1>
+              "Próxima"
             )}
           </PrimaryButton>
+
           <SecondaryButton>
-            <Heading1>
-              Já tenho cadastro
-            </Heading1>
+            Já tenho cadastro
           </SecondaryButton>
         </ButtonsArea>
       </Form>
-
     </GenericContainer>
   )
 }
