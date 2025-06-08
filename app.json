@@ -22,7 +22,12 @@
       },
       "package": "com.farmafacil.FarmaFacil"
     },
-    "package": "com.farmafacil.FarmaFacil"
+    "package": "com.farmafacil.FarmaFacil",
+    "extra": {
+      "eas": {
+        "projectId": "a1f53d56-ed1f-4164-92e1-7fa891e00645"
+      }
+    }
   },
   "web": {
     "bundler": "metro",
