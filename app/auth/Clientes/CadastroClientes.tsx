@@ -87,7 +87,7 @@ const CadastroClientes = () => {
           <TextInputComponent value={senha} secureTextEntry onChangeText={setSenha} label='Senha:' />
           <TextInputComponent value={confirmasenha} onChangeText={setConfirmaSenha} label='Repita sua senha:' />
         </ScrollView>
-        
+        <ButtonsArea>
           <PrimaryButton onPress={enviarInformacoes} disabled={loading}>
             {loading ? (
               <ActivityIndicator color="#fff" />
@@ -101,8 +101,7 @@ const CadastroClientes = () => {
               Já tenho cadastro
             </Heading1>
           </SecondaryButton>
-
-
+        </ButtonsArea>
       </Form>
 
     </GenericContainer>

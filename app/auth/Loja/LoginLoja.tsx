@@ -20,7 +20,7 @@ const LoginLoja = () => {
   const router = useRouter()
   return (
     <GenericContainer>
-      <ReturnButton className='' />
+      <ReturnButton className='m-5' />
 
       <Heading1 className='text-center'>
         Login - Lojas
@@ -30,13 +30,19 @@ const LoginLoja = () => {
       <Form>
         <TextInputComponent label='CNPJ' />
         <TextInputComponent label='Senha' />
-        
+
+        <ButtonsArea>
           <PrimaryButton onPress={() => router.push('/pages/Lojas/HomeLojas')}>
+            <Heading1>
               Login
+            </Heading1>
           </PrimaryButton>
           <SecondaryButton onPress={() => router.push('/auth/Loja/CadastroLoja1')}>
+            <Heading1>
               Não tenho cadastro
+            </Heading1>
           </SecondaryButton>
+        </ButtonsArea>
       </Form>
 
     </GenericContainer>

@@ -4,66 +4,39 @@
     "slug": "FarmaFacil",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/LogoFarmaFacil.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.farmafacil.FarmaFacil",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/LogoFarmaFacil.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.farmafacil.FarmaFacil"
-    },
-    "package": "com.farmafacil.FarmaFacil",
-    "extra": {
-      "eas": {
-        "projectId": "a1f53d56-ed1f-4164-92e1-7fa891e00645"
-      }
-    }
-  },
-  "web": {
-    "bundler": "metro",
-    "output": "static",
-    "favicon": "./public/assets/images/LogoFarmaFacil.png"
-  },
-  "plugins": [
-    "expo-router",
-    [
-      "expo-splash-screen",
-      {
-        "image": "./assets/images/LogoFarmaFacil.png",
-        "imageWidth": 200,
-        "resizeMode": "contain",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
-    ],
-    [
-      "@react-native-google-signin/google-signin",
-      {
-        "iosUrlScheme": "com.googleusercontent.apps.149491902490-s2u7hv0hqfbm6odt8m3bp5svicrtafo4"
-      }
-    ],
-    "expo-secure-store",
-    "expo-font"
-  ],
-  "experiments": {
-    "typedRoutes": true
-  },
-  "extra": {
-    "router": {
-      "origin": false
     },
-    "eas": {
-      "projectId": "a1f53d56-ed1f-4164-92e1-7fa891e00645"
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./public/assets/images/LogoFarmaFacil.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-secure-store",      
+    ],
+    "experiments": {
+      "typedRoutes": true
     }
-  },
-  "owner": "farmafacil"
+  }
 }
