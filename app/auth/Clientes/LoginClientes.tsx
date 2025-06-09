@@ -23,8 +23,8 @@ const LoginClientes = () => {
       try {
         const token = await AsyncStorage.getItem('token')
         if (token) {
+          // Não precisa de requestPermissionsAsync no Android
           const compativel = await LocalAuthentication.hasHardwareAsync()
-          
           const biometriaDisponivel = await LocalAuthentication.isEnrolledAsync()
           if (compativel && biometriaDisponivel) {
             const resultado = await LocalAuthentication.authenticateAsync({
@@ -64,9 +64,10 @@ const LoginClientes = () => {
         setError(response.data?.message || 'Erro ao fazer login')
         Alert.alert('Erro', response.data?.message || 'Erro ao fazer login')
       }
-    } catch (err) {
-      setError('Erro ao conectar no servidor.')
-      Alert.alert('Erro', 'Erro ao conectar no servidor.')
+    } catch (err: any) {
+      console.log(err)
+      setError(err.response?.data?.msg || 'Erro ao conectar no servidor.')
+      Alert.alert('Erro', err.response?.data?.msg || 'Erro ao conectar no servidor.')
     } finally {
       setLoading(false)
     }
