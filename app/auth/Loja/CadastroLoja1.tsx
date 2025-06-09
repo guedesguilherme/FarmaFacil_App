@@ -5,7 +5,9 @@ import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { useRouter } from 'expo-router'
 import GenericContainer, { ButtonsArea, Form } from '@/src/components/ViewComponents'
 import { validarCnpj } from '@/src/services/api'
-import { Text, ActivityIndicator, Alert, ScrollView } from 'react-native'
+import { ActivityIndicator, Alert, ScrollView } from 'react-native'
+
+import { saveSecureItem } from '../../../utils/secureStore'
 
 const CadastroLoja1 = () => {
 
@@ -18,18 +20,17 @@ const CadastroLoja1 = () => {
   const router = useRouter()
 
   const check = async () => {
+    const cnpjNumerico = cnpj.replace(/\D/g, '');
     try {
-      const response = await validarCnpj.get(`${cnpj}`)      
+      const response = await validarCnpj.get(`${cnpjNumerico}`)
+      console.log(cnpjNumerico)
 
       if (response.status === 200) {        
         return true
-      } else {
-        Alert.alert('Erro', 'Não foi possível buscar este cnpj.')      
-        console.log(response)          
-        return false
       }
+
     } catch (erro) {
-      Alert.alert('Erro', `Não foi possível enviar a consulta: ${erro}`)
+      Alert.alert('Erro', `Não foi possível encontrar o cnpj informado.`)
       return false
     }
   }
@@ -42,14 +43,17 @@ const CadastroLoja1 = () => {
     }
 
     setLoading(true)
+
     const valido = await check()
 
     if (valido) {
+      // router.push('/auth/Loja/CadastroLoja2')
+      // setNome('')
+      // setCnpj('')
+      // setEmail('')
+      // setNomeRede('')
+      await saveSecureItem('cadastroLojaParte1', { nome, cnpj, email, nomeRede})
       router.push('/auth/Loja/CadastroLoja2')
-      setNome('')
-      setCnpj('')
-      setEmail('')
-      setNomeRede('')
       setLoading(false)
     }
 

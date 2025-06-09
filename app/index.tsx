@@ -2,43 +2,45 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import "../global.css";
 import { router } from "expo-router";
 import { PrimaryButton, SecondaryButton } from "../src/components/ButtonsComponent";
-import { Heading1 } from "../src/components/TextComponent";
+import GenericContainer, { ButtonsArea } from "@/src/components/ViewComponents";
+import { Heading1, Heading2, LinkText } from "../src/components/TextComponent";
 
 export default function Home() {
   return (
-    <View className='justify-around items-center flex-1 bg-white'>
-      <Heading1>
-        <Text>Bem vindo(a) ao FarmaFácil!</Text>
+    <GenericContainer className='justify-evenly items-center bg-white'>
+      <Image source={require('../assets/images/LogoFarmaFacil.png')} style={{ width: 120, height: 120 }} />
+      
+      <Heading1 className="text-center">
+        Bem vindo(a) ao FarmaFácil!
       </Heading1>
 
-      <Image source={require('../assets/images/LogoFarmaFacil.png')} style={{ width: 120, height: 120 }} />
+      <Heading2 className="text-center">
+        <Text>Você possui cadastro em nosso aplicativo?</Text>
+      </Heading2>
 
-      <View style={styles.areaButtons}>
-        <Heading1>
-          <Text>Quem é você?</Text>
-        </Heading1>
-
+      <ButtonsArea>
         <PrimaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')} >
-          <Heading1>
-            <Text>Sou um cliente</Text>
-          </Heading1>
+            Sim, sou cliente.
         </PrimaryButton>
 
-        <SecondaryButton onPress={() => router.push('/auth/Loja/LoginLoja')}>
-          <Heading1>
-            <Text>Sou uma loja</Text>
-          </Heading1>
+        <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
+          Não, quero me cadastrar!
         </SecondaryButton>
-      </View>
-    </View>
+      </ButtonsArea>
+
+      <LinkText onPress={() => router.push('/auth/Loja/LoginLoja')}>
+        Sou proprietário de uma farmácia.
+      </LinkText>
+      
+    </GenericContainer>
   );
 }
 
-const styles = StyleSheet.create({  
+/*const styles = StyleSheet.create({
   areaButtons: {
     gap: 20,
     justifyContent: "center",
     alignItems: "center",
     width: 300,
   },
-});
+});*/
