@@ -10,7 +10,7 @@ import * as LocalAuthentication from 'expo-local-authentication'
 import api from '@/src/services/api'
 import "../../../global.css";
 import { viacep } from '@/src/services/api.js'
-import GoogleLoginButton from '../../../src/components/userCliente/GoogleLoginButton'
+
 
 const LoginClientes = () => {
   const [email, setEmail] = useState('')
