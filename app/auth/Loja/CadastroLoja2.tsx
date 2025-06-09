@@ -7,9 +7,6 @@ import { useRouter } from 'expo-router'
 import GenericContainer, { Form, ButtonsArea } from '@/src/components/ViewComponents'
 import { viacep } from '@/src/services/api'
 
-import { saveSecureItem } from '../../../utils/secureStore'
-
-
 const CadastroLoja2 = () => {
     const [cep, setCep] = useState('')
     const [rua, setRua] = useState('')
@@ -63,18 +60,13 @@ const CadastroLoja2 = () => {
                     <Text className='font-bold text-primaryBlue'>* Campos obrigatórios</Text>
 
                     <ButtonsArea>
-                        <PrimaryButton onPress={async () => {
+                        <PrimaryButton onPress={() => {
                             if (!cep || !rua || !bairro || !numero || !estado || !cidade) {                                
                                 Alert.alert('Campos em branco', 'Todos os campos são obrigatórios!')
                                 return
+                            } else {
+                                router.push('/auth/Loja/CadastroLoja3')
                             }
-
-                            await saveSecureItem('cadastroLojaParte2', {
-                                cep, rua, bairro, numero, estado, cidade
-                            })
-
-                            router.push('/auth/Loja/CadastroLoja3')
-
                             }}
                         >
                             <Heading1>

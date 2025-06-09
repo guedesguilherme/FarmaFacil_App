@@ -1,37 +1,24 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Heading1 } from '@/src/components/TextComponent'
-import { SecondaryButton } from '@/src/components/ButtonsComponent'
 import GenericContainer from '@/src/components/ViewComponents'
-import { CardHomeLoja, SecondaryCard } from '@/src/components/CardComponents'
+import { GenericCard, SecondaryCard } from '@/src/components/CardComponents'
 
 const HomeLojas = () => {
   return (
-    <GenericContainer className='items-center gap-8'>
+    <GenericContainer>
+      <Heading1 className='m-5'>
+        {`Olá {nome da loja}`}
+      </Heading1>
 
-      <Heading1>Bem vindo</Heading1>
+      <Heading1 className='m-5'>
+        Seus produtos:
+      </Heading1>
 
-      <SecondaryButton className=''>
-        Adicionar Novo Produto
-      </SecondaryButton>
+      <ScrollView className='m-5'>
+        <SecondaryCard label1='texto' label2='texto' label3='texto' />
+      </ScrollView>
 
-      <CardHomeLoja 
-        CardHeader="Gerencie seu estoque" 
-        CardItem1="Produtos em estoque" 
-        CardDesc1="10"
-        CardItem2="Produtos com menos unidades"
-        CardDesc2="Dipirona"
-        ButtonDesc="Gerenciar Estoque">
-      </CardHomeLoja>
-
-      <CardHomeLoja 
-        CardHeader="Gerencie seus pedidos" 
-        CardItem1="Pedidos concluídos" 
-        CardDesc1="10"
-        CardItem2="Peidos pendentes"
-        CardDesc2="Dipirona"
-        ButtonDesc="Gerenciar Pedidos">
-      </CardHomeLoja>
     </GenericContainer>
   )
 }

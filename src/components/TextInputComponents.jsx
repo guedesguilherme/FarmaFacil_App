@@ -2,10 +2,10 @@ import { StyleSheet, Text, View, TextInput } from 'react-native'
 import React from 'react'
 
 export const TextInputComponent = ({ className='', label, ...props }) => (
-    <View className={`flex-col w-full mx-5 ${className}`}>
+    <View className={`flex-col gap-2 ${className}`}>
         <Text
             className='
-                font-poppins_bold
+                font-bold
                 text-xl
             '
         >
@@ -18,7 +18,7 @@ export const TextInputComponent = ({ className='', label, ...props }) => (
                 border-2
                 rounded-lg
                 p-2
-                font-poppins_semibold
+                font-bold
                 text-lg
             '
             {...props} 
