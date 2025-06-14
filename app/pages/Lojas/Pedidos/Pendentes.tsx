@@ -1,11 +1,38 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
+import GenericContainer from '@/src/components/ViewComponents'
+import { Heading1 } from '@/src/components/TextComponent'
+import { PedidoCard } from '@/src/components/CardComponents'
+import { useRouter } from 'expo-router'
 
 const Pendentes = () => {
+  const router = useRouter()
+
+  const handleNavigate = () => {
+    router.push({
+      pathname: '/pages/Lojas/Pedidos/DetalhesPedido',
+      params: {
+        nome: 'Benegripe',
+        preco: '38,00',
+        cliente: 'João da Silva',
+      },
+    })
+  }
+
   return (
-    <View>
-      <Text>Pendentes</Text>
-    </View>
+    <GenericContainer>
+      <Heading1 className='m-5'>
+        Pedidos pendentes:
+      </Heading1>
+
+      <PedidoCard
+        nome="Buscopan"
+        preco="20,00"
+        cliente="Julia Barros"
+        imgUrl=""
+        onPress={handleNavigate}
+      />
+    </GenericContainer>
   )
 }
 
