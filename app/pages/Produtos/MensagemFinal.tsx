@@ -1,10 +1,13 @@
 import api from '@/src/services/api'
 import React, { useState, useEffect } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
-import { router, useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+
 import { Heading1, Heading2 } from '@/src/components/TextComponent'
 import GenericContainer from '@/src/components/ViewComponents'
 import { PrimaryButton } from '@/src/components/ButtonsComponent'
+
+
 
 const MensagemFinal = () => {
 
@@ -21,6 +24,8 @@ const MensagemFinal = () => {
         }
         loadNome()
     }, [id])
+
+    const router = useRouter()
 
     if (loading) {
         return (
@@ -41,7 +46,7 @@ const MensagemFinal = () => {
                 <Heading2 className=''>
                     Já estamos separando {informacoes.produto.nome} pra você!
                 </Heading2>
-                <PrimaryButton>
+                <PrimaryButton  onPress={() => router.push('/pages/Clientes/AcompanharPedidos')}>
                     <Heading1 className='font-bold'>
                         Acompanhar
                     </Heading1>
