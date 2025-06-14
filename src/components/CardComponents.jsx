@@ -100,3 +100,31 @@ export const CardHomeLoja = ({ CardHeader, CardItem1, CardDesc1, CardItem2, Card
     </View>
 )
 
+
+export const PedidoCard = ({ nome, preco, cliente, imgUrl, onPress }) => (
+  <TouchableOpacity
+    onPress={onPress}
+    className='
+      bg-white
+      border-2
+      border-primaryBlue
+      rounded-lg
+      p-3
+      flex-row
+      items-center
+      justify-between
+      mb-4
+    '
+  >
+    <Image
+      source={{ uri: imgUrl || 'https://picsum.photos/80' }}
+      className='w-[60px] h-[60px] rounded-md'
+      resizeMode='contain'
+    />
+    <View className='flex-1 px-4'>
+      <Heading3 className='mb-1'>{nome}</Heading3>
+      <Heading2 className='mb-1'>R$ {preco}</Heading2>
+      <BodyText>Cliente: {cliente}</BodyText>
+    </View>
+  </TouchableOpacity>
+)
