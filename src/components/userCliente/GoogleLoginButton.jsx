@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { TouchableOpacity, Text, View, StyleSheet, Image } from "react-native";
 import { GoogleSignin, GoogleSigninButton, isSuccessResponse, isErrorWithCode, statusCodes } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
-import { saveSecureItem } from "../../../utils/secureStore"
+import { saveSecureItem, getSecureItem } from "../../../utils/secureStore"
 import {
   PrimaryButton,
   ReturnButton,
@@ -47,10 +47,8 @@ const GoogleLoginButton = () => {
         throw new Error(data.msg || 'Erro na autenticação com Google');
         }
 
-        //await saveSecureItem(data.token)
-        //await saveSecureItem(data.user.id)
-        console.log(data.user.id)
-        console.log(data.token)
+        await saveSecureItem("token", JSON.stringify(data.token))
+        await saveSecureItem("userId", JSON.stringify(data.user.id))
 
         router.navigate("/pages/Clientes/HomeClientes");
       } else {
