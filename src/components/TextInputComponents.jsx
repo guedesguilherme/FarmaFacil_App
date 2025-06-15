@@ -26,28 +26,28 @@ export const TextInputComponent = ({ className='', label, ...props }) => (
     </View>
 )
 
-export const DisabledTextInputComponent = ({ className='', label, ...props }) => (
-    <View>
-        <Text
-            className='
-                font-bold
-                text-xl
-            '
-        >
-            {label}
-        </Text>
-        <TextInput
-            className='
-                bg-gray-200
-                border-primaryBlue
-                border-2
-                rounded-lg
-                font-bold
-                p-2
-                text-lg
-            '
-            editable={false}
-            {...props} 
-        />
-    </View>
+export const DisabledTextInputComponent = ({ className = '', label, ...props }) => (
+  <View className={`flex-col w-full mx-5 ${className}`}>
+    <Text
+      className='
+        font-poppins_bold
+        text-xl
+      '
+    >
+      {label}
+    </Text>
+    <TextInput
+      className='
+        bg-gray-200
+        border-primaryBlue
+        border-2
+        rounded-lg
+        font-poppins_semibold
+        p-2
+        text-lg
+      '
+      editable={false}
+      {...props}
+    />
+  </View>
 )
