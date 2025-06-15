@@ -30,13 +30,16 @@ const CadastroLoja3 = () => {
     }
 
     try {
-        const part1  = await getSecureItem('cadastroLojaParte1')
-        const part2 = await getSecureItem('cadastroLojaParte2')
+        const rawpart1  = await getSecureItem('cadastroLojaParte1')
+        const rawpart2 = await getSecureItem('cadastroLojaParte2')
 
-        if (!part1 || !part2){
+        if (!rawpart1 || !rawpart2){
             Alert.alert('Erro', 'Informações incompletas. Volte e preencha os campos vazios.')
             return
         }
+
+        const part1 = JSON.parse(rawpart1)
+        const part2 = JSON.parse(rawpart2)
 
         const payload = {
             part1,

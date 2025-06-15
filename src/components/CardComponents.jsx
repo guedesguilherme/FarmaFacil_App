@@ -128,3 +128,28 @@ export const PedidoCard = ({ nome, preco, cliente, imgUrl, onPress }) => (
     </View>
   </TouchableOpacity>
 )
+
+const LinhaItem = ({ label, valor }) => (
+  <View className='flex-row justify-between py-2 px-4 bg-slate-100 border-b border-slate-200'>
+    <Text className='font-semibold'>{label}</Text>
+    <Text style={{ flexShrink: 1, flexWrap: 'wrap', maxWidth: '70%' }}>
+      {valor}
+    </Text>
+  </View>
+);
+
+export const PedidoDetalhesCard = ({ pedido }) => {
+  return (
+    <View className='border-2 border-primaryBlue rounded-xl m-4 overflow-hidden bg-white'>
+      <View className='px-4 py-3 border-b border-primaryBlue'>
+        <Heading2 className='font-bold'>{pedido.titulo}</Heading2>
+      </View>
+
+      <LinhaItem label="Nº Pedido" valor={pedido.numero} />
+      <LinhaItem label="Produto" valor={pedido.produto} />
+      <LinhaItem label="Preço" valor={`R$ ${pedido.preco}`} />
+      <LinhaItem label="QTD" valor={`${pedido.quantidade}`} />
+      <LinhaItem label="Cliente" valor={pedido.cliente} />
+    </View>
+  );
+};

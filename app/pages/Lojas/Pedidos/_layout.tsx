@@ -28,7 +28,8 @@ const Layout = () => {
           ),
         }}
       />
-      <Tabs.Screen name='DetalhesPedido' options={{ href: null }} />
+      <Tabs.Screen name='DetalhesPedidoConcluido' options={{ href: null }} />
+      <Tabs.Screen name='DetalhesPedidoPendente' options={{ href: null }} />
     </Tabs>
   );
 };
