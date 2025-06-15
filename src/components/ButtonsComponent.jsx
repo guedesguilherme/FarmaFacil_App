@@ -1,8 +1,10 @@
-import { TouchableOpacity, Text, Image } from 'react-native';
+import { TouchableOpacity, Text, Image, View } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { router } from 'expo-router';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Heading1 } from './TextComponent';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
 
 export const PrimaryButton = ({ children, className = '', ...props }) => (
   <TouchableOpacity
@@ -142,4 +144,28 @@ export const GoogleButton = ({
       {children}
     </Text>
   </TouchableOpacity>
+);
+
+export const ActionButton = ({ onPress }) => (
+  <View
+    className='
+      flex-row 
+      w-full 
+      bg-slate-100 
+      border-t 
+      border-gray-300 
+      absolute 
+      bottom-0 
+      left-0 
+      right-0
+    '
+  >
+    <TouchableOpacity
+      className='flex-1 items-center justify-center py-4'
+      onPress={onPress}
+    >
+      <FontAwesome name="check" size={24} color="#2f88ff" />
+      <Text className='text-primaryBlue mt-1 font-poppins_medium'>Marcar como concluído</Text>
+    </TouchableOpacity>
+  </View>
 );
