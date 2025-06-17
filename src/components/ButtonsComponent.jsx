@@ -10,7 +10,6 @@ export const PrimaryButton = ({ children, className = '', ...props }) => (
   <TouchableOpacity
     className={`
       w-full 
-      mx-4 
       bg-primaryBlue 
       py-[13px] 
       rounded-lg 
@@ -31,7 +30,6 @@ export const SecondaryButton = ({ children, className = '', ...props }) => (
   <TouchableOpacity
     className={`
       w-full 
-      mx-4 
       bg-white 
       border-2 border-primaryBlue
       py-[13px] 
@@ -49,6 +47,26 @@ export const SecondaryButton = ({ children, className = '', ...props }) => (
   </TouchableOpacity>
 );
 
+export const DangerButton = ({ children, className = '', ...props }) => (
+  <TouchableOpacity
+    className={`
+      w-full 
+      bg-white 
+      border-2 border-primaryRed
+      py-[13px] 
+      rounded-lg 
+      items-center 
+      justify-center
+      ${className}
+    `}
+    activeOpacity={0.7}
+    {...props}
+  >
+    <Text className="text-xl font-poppins_semibold text-primaryRed">
+      {children}
+    </Text>
+  </TouchableOpacity>
+);
 
 export const FillButton = ({ children, className = '', ...props }) => (
   <TouchableOpacity

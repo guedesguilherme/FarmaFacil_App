@@ -1,34 +1,50 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import GenericContainer from '@/src/components/ViewComponents'
-import { ReturnButton } from '@/src/components/ButtonsComponent'
+import { DangerButton, PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent'
 import { Heading1 } from '@/src/components/TextComponent'
-import { TextInputComponent } from '@/src/components/TextInputComponents'
+import ListItemComponent from '@/src/components/ListComponents'
 
 const EditarDadosLoja = () => {
   return (
     <GenericContainer>
-      <ReturnButton className='m-5' />
-      <Heading1 className='text-center'>
-        Editar suas informações:
+      <ReturnButton/>
+      <Heading1 className='mt-5'>
+        Editar suas informações
       </Heading1>
 
-      <ScrollView className='m-5'>
-        <TextInputComponent label={'Nome da sua loja:'} />
-        <TextInputComponent label={'Rede da sua loja:'} />
-        <TextInputComponent label={'E-mail:'} />
-        <TextInputComponent label={'CEP:'} />
-        <TextInputComponent label={'Rua:'} />
-        <TextInputComponent label={'Bairro:'} />
-        <TextInputComponent label={'Estado:'} />
-        <TextInputComponent label={'Cidade:'} />
-        <TextInputComponent label={'Número:'} />
-        <TextInputComponent label={'Complemento:'} />
-      </ScrollView>
+      <View className='mt-8 flex-col gap-2'>
+        <ListItemComponent
+          label='Rua'
+          placeholder='XPTO'
+        />
+        <ListItemComponent
+          label='Bairro'
+          placeholder='XPTO'
+        />
+        <ListItemComponent
+          label='N°'
+          placeholder='XPTO'
+        />
+        <ListItemComponent
+          label='CEP'
+          placeholder='XPTO'
+        />
+        <ListItemComponent
+          label='UF'
+          placeholder='XPTO'
+        />
+        <ListItemComponent
+          label='Cidade'
+          placeholder='XPTO'
+        />
+      </View>
+
+      <PrimaryButton className='mt-8'>Salvar Alterações</PrimaryButton>
+      <DangerButton className='mt-4'>Descartar Alterações</DangerButton>
+
     </GenericContainer>
   )
 }
 
 export default EditarDadosLoja
-
-const styles = StyleSheet.create({})

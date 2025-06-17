@@ -1,26 +1,44 @@
-import { Entypo } from '@expo/vector-icons'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Text, View, TouchableOpacity, TextInput } from 'react-native'
 
-const ListItemComponent = ({ className = '', icone, titulo, ...props }) => {
+const ListItemComponent = ({ className = '', label, placeholder, ...props }) => {
     return (
         <TouchableOpacity
             className={`
-                border-b-2
-                pb-2
-                flex-row
-                justify-between 
-                items-center
-                border-gray-600
-                mb-6
+                flex-col
+                w-full
                 ${className}
             `}            
                 {...props}
             >
-            <View className='flex-row gap-3 items-center'>
-                {icone}
-                <Text className='font-bold text-xl'>{titulo}</Text>
+            <Text
+                className='
+                    font-poppins_bold
+                    text-xl
+                '
+            >
+                {label}
+            </Text>
+            <View className='
+                flex-row 
+                items-center 
+                justify-between 
+                bg-white
+                border-primaryBlue
+                border-2
+                rounded-lg
+                p-2
+                w-full
+            '>
+            <TextInput
+            className='font-poppins_semibold text-lg color-slate-600'
+            {...props} 
+            >
+            {placeholder}    
+
+            </TextInput>                
+            <AntDesign name='edit' size={24} color='#2F88FF'/>    
             </View>
-            <Entypo name='chevron-right' size={24} color='gray' />
         </TouchableOpacity>
     )
 }
