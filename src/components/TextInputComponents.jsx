@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
+import Entypo from '@expo/vector-icons/Entypo'
 import React from 'react'
 
 export const TextInputComponent = ({ className='', label, ...props }) => (

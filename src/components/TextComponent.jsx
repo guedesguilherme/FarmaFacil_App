@@ -45,8 +45,6 @@ export const Heading3 = ({ children, className = '', ...props }) => (
   </BaseText>
 );
 
-// text-base font-medium text-slate-600 
-
 export const BodyText = ({ children, className = '', ...props }) => (
   <BaseText 
     className={`text-base font-poppins_medium ${className}`} 
