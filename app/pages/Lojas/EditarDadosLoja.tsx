@@ -107,37 +107,31 @@ const EditarDadosLoja = () => {
       <ScrollView className="mt-8 flex-col gap-2">
         <ListItemComponent
           label="Rua"
-          placeholder="XPTO"
           value={formData.rua}
           onChangeText={(value: string) => handleChange('rua', value)}
         />
         <ListItemComponent
           label="Bairro"
-          placeholder="XPTO"
           value={formData.bairro}
           onChangeText={(value: string) => handleChange('bairro', value)}
         />
         <ListItemComponent
           label="N°"
-          placeholder="XPTO"
           value={formData.numero}
           onChangeText={(value: string) => handleChange('numero', value)}
         />
         <ListItemComponent
           label="CEP"
-          placeholder="XPTO"
           value={formData.cep}
           onChangeText={(value: string) => handleChange('cep', value)}
         />
         <ListItemComponent
           label="UF"
-          placeholder="XPTO"
           value={formData.uf}
           onChangeText={(value: string) => handleChange('uf', value)}
         />
         <ListItemComponent
           label="Cidade"
-          placeholder="XPTO"
           value={formData.cidade}
           onChangeText={(value: string) => handleChange('cidade', value)}
         />

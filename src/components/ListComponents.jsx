@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, View, TextInput, TouchableOpacity } from 'react-native'
 import AntDesign from '@expo/vector-icons/AntDesign'
 
@@ -6,22 +6,24 @@ const ListItemComponent = ({ className = '', label, value = '', onChangeText, pl
   const [isEditing, setIsEditing] = useState(false)
   const [inputValue, setInputValue] = useState(value)
 
+  useEffect(() => {
+    setInputValue(value)
+  }, [value])
+
   const handleEditToggle = () => {
     setIsEditing(true)
   }
 
   const handleEndEditing = () => {
     setIsEditing(false)
-    if (onChangeText) {
+    if (onChangeText && inputValue !== value) {
       onChangeText(inputValue)
     }
   }
 
   return (
     <View className={`flex-col w-full ${className}`}>
-      <Text className="font-poppins_bold text-xl mb-1">
-        {label}
-      </Text>
+      <Text className="font-poppins_bold text-xl mb-1">{label}</Text>
 
       <View className="flex-row items-center justify-between bg-white border-primaryBlue border-2 rounded-lg px-3 py-2">
         <TextInput
@@ -34,11 +36,9 @@ const ListItemComponent = ({ className = '', label, value = '', onChangeText, pl
           placeholderTextColor="#94a3b8"
         />
 
-        {!isEditing && (
-          <TouchableOpacity onPress={handleEditToggle}>
-            <AntDesign name="edit" size={24} color="#2F88FF" />
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity onPress={isEditing ? handleEndEditing : handleEditToggle}>
+          <AntDesign name={isEditing ? 'check' : 'edit'} size={24} color={isEditing ? '#22C55E' : '#2F88FF'} />
+        </TouchableOpacity>
       </View>
     </View>
   )
