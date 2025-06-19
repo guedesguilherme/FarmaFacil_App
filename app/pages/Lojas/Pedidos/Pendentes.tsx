@@ -1,10 +1,12 @@
 import { ScrollView, ActivityIndicator, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import GenericContainer from '@/src/components/ViewComponents';
 import { Heading1 } from '@/src/components/TextComponent';
 import { PedidoCard } from '@/src/components/CardComponents';
 import { useRouter } from 'expo-router';
 import api from '@/src/services/api';
+import { getSecureItem } from '@/utils/secureStore';
+import { useFocusEffect } from '@react-navigation/native';
 
 // Tipagem dos pedidos
 type Produto = {
@@ -34,29 +36,38 @@ const Pendentes = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const loadPedidos = async () => {
-      try {
-        const response = await api.get('/pedidos/farmacia/684f0d1727a22163bcc3af02');
-        const pedidos = Array.isArray(response.data) ? response.data : response.data.pedidos;
+  useFocusEffect(
+    useCallback(() => {
+      const loadPedidos = async () => {
+        try {
+          setLoading(true);
 
-        const detalhes = await Promise.all(
-          pedidos.map((p: { _id: string }) => api.get(`/pedidos/${p._id}`))
-        );
+          const farmaciaId = await getSecureItem('id_farmacia');
+          const response = await api.get(`/pedidos/farmacia/${farmaciaId}`);
+          const pedidos = Array.isArray(response.data)
+            ? response.data
+            : response.data.pedidos;
 
-        const detalhesPedidos = detalhes.map((res) => res.data.pedido);
-        const apenasPendentes = detalhesPedidos.filter((p) => p.status === 'Pendente');
+          const detalhes = await Promise.all(
+            pedidos.map((p: { _id: string }) => api.get(`/pedidos/${p._id}`))
+          );
 
-        setPedidos(apenasPendentes);
-      } catch (error) {
-        console.error('Erro ao carregar pedidos pendentes:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+          const detalhesPedidos = detalhes.map((res) => res.data.pedido);
+          const apenasPendentes = detalhesPedidos.filter(
+            (p) => p.status === 'Pendente'
+          );
 
-    loadPedidos();
-  }, []);
+          setPedidos(apenasPendentes);
+        } catch (error) {
+          console.error('Erro ao carregar pedidos pendentes:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      loadPedidos();
+    }, [])
+  );
 
   const handleNavigate = (pedido: PedidoDetalhado) => {
     router.push({
@@ -78,7 +89,9 @@ const Pendentes = () => {
       {loading ? (
         <ActivityIndicator size="large" color="#2f88ff" />
       ) : pedidos.length === 0 ? (
-        <Text className="text-center text-gray-500 mt-10">Nenhum pedido pendente encontrado</Text>
+        <Text className="text-center text-gray-500 mt-10">
+          Nenhum pedido pendente encontrado
+        </Text>
       ) : (
         <ScrollView>
           {pedidos.map((pedido) => (
