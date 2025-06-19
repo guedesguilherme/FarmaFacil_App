@@ -54,6 +54,15 @@ export const BodyText = ({ children, className = '', ...props }) => (
   </BaseText>
 );
 
+export const BodyTextBold = ({ children, className = '', ...props }) => (
+  <BaseText 
+    className={`text-base font-poppins_bold ${className}`} 
+    {...props}
+  >
+    {children}
+  </BaseText>
+);
+
 export const LinkText = ({ children, className = '', ...props }) => (
   <BaseText 
     className={`text-xl font-poppins_semibold text-primaryBlue ${className}`} 

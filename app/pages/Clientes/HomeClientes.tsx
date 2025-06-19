@@ -7,6 +7,7 @@ import api from "../../../src/services/api";
 import Produtos from "../../../src/components/Produto";
 import { ActivityIndicator } from "react-native";
 import GenericContainer from "@/src/components/ViewComponents";
+import { Heading1, Heading2 } from "@/src/components/TextComponent";
 
 export default function HomeCliente() {
 
@@ -25,7 +26,9 @@ export default function HomeCliente() {
 
   if (loading === true) { 
     return (
-      <GenericContainer className='justify-center items-center flex-1'>
+      <GenericContainer className=''>
+        <Heading1>Seja bem vindo(a)</Heading1>
+        <Heading2>Procure por um medicamento</Heading2>
         <ActivityIndicator 
           color='#2f88ff'
           size={45}
@@ -34,13 +37,15 @@ export default function HomeCliente() {
     )
   } else {    
     return (
-      <GenericContainer>        
+      <GenericContainer>    
+        <Heading1>Seja bem vindo(a)</Heading1>
+        <Heading2 className="mt-5 mb-8">Procure por um medicamento</Heading2>    
         <FlatList
           data={produtos}          
           keyExtractor={item => String(item._id)}
           renderItem={({ item }) => <Produtos data={item} />}
         >
-        </FlatList>        
+        </FlatList>         
       </GenericContainer>
     )
   }
