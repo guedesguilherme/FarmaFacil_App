@@ -4,13 +4,26 @@ import GenericContainer from '@/src/components/ViewComponents';
 import { PedidoDetalhesCard } from '@/src/components/CardComponents';
 import { Heading1 } from '@/src/components/TextComponent';
 import { ReturnButton, ActionButton } from "@/src/components/ButtonsComponent";
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter  } from 'expo-router';
+import api from '@/src/services/api';
+
 
 const DetalhesPedidoPendente = () => {
   const { idPedido, nome, preco, cliente, quantidade } = useLocalSearchParams();
 
-  const marcarComoConcluido = () => {
-    console.log('Pedido marcado como concluído');
+  const router = useRouter();
+
+  const marcarComoConcluido = async () => {
+    try {
+      await api.put(`/pedidos/${idPedido}`, {
+        status: 'Concluido',
+      });
+
+      router.replace('/pages/Lojas/Pedidos/Pendentes');
+    } catch (error) {
+      console.error('Erro ao atualizar pedido:', error);
+      alert('Erro ao atualizar o pedido.');
+    }
   };
 
   return (

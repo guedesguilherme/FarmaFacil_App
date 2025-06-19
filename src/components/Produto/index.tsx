@@ -1,39 +1,42 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Heading1, Heading2 } from "../TextComponent";
+import React from "react";
+import { View, Image, TouchableOpacity } from "react-native";
+import { BodyText, BodyTextBold, Heading2, Heading3 } from "../TextComponent";
 import { router } from 'expo-router'
 
-export default function Produtos({ data }) {
+export default function Produtos({ data, className = '', ...props }) {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => router.push({ pathname: '/pages/Produtos/Detalhes', params: { id: data._id } })}>
-      <Image source={{ uri: data.imagem_url }} style={styles.imagem} />
-      <View style={styles.card}>
+    <TouchableOpacity 
+      className="
+        flex
+        flex-row
+        w-full 
+        mb-3
+        bg-white 
+        border-2 border-primaryBlue
+        py-4
+        px-3
+        rounded-lg 
+        items-center 
+        ${className}
+      "
+      onPress={() => router.push({ pathname: '/pages/Produtos/Detalhes', params: { id: data._id } })}>
+      <Image 
+      className="
+        w-20
+        h-20
+        mr-3
+      "
+      source={{ uri: data.imagem_url }}/>
+      <View>
         <View>
-          <Heading1>{data.nome}</Heading1>
-          <Heading2>{data.nome_quimico}</Heading2>
-          <Heading2>{data.label}</Heading2>
+          <Heading2>{data.nome}</Heading2>
+          <Heading3>{data.nome_quimico}</Heading3>
+          <BodyText>{data.label}</BodyText>
         </View>
 
-        <Heading1>R$ {parseFloat(data.preco).toFixed(2)}</Heading1>
+        <BodyTextBold className="color-green-600">R$ {parseFloat(data.preco).toFixed(2)}</BodyTextBold>
       </View>
     </TouchableOpacity>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    margin: 20,    
-    borderBottomWidth: 1,
-    borderBottomColor: '#2f88ff'
-  },
-  card: {
-    flexDirection: "row",
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  titulo: {},
-  imagem: {
-    height: 250,
-  },
-});

@@ -97,13 +97,13 @@ const LoginClientes = () => {
 
   return (
     <GenericContainer>
-      <ReturnButton className='m-5' />
+      <ReturnButton className='' />
 
-      <Heading1 className='text-center'>
-        Login - Clientes
+      <Heading1 className='text-center mt-8'>
+        Entre com sua conta
       </Heading1>
 
-      <Form>
+      <Form className='mt-8'>
         <TextInputComponent
           label='E-mail:'
           value={email}
@@ -123,7 +123,7 @@ const LoginClientes = () => {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Heading1>Logar</Heading1>
+              "Logar"
             )}
           </PrimaryButton>
           <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>

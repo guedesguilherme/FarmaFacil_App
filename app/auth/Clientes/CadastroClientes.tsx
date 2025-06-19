@@ -74,32 +74,28 @@ const CadastroClientes = () => {
 
   return (
     <GenericContainer>
-      <ReturnButton className='m-5' />
+      <ReturnButton className='' />
 
-      <Heading1 className='text-center'>
-        Cadastro de Clientes
+      <Heading1 className='text-center mt-5'>
+        Cadastre-se
       </Heading1>
 
-      <Form>
-        <ScrollView>
+      <Form className='mt-8'>
           <TextInputComponent value={nome} onChangeText={setNome} label='Nome:' />
           <TextInputComponent value={email} onChangeText={setEmail} label='E-mail:' />
           <TextInputComponent value={senha} secureTextEntry onChangeText={setSenha} label='Senha:' />
           <TextInputComponent value={confirmasenha} onChangeText={setConfirmaSenha} label='Repita sua senha:' />
-        </ScrollView>
         
           <PrimaryButton onPress={enviarInformacoes} disabled={loading}>
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Heading1>Cadastrar</Heading1>
+              "Cadastrar"
             )}
           </PrimaryButton>
 
-          <SecondaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')}>
-            <Heading1>
+          <SecondaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')}>   
               Já tenho cadastro
-            </Heading1>
           </SecondaryButton>
 
 
