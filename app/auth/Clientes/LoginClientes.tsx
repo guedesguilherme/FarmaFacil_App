@@ -17,9 +17,10 @@ import {
 import GenericContainer, { Form, ButtonsArea } from "@/src/components/ViewComponents";
 import { viacep } from '@/src/services/api.js'
 import GoogleLoginButton from '../../../src/components/userCliente/GoogleLoginButton'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as LocalAuthentication from 'expo-local-authentication'
 import api from '@/src/services/api'
+import { saveSecureItem, getSecureItem } from "../../../utils/secureStore"
+
 
 const LoginClientes = () => { 
   const [email, setEmail] = useState('')
@@ -33,7 +34,7 @@ const LoginClientes = () => {
   useEffect(() => {
     (async () => {
       try {
-        const token = await AsyncStorage.getItem('token')
+        const token = await getSecureItem('token')
         if (token) {
           const compativel = await LocalAuthentication.hasHardwareAsync()
           const biometriaDisponivel = await LocalAuthentication.isEnrolledAsync()
@@ -69,7 +70,8 @@ const LoginClientes = () => {
     try {
       const response = await api.post('/usuarios/auth/login', { email, senha })
       if (response.data?.token) {
-        await AsyncStorage.setItem('token', response.data.token)
+        await saveSecureItem("token", JSON.stringify(response.data.token))
+        await saveSecureItem("userId", response.data.userId);
         router.replace('/pages/Clientes/HomeClientes')
       } else {
         setError(response.data?.message || 'Erro ao fazer login')

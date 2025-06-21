@@ -72,33 +72,44 @@ export const SecondaryCard = ({ label1, label2, label3 }) => (
     </TouchableOpacity>
 )
 
-export const CardHomeLoja = ({ CardHeader, CardItem1, CardDesc1, CardItem2, CardDesc2, ButtonDesc }) => (
-    <View
-        className='
-        bg-white
-        border-primaryBlue
-        border-2
-        p-5
-        justify-between
-        mx-[20px]
-        w-full 
-        max-h-[335px]
-        rounded-lg
-        '
-    >
-        <View className='items-start'>
-            <Heading2 className='mb-6'>{CardHeader}</Heading2>
-            <Heading3>{CardItem1}</Heading3>
-            <BodyText className='color-slate-500'>{CardDesc1}</BodyText>
-            <Heading3 className='mt-2'>{CardItem2}</Heading3>
-            <BodyText className='color-slate-500'>{CardDesc2}</BodyText>
-        </View>
-
-        <View className='items-center mt-7'>
-            <PrimaryButton>{ButtonDesc}</PrimaryButton>
-        </View>
+export const CardHomeLoja = ({
+  CardHeader,
+  CardItem1,
+  CardDesc1,
+  CardItem2,
+  CardDesc2,
+  ButtonDesc,
+  onPress,
+}) => (
+  <View
+    className='
+      bg-white
+      border-primaryBlue
+      border-2
+      p-5
+      justify-between
+      mx-[20px]
+      w-full 
+      max-h-[335px]
+      rounded-lg
+    '
+  >
+    <View className='items-start'>
+      <Heading2 className='mb-6'>{CardHeader}</Heading2>
+      <Heading3>{CardItem1}</Heading3>
+      <BodyText className='color-slate-500'>{CardDesc1}</BodyText>
+      <Heading3 className='mt-2'>{CardItem2}</Heading3>
+      <BodyText className='color-slate-500'>{CardDesc2}</BodyText>
     </View>
-)
+
+    <View className='items-center mt-7'>
+      {/* Passa a função onPress para o botão */}
+      <PrimaryButton onPress={onPress}>
+        {ButtonDesc}
+      </PrimaryButton>
+    </View>
+  </View>
+);
 
 
 export const PedidoCard = ({ nome, preco, cliente, imgUrl, onPress }) => (
@@ -153,3 +164,30 @@ export const PedidoDetalhesCard = ({ pedido }) => {
     </View>
   );
 };
+
+export const PedidoCardCliente = ({ nome, preco, dataPedido, imgUrl}) => (
+  <TouchableOpacity
+    className='
+      bg-white
+      border-2
+      border-primaryBlue
+      rounded-lg
+      p-3
+      flex-row
+      items-center
+      justify-between
+      mb-4
+    '
+  >
+    <Image
+      source={{ uri: imgUrl || 'https://picsum.photos/80' }}
+      className='w-[60px] h-[60px] rounded-md'
+      resizeMode='contain'
+    />
+    <View className='flex-1 px-4'>
+      <Heading3 className='mb-1'>{nome}</Heading3>
+      <Heading2 className='mb-1'>R$ {preco}</Heading2>
+      <BodyText>Data do pedido: {dataPedido}</BodyText>
+    </View>
+  </TouchableOpacity>
+)
