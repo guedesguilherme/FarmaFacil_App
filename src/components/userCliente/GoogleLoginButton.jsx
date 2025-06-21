@@ -48,7 +48,8 @@ const GoogleLoginButton = () => {
         }
 
         await saveSecureItem("token", JSON.stringify(data.token))
-        await saveSecureItem("userId", JSON.stringify(data.user.id))
+        //await saveSecureItem("userId", JSON.stringify(data.user.id))
+        await saveSecureItem("userId", data.user.id);
 
         router.navigate("/pages/Clientes/HomeClientes");
       } else {

@@ -36,7 +36,8 @@ const Layout = () => {
       {/* Telas ocultas da tab bar */}
       <Tabs.Screen name='EditarDadosLoja' options={{ href: null }} />
       <Tabs.Screen name='ProdutosLoja' options={{ href: null }} />
-      <Tabs.Screen name='LinkToPedidos' options={{ href: null }} />
+      {/* <Tabs.Screen name='LinkToPedidos' options={{ href: null }} /> */}
+      <Tabs.Screen name='Estoque' options={{ href: null }} />
     </Tabs>
   )
 }
