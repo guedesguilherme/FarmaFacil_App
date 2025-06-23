@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import React from 'react';
 import { Heading1 } from '@/src/components/TextComponent';
 import { SecondaryButton } from '@/src/components/ButtonsComponent';
@@ -70,10 +70,14 @@ const HomeLojas = () => {
     <GenericContainer className='items-center gap-8'>
       <Heading1>Bem vindo</Heading1>
 
-      <SecondaryButton>
+      <SecondaryButton onPress={() => router.push('/pages/Lojas/AdicionarProduto')}>
         Adicionar Novo Produto
       </SecondaryButton>
 
+      <ScrollView 
+        contentContainerStyle={{ gap: 32, alignItems: 'center' }}
+        showsVerticalScrollIndicator={false}
+      >
       <CardHomeLoja 
         CardHeader="Gerencie seu estoque" 
         CardItem1="Produtos em estoque" 
@@ -93,6 +97,7 @@ const HomeLojas = () => {
         ButtonDesc="Gerenciar Pedidos"
         onPress={() => router.push('/pages/Lojas/Pedidos')}
       />
+      </ScrollView> 
     </GenericContainer>
   );
 };

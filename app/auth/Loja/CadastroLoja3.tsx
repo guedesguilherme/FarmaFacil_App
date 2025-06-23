@@ -7,10 +7,7 @@ import { useRouter } from 'expo-router'
 import { TextInputComponent } from '@/src/components/TextInputComponents'
 import api from '@/src/services/api'
 
-
-
 import {getSecureItem, deleteSecureItem} from '../../../utils/secureStore'
-
 
 const CadastroLoja3 = () => {
 
@@ -77,6 +74,7 @@ const CadastroLoja3 = () => {
         
     } catch (error) {
         Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o usuário.')
+        console.log(error)
     }
   }
 
@@ -104,10 +102,8 @@ const CadastroLoja3 = () => {
                 />
             
             <ButtonsArea>
-                <PrimaryButton onPress={handleSubmit}>
-                    <Heading1>
-                        Cadastrar Loja
-                    </Heading1>
+                <PrimaryButton onPress={handleSubmit}>                    
+                    Cadastrar Loja                    
                 </PrimaryButton>
             </ButtonsArea>
         </Form>
