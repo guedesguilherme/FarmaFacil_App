@@ -52,7 +52,9 @@
     "react-native-webview": "13.12.5",
     "tailwindcss": "3.4.17",
     "undefined": "@expo/vector-icons/AntDesign",
-    "expo-asset": "~11.0.5"
+    "expo-asset": "~11.0.5",
+    "expo-location": "~18.0.10",
+    "expo-image-picker": "~16.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
