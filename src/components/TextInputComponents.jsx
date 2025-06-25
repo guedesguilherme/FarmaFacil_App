@@ -28,7 +28,7 @@ export const TextInputComponent = ({ className='', label, ...props }) => (
 )
 
 export const DisabledTextInputComponent = ({ className = '', label, ...props }) => (
-  <View className={`flex-col w-full mx-5 ${className}`}>
+  <View className={`flex-col w-full mx-0 ${className}`}>
     <Text
       className='
         font-poppins_bold
