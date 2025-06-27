@@ -4,8 +4,9 @@ import { useLocalSearchParams, router } from 'expo-router'
 import * as Location from 'expo-location'
 import api from '@/src/services/api'
 import GenericContainer from '@/src/components/ViewComponents'
-import { ReturnButton } from '@/src/components/ButtonsComponent'
+import { ReturnButton, ActionButton } from "@/src/components/ButtonsComponent";
 import { Heading1, Heading2, BodyText } from '@/src/components/TextComponent'
+
 
 const GOOGLE_API_KEY = 'AIzaSyCQ4GtwtrfiV_BdU1vEiy5Tyk8ZDzM0P10'
 
@@ -65,11 +66,32 @@ const AcompanharPedido = () => {
         calcularTempoEntrega()
     }, [pedidoId])
 
+    const marcarComoConcluido = async () => {
+        try {
+            await api.put(`/pedidos/${pedidoId}`, {
+                status: 'Concluido',
+            });
+            // Redireciona para a tela inicial ou mostra um alerta
+            router.replace('/pages/Clientes/HomeClientes');
+        } catch (error) {
+            console.error('Erro ao atualizar pedido:', error);
+            alert('Erro ao marcar pedido como concluído.');
+        }
+    };
+
     if (loading || !pedido) return (
         <GenericContainer className="justify-center items-center">
             <ActivityIndicator size={40} color="#2f88ff" />
         </GenericContainer>
     )
+    // Só mostra se o status for 'Pendente'
+    if (pedido.status !== 'Pendente') {
+        return (
+            <GenericContainer className="justify-center items-center">
+                <Heading2>Este pedido já foi concluído ou cancelado.</Heading2>
+            </GenericContainer>
+        )
+    }
 
     // Dados do pedido
     const farmacia = pedido.farmacia
@@ -123,6 +145,13 @@ const AcompanharPedido = () => {
 
             <BodyText className="font-bold mb-1">Endereço chegada:</BodyText>
             <BodyText>{enderecoChegada}</BodyText>
+
+
+            <View className="absolute bottom-0 left-0 right-0">
+                <ActionButton onPress={marcarComoConcluido}>
+                    Pedido entregue
+                </ActionButton>
+            </View>
         </GenericContainer>
     )
 }
