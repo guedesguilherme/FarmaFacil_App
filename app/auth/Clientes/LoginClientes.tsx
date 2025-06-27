@@ -36,29 +36,19 @@ const LoginClientes = () => {
       try {
         const token = await getSecureItem('token')
         if (token) {
-          // Valide o token antes de liberar a biometria
-          const response = await api.get('/usuarios/validar-token', {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-          if (response.data?.valido) {
-            const compativel = await LocalAuthentication.hasHardwareAsync()
-            const biometriaDisponivel = await LocalAuthentication.isEnrolledAsync()
-            if (compativel && biometriaDisponivel) {
-              const resultado = await LocalAuthentication.authenticateAsync({
-                promptMessage: 'Use biometria para entrar',
-                fallbackLabel: 'Use PIN ou senha',
-              })
-              if (resultado.success) {
-                router.replace('/pages/Clientes/HomeClientes')
-                return
-              } else {
-                Alert.alert('Login biométrico falhou', 'Use seu login e senha para continuar.')
-              }
+          const compativel = await LocalAuthentication.hasHardwareAsync()
+          const biometriaDisponivel = await LocalAuthentication.isEnrolledAsync()
+          if (compativel && biometriaDisponivel) {
+            const resultado = await LocalAuthentication.authenticateAsync({
+              promptMessage: 'Use biometria para entrar',
+              fallbackLabel: 'Use PIN ou senha',
+            })
+            if (resultado.success) {
+              router.replace('/pages/Clientes/HomeClientes')
+              return
+            } else {
+              Alert.alert('Login biométrico falhou', 'Use seu login e senha para continuar.')
             }
-          } else {
-            // Token inválido, apague-o
-            await saveSecureItem('token', '')
-            await saveSecureItem('userId', '')
           }
         }
       } catch (error) {
