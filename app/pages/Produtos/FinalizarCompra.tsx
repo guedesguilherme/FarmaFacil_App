@@ -104,7 +104,7 @@ const FinalizarCompra = () => {
                 telefone,
                 usuario: usuarioId,
                 farmacia: farmaciaId,
-                status: 'Aguardando pagamento'
+                status: 'Pendente'
             };
 
             const response = await api.post('/pedidos', pedido);
