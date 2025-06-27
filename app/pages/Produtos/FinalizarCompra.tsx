@@ -5,7 +5,8 @@ import {
     View,
     ScrollView,
     Alert,
-    ActivityIndicator
+    ActivityIndicator,
+    Share
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Image } from 'react-native'
@@ -28,7 +29,7 @@ const FinalizarCompra = () => {
     const [loadingEndereco, setLoadingEndereco] = useState(true);
     const [farmaciaId, setFarmaciaId] = useState('');
     const [usuarioId, setUsuarioId] = useState('');
-    const chavePix = 'Exemplo de chave pix...';
+    const chavePix = '00020126580014BR.GOV.BCB.PIX0136e1f0b0d5-4b4e-4e5c-9d77-fakepixkey520400005303986540410005802BR5925Nome do Recebedor Exemplo6009Sao Paulo62070503***6304B13F';
     const router = useRouter();
 
     // Busca dados do produto para pegar o id da farmácia
@@ -122,6 +123,55 @@ const FinalizarCompra = () => {
         }
     };
 
+    const handleCompartilhar = async () => {
+        if (!telefone) {
+            Alert.alert('Erro', 'Preencha o telefone!');
+            return;
+        }
+        if (!farmaciaId) {
+            Alert.alert('Erro', 'Não foi possível identificar a farmácia.');
+            return;
+        }
+        if (!usuarioId) {
+            Alert.alert('Erro', 'Usuário não identificado!');
+            return;
+        }
+        try {
+            const pedido = {
+                itensPedido: [
+                    {
+                        quantidade: 1,
+                        product: id // id do produto
+                    }
+                ],
+                endereco1,
+                city,
+                cep,
+                pais,
+                telefone,
+                usuario: usuarioId,
+                farmacia: farmaciaId,
+                status: 'Pendente'
+            };
+
+            const response = await api.post('/pedidos', pedido);
+            const pedidoId = response.data.pedido?._id || response.data._id;
+
+            await copyToClipboard();
+            Alert.alert('Copiado', 'Chave pix copiada com sucesso!');
+            await Share.share({
+                message: `Chave Pix para pagamento:\n${chavePix}`,
+            });
+            router.push({
+                pathname: '/pages/Produtos/MensagemFinal',
+                params: { id: pedidoId }
+            });
+        } catch (error) {
+            Alert.alert('Erro', 'Não foi possível compartilhar o código Pix.');
+            console.error(error);
+        }
+    };
+
     if (loadingEndereco) {
         return (
             <GenericContainer className='justify-center items-center'>
@@ -145,15 +195,18 @@ const FinalizarCompra = () => {
                         }}
                     />
                 </View>
+                <Heading1 className='text-center mt-2.5'>
+                    Pedido aguardando pagamento
+                </Heading1>
                 <Heading2 className='text-center mt-4 mb-2'>
-                    Dados de entrega detectados:
+                    Digite telefone para contato:
                 </Heading2>
-                <View className="border-2 border-primaryBlue rounded-lg p-2 mb-2 bg-gray-100">
+                {/* <View className="border-2 border-primaryBlue rounded-lg p-2 mb-2 bg-gray-100">
                     <Text>Endereço: {endereco1}</Text>
                     <Text>Cidade: {city}</Text>
                     <Text>CEP: {cep}</Text>
                     <Text>País: {pais}</Text>
-                </View>
+                </View> */}
                 <TextInput
                     placeholder="Telefone"
                     value={telefone}
@@ -161,9 +214,6 @@ const FinalizarCompra = () => {
                     keyboardType="phone-pad"
                     className="border-2 border-primaryBlue rounded-lg p-2 mb-2"
                 />
-                <Heading1 className='text-center mt-2.5'>
-                    Pedido aguardando pagamento
-                </Heading1>
                 <Heading2 className='text-center'>
                     Copie o código pix abaixo para realizar o pagamento:
                 </Heading2>
@@ -188,7 +238,12 @@ const FinalizarCompra = () => {
                 <View className='justify-center items-center gap-3'>
                     <PrimaryButton onPress={handleFinalizar}>
                         <Heading1>
-                            Copiar código pix e finalizar pedido
+                            Copiar código pix
+                        </Heading1>
+                    </PrimaryButton>
+                    <PrimaryButton onPress={handleCompartilhar}>
+                        <Heading1 className='text-center'>
+                            Compartilhar código pix
                         </Heading1>
                     </PrimaryButton>
                 </View>
