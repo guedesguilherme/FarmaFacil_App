@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react'
-import { Alert, ScrollView } from 'react-native'
+import { Alert, Button, ScrollView, ActivityIndicator, Text, View, TouchableOpacity, Modal } from 'react-native'
 import { useRouter, useFocusEffect } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 
 import GenericContainer from '@/src/components/ViewComponents'
-import { BodyText, Heading1, Heading3 } from '@/src/components/TextComponent'
+import { BodyText, Heading1, Heading2, Heading3 } from '@/src/components/TextComponent'
 import { PrimaryButton, ReturnButton, DangerButton } from '@/src/components/ButtonsComponent'
 import api from '@/src/services/api'
 
@@ -25,6 +25,9 @@ interface Farmacia {
 const ConfiguracoesLoja = () => {
   const router = useRouter()
   const [farmacia, setFarmacia] = useState<Farmacia | null>(null)
+  const [open, setOpen] = useState(false)
+  const [temp, setTemp] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
 
   const carregarDadosFarmacia = async () => {
     try {
@@ -75,6 +78,31 @@ const ConfiguracoesLoja = () => {
     }
   }
 
+  function openModal() {
+    setOpen(!open)
+  }
+
+  const deletarFarmacia = async () => {
+    setTemp(true)
+    setDeleteLoading(true)
+
+    try {
+      const id = await SecureStore.getItemAsync('id_farmacia')
+
+      api.delete(`/farma/${id}`)
+      Alert.alert('Conta excluída', 'Sua conta foi excluída com sucesso.')
+      await SecureStore.deleteItemAsync('token')
+      await SecureStore.deleteItemAsync('id_farmacia')
+      router.replace('/IndexLoja')
+
+    } catch (error) {
+      setDeleteLoading(false)
+      Alert.alert('Erro', `Não foi possível deletar sua loja: ${error}`)
+    } finally {
+      setDeleteLoading(false)
+    }
+  }
+
   return (
     <GenericContainer>
       <ReturnButton />
@@ -109,10 +137,41 @@ const ConfiguracoesLoja = () => {
           <BodyText>Carregando dados da farmácia...</BodyText>
         )}
 
-        <DangerButton className="mt-10 mb-10" onPress={handleEncerrarSessao}>
-          Encerrar Sessão
-        </DangerButton>
+        <View className='flex flex-col justify-between gap-5'>
+          <DangerButton className="" onPress={openModal}>
+            Deletar sua conta
+          </DangerButton>
+          <Button title='Encerrar sessão' onPress={handleEncerrarSessao} />
+        </View>
       </ScrollView>
+
+      <Modal animationType='slide' transparent={false} visible={open}>
+        <View className='flex-1 justify-center items-center m-5'>
+
+          <Heading2 className='text-center mx-3'>
+            Deseja mesmo deletar sua conta?
+          </Heading2>
+
+          <View className='flex flex-row items-center justify-center gap-20 mt-5 w-full'>
+            <TouchableOpacity
+              className='border-2 border-primaryBlue p-5 rounded-lg w-[30%] flex items-center justify-center text-center'
+              onPress={openModal}
+            >
+              <Text className='text-primaryBlue font-bold'>Não</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity className='border-2 border-red-500 p-5 rounded-lg w-[30%] flex items-center justify-center text-center'
+              onPress={deletarFarmacia}
+              disabled={temp}
+            >{deleteLoading ? (
+              <ActivityIndicator color="#f00" />
+            ) : (
+              <Text className='font-bold text-red-500'>Sim</Text>
+            )}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </GenericContainer>
   )
 }

@@ -27,7 +27,9 @@ const AdicionarProduto = () => {
 
     const [loadingScreen, setLoadingScreen] = useState(true)
     const [loading, setLoading] = useState(false)
+    const [deleteLoading, setDeleteLoading] = useState(false)
     const [informacoes, setInformacoes] = useState(null)
+    const [temp, setTemp] = useState(false)
 
     const { id } = useLocalSearchParams()
 
@@ -179,7 +181,8 @@ const AdicionarProduto = () => {
     }
 
     const deletarProduto = async () => {
-        setLoading(true)
+        setDeleteLoading(true)
+        setTemp(true)
         try {
             await api.delete(`/produtos/${id}`)
 
@@ -191,11 +194,13 @@ const AdicionarProduto = () => {
             setImagem('')
             setDescricao('')
             Alert.alert('Sucesso', 'Produto deletado com sucesso.')
-            setLoading(false)
-            router.navigate('/pages/Lojas/Estoque')
+            setDeleteLoading(false)
+            router.navigate('/pages/Lojas/Estoque')            
         } catch (error) {
             Alert.alert('Erro', `Não foi possível deletar o produto: ${error}`)
-        } finally { setLoading(false) }
+            setDeleteLoading(false)
+            setTemp(false)
+        } finally { setDeleteLoading(false); setTemp(false) }
     }
 
     if (loadingScreen) {
@@ -364,7 +369,7 @@ const AdicionarProduto = () => {
 
                         <Heading2 className='text-center'>
                             Deseja mesmo deletar este produto?
-                        </Heading2>                       
+                        </Heading2>
 
                         <View className='flex flex-row items-center justify-center gap-20 mt-5 w-full'>
                             <TouchableOpacity
@@ -375,9 +380,13 @@ const AdicionarProduto = () => {
                             </TouchableOpacity>
 
                             <TouchableOpacity className='border-2 border-red-500 p-5 rounded-lg w-[30%] flex items-center justify-center text-center'
+                                disabled={temp}
                                 onPress={deletarProduto}
-                            >
+                            >{deleteLoading ? (
+                                <ActivityIndicator color="#f00" />
+                            ) : (
                                 <Text className='font-bold text-red-500'>Sim</Text>
+                            )}
                             </TouchableOpacity>
                         </View>
                     </View>
