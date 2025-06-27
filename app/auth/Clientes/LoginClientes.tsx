@@ -130,7 +130,7 @@ const LoginClientes = () => {
           <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
             Não tenho cadastro
           </SecondaryButton>
-          {/* <GoogleLoginButton /> */}
+          <GoogleLoginButton />
         </ButtonsArea>
       </Form>
     </GenericContainer>
