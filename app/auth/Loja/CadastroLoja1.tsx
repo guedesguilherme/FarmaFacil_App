@@ -53,6 +53,7 @@ const CadastroLoja1 = () => {
       // setEmail('')
       // setNomeRede('')
       await saveSecureItem('cadastroLojaParte1', JSON.stringify({ nome, cnpj, email, nomeRede}))
+      console.log(email)
       router.push('/auth/Loja/CadastroLoja2')
       setLoading(false)
     }

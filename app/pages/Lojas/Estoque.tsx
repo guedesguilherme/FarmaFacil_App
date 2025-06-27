@@ -1,10 +1,12 @@
-import { View, Text, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator, Dimensions, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import GenericContainer from '@/src/components/ViewComponents';
 import { Heading1 } from '@/src/components/TextComponent';
-import { ReturnButton } from '@/src/components/ButtonsComponent';
+import { PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent';
 import api from '@/src/services/api';
 import { getSecureItem } from '@/utils/secureStore';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useRouter } from 'expo-router'
 
 type Produto = {
   _id: string;
@@ -14,6 +16,9 @@ type Produto = {
 };
 
 const Estoque = () => {
+
+  const router = useRouter()
+
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(true);
   const [itemHeight, setItemHeight] = useState(0);
@@ -86,6 +91,9 @@ const Estoque = () => {
             <Text className="flex-[2] font-bold text-slate-800">Nome</Text>
             <Text className="flex-1 font-bold text-slate-800 text-center">Estoque</Text>
             <Text className="flex-1 font-bold text-slate-800 text-center">QTD Vendida</Text>
+            <View className="flex-1 items-center">
+              <Text className="font-bold text-slate-800 text-center">Editar produto</Text>
+            </View>
           </View>
 
           {/* Lista com limite de altura dinâmica */}
@@ -101,13 +109,17 @@ const Estoque = () => {
               <View
                 key={produto._id}
                 onLayout={index === 0 ? (e) => setItemHeight(e.nativeEvent.layout.height) : undefined}
-                className={`flex-row items-center px-4 py-3 border-b border-slate-200 ${
-                  index % 2 === 0 ? 'bg-slate-100' : 'bg-white'
-                }`}
+                className={`flex-row items-center px-4 py-3 border-b border-slate-200 ${index % 2 === 0 ? 'bg-slate-100' : 'bg-white'
+                  }`}
               >
                 <Text className="flex-[2] text-slate-800">{produto.nome}</Text>
                 <Text className="flex-1 text-center text-slate-700">{produto.quantidade}</Text>
                 <Text className="flex-1 text-center text-slate-700">{produto.vendidos}</Text>
+                <TouchableOpacity 
+                  onPress={() => router.push({ pathname: '/pages/Lojas/EditarProduto', params: { id: produto._id }})}
+                  className='flex bg-primaryBlue rounded-lg p-3 items-center justify-center'>
+                  <FontAwesome name="pencil" size={24} color="white" />
+                </TouchableOpacity>
               </View>
             ))}
           </ScrollView>

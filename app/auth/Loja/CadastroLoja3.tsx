@@ -70,12 +70,49 @@ const CadastroLoja3 = () => {
             Alert.alert('Sucesso', 'Usuário criado com sucesso!')
             console.log(response.data)
             router.push('/auth/Loja/LoginLoja')
-        }
-
+        }        
         
     } catch (error) {
-        Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o usuário.')
-        console.log(error)
+        Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o usuário.\n' + error)
+        console.log(error)   
+        const rawpart1  = await getSecureItem('cadastroLojaParte1')
+        const rawpart2 = await getSecureItem('cadastroLojaParte2')
+
+        if (!rawpart1 || !rawpart2){
+            Alert.alert('Erro', 'Informações incompletas. Volte e preencha os campos vazios.')
+            return
+        }
+
+        const part1 = JSON.parse(rawpart1)
+        const part2 = JSON.parse(rawpart2)
+
+        const payload = {
+            part1,
+            part2,
+            senha,
+            confirmarSenha
+        }
+
+        const page1 = payload.part1
+        const page2 = payload.part2
+        
+        console.log('Nome: ' + page1.nome)
+        console.log('cnpj:' + page1.cnpj)
+        console.log('rede: '+page1.nomeRede)
+        console.log('cep: '+page2.cep)
+        console.log('rua: '+page2.rua)
+        console.log('bairro: '+page2.bairro)
+        console.log('numero: '+page2.numero)
+        console.log('estado:' + page2.estado)
+        console.log('cidade: '+page2.cidade)
+        console.log('email: '+page2.email)
+        console.log('senha: '+senha)
+        console.log('confirmarSenha: '+confirmarSenha)
+
+        console.log('rawpart1: '+rawpart1)
+        console.log('rawpart2: ' + rawpart2)
+        console.log('part1: '+part1)
+        console.log('part2'+part2)
     }
   }
 

@@ -39,6 +39,7 @@ const Layout = () => {
       {/* <Tabs.Screen name='LinkToPedidos' options={{ href: null }} /> */}
       <Tabs.Screen name='Estoque' options={{ href: null }} />
       <Tabs.Screen name='AdicionarProduto' options={{ href: null }} />
+      <Tabs.Screen name='EditarProduto' options={{ href: null }} />
     </Tabs>
   )
 }

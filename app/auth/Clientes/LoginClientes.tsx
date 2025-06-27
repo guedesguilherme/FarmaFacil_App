@@ -15,7 +15,6 @@ import {
   Heading1,
 } from "../../../src/components/TextComponent";
 import GenericContainer, { Form, ButtonsArea } from "@/src/components/ViewComponents";
-import { viacep } from '@/src/services/api.js'
 import GoogleLoginButton from '../../../src/components/userCliente/GoogleLoginButton'
 import * as LocalAuthentication from 'expo-local-authentication'
 import api from '@/src/services/api'
@@ -131,7 +130,7 @@ const LoginClientes = () => {
           <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
             Não tenho cadastro
           </SecondaryButton>
-          <GoogleLoginButton />
+          {/* <GoogleLoginButton /> */}
         </ButtonsArea>
       </Form>
     </GenericContainer>

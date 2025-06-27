@@ -1,17 +1,20 @@
-import { View, Text, TextInput, ScrollView, Alert, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, TextInput, ScrollView, Alert, TouchableOpacity, Modal, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GenericContainer, { Form } from '@/src/components/ViewComponents'
 import { PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent'
 import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { Heading1, Heading2 } from '@/src/components/TextComponent'
 import { Calendar } from 'react-native-calendars'
-import { Asset } from 'expo-asset'
 import * as ImagePicker from 'expo-image-picker'
 import { Image } from 'react-native'
 import api from '@/src/services/api'
 import * as SecureStore from 'expo-secure-store'
+import { useRouter } from 'expo-router'
 
 const AdicionarProduto = () => {
+
+    const router = useRouter()
+
     const [error, setError] = useState('')
     const [nomeProduto, setNomeProduto] = useState('')
     const [nomeQuimico, setNomeQuimico] = useState('')
@@ -22,7 +25,10 @@ const AdicionarProduto = () => {
     const [validade, setValidade] = useState('')
     const [dataOriginal, setDataOriginal] = useState('')
     const [farmaId, setFarmaId] = useState('')
+    const [descricao, setDescricao] = useState('')
     const [imagem, setImagem] = useState<any>(null)
+
+    const [loading, setLoading] = useState(false)
 
     const escolherImagem = async () => {
         Alert.alert(
@@ -104,6 +110,8 @@ const AdicionarProduto = () => {
             return
         }
 
+        setLoading(true)
+
         try {
             const precoFinal = desformatarValor(preco)
 
@@ -115,7 +123,7 @@ const AdicionarProduto = () => {
             formData.append('quantidade', estoque)
             formData.append('validade', dataOriginal)
             formData.append('lote', lote)
-            formData.append('label', 'analgésico')
+            formData.append('label', descricao)
 
             formData.append('imagem', {
                 uri: imagem.uri,
@@ -129,10 +137,23 @@ const AdicionarProduto = () => {
                 }
             })
 
+            setNomeProduto('')
+            setNomeQuimico('')
+            setLote('')
+            setValidade('')
+            setDataOriginal('')
+            setImagem('')
+            setEstoque('')
+            setDescricao('')
+            setPreco('')
             Alert.alert('Sucesso', response.data.msg)
+            router.push('/pages/Lojas/HomeLoja')
         } catch (error: any) {
             console.error(error.response?.data || error.message)
-            Alert.alert('Erro', error.response?.data?.msg || 'Erro ao registrar o produto')
+            console.error(error)
+            Alert.alert('Erro', error.response?.data?.msg || 'Erro ao registrar o produto:\n' + error)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -241,17 +262,18 @@ const AdicionarProduto = () => {
                         label="Descrição:"
                         multiline
                         numberOfLines={4}
+                        value={descricao}
+                        onChangeText={setDescricao}
                     />
-
-
-
-
-                    {/* ...outros campos... */}
 
                     <PrimaryButton
                         onPress={handleNovoProduto}
                     >
-                        <Text>Registrar</Text>
+                        {loading ? (
+                            <ActivityIndicator color="#fff" />
+                        ) : (
+                            <Text>Registrar</Text>
+                        )}
                     </PrimaryButton>
                 </Form>
             </ScrollView>
