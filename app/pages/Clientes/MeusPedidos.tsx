@@ -6,6 +6,7 @@ import { PedidoCardCliente } from '@/src/components/CardComponents';
 import api from '@/src/services/api';
 import { useFocusEffect } from '@react-navigation/native';
 import { getSecureItem } from '@/utils/secureStore';
+import { useRouter } from "expo-router";
 
 // Tipos usados
 type Produto = {
@@ -30,6 +31,8 @@ const MeusPedidos = () => {
   const [pedidos, setPedidos] = useState<PedidoDetalhado[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const router = useRouter();
+
   useFocusEffect(
     useCallback(() => {
       const loadPedidos = async () => {
@@ -39,7 +42,7 @@ const MeusPedidos = () => {
           const userId = await getSecureItem('userId');
 
           const response = await api.get(`/pedidos/usuarios/${userId}`);
-          
+
           const pedidosList = Array.isArray(response.data) ? response.data : response.data.pedidos;
 
           const detalhes = await Promise.all(
@@ -64,6 +67,12 @@ const MeusPedidos = () => {
     }, [])
   );
 
+  const handleNavigate = (pedido: PedidoDetalhado) => {
+    router.push({
+      pathname: '/pages/Produtos/AcompanharPedido',
+      params: { id: pedido._id },
+    });
+  };
   return (
     <GenericContainer>
       <Heading1 className="m-5">Meus pedidos</Heading1>
@@ -78,7 +87,7 @@ const MeusPedidos = () => {
         <ScrollView className="px-4">
           {pedidos.map((pedido) => (
             <PedidoCardCliente
-              key={pedido._id}
+              key={pedido._id} onPress={() => handleNavigate(pedido)}
               nome={pedido.itensPedido[0]?.product?.nome ?? 'Produto'}
               preco={pedido.precoTotal?.toFixed(2)}
               imgUrl={pedido.itensPedido[0]?.product?.imagem_url}
