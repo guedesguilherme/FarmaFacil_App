@@ -1,4 +1,4 @@
-import { ScrollView, View, Alert } from 'react-native'
+import { ScrollView, View, Alert, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GenericContainer from '@/src/components/ViewComponents'
 import { PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent'
@@ -12,7 +12,7 @@ const EditarDados = () => {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)   
 
   useEffect(() => {
     async function carregarDados() {
@@ -93,9 +93,7 @@ const EditarDados = () => {
       <View className='mt-5 flex-1 justify-end'>
         <View className='items-center justify-center'>
           <PrimaryButton onPress={handleEditar}>
-            <Heading1>
-              Editar
-            </Heading1>
+            Editar
           </PrimaryButton>
         </View>
       </View>
