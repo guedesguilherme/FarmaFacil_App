@@ -52,6 +52,7 @@ const CadastroLoja3 = () => {
             nome: page1.nome,
             cnpj: page1.cnpj,
             rede: page1.nomeRede,
+            cep: page2.cep,
             rua: page2.rua,
             bairro: page2.bairro,
             numero: page2.numero,

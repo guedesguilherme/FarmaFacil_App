@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store'
 
 import GenericContainer from '@/src/components/ViewComponents'
 import { BodyText, Heading1, Heading3 } from '@/src/components/TextComponent'
-import { PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent'
+import { PrimaryButton, ReturnButton, DangerButton } from '@/src/components/ButtonsComponent'
 import api from '@/src/services/api'
 
 interface Farmacia {
@@ -64,6 +64,17 @@ const ConfiguracoesLoja = () => {
     router.push('/pages/Lojas/EditarDadosLoja')
   }
 
+  const handleEncerrarSessao = async () => {
+    try {
+      await SecureStore.deleteItemAsync('token')
+      await SecureStore.deleteItemAsync('id_farmacia')
+      router.replace('/IndexLoja')
+    } catch (error) {
+      console.error('Erro ao encerrar sessão:', error)
+      Alert.alert('Erro', 'Não foi possível encerrar a sessão.')
+    }
+  }
+
   return (
     <GenericContainer>
       <ReturnButton />
@@ -97,6 +108,10 @@ const ConfiguracoesLoja = () => {
         ) : (
           <BodyText>Carregando dados da farmácia...</BodyText>
         )}
+
+        <DangerButton className="mt-10 mb-10" onPress={handleEncerrarSessao}>
+          Encerrar Sessão
+        </DangerButton>
       </ScrollView>
     </GenericContainer>
   )
