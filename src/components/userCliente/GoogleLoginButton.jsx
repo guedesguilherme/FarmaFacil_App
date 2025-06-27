@@ -47,7 +47,7 @@ const GoogleLoginButton = () => {
         throw new Error(data.msg || 'Erro na autenticação com Google');
         }
 
-        await saveSecureItem("token", JSON.stringify(data.token))
+        await saveSecureItem("token", data.token)
         //await saveSecureItem("userId", JSON.stringify(data.user.id))
         await saveSecureItem("userId", data.user.id);
 
