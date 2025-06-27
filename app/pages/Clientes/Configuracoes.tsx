@@ -28,7 +28,7 @@ const Configuracoes = () => {
         await deleteSecureItem('token')
         await deleteSecureItem('userId')
         Alert.alert('Sessão encerrada', 'Você saiu da sua conta.')
-        router.replace('/pages/Clientes/Login')
+        router.replace('/auth/Clientes/LoginClientes')
     }
 
     if (loading) return null
