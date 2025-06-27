@@ -54,7 +54,7 @@ const Configuracoes = () => {
             await AsyncStorage.removeItem('userId')
             await deleteSecureItem('token')
             await deleteSecureItem('userId')
-            router.navigate('/auth/Clientes/LoginClientes')
+            router.replace('/auth/Clientes/LoginClientes')
         } catch (error) {
             setDeleteLoading(false)
             Alert.alert('Erro', `Não foi possível deletar sua conta: ${error}`)
