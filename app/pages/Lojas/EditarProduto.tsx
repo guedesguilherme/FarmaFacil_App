@@ -1,7 +1,7 @@
 import { View, Text, TextInput, ScrollView, Alert, TouchableOpacity, Modal, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GenericContainer, { Form } from '@/src/components/ViewComponents'
-import { PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent'
+import { DangerButton, PrimaryButton, ReturnButton, SecondaryButton } from '@/src/components/ButtonsComponent'
 import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { Heading1, Heading2 } from '@/src/components/TextComponent'
 import { Calendar } from 'react-native-calendars'
@@ -19,6 +19,7 @@ const AdicionarProduto = () => {
     const [estoque, setEstoque] = useState('')
     const [lote, setLote] = useState('')
     const [open, setOpen] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
     const [validade, setValidade] = useState('')
     const [dataOriginal, setDataOriginal] = useState('')
     const [imagem, setImagem] = useState<any>(null)
@@ -90,6 +91,10 @@ const AdicionarProduto = () => {
         setOpen(!open)
     }
 
+    function openDeleteModal() {
+        setOpenDelete(!openDelete)
+    }
+
     useEffect(() => {
         async function getData() {
             const info = await api.get(`/produtos/${id}`)
@@ -107,7 +112,11 @@ const AdicionarProduto = () => {
             setPreco(formatarParaReal(informacoes.preco?.toString() || '0'))
             setEstoque(informacoes.quantidade?.toString() || '')
             setLote(informacoes.lote || '')
-            setValidade(informacoes.validade || '')
+            if (informacoes.validade) {
+                const [ano, mes, dia] = informacoes.validade.split('-')
+                setValidade(`${dia}/${mes}/${ano}`)
+                setDataOriginal(informacoes.validade)
+            }
             setImagem({ uri: informacoes.imagem_url })
             setDescricao(informacoes.label)
         }
@@ -156,8 +165,6 @@ const AdicionarProduto = () => {
             setPreco('')
             setEstoque('')
             setLote('')
-            setValidade('')
-            setDataOriginal('')
             setImagem('')
             setDescricao('')
             Alert.alert('Sucesso', response.data.msg)
@@ -169,6 +176,26 @@ const AdicionarProduto = () => {
             Alert.alert('Erro', error.response?.data?.msg || 'Erro ao registrar o produto:\n' + error)
         }
 
+    }
+
+    const deletarProduto = async () => {
+        setLoading(true)
+        try {
+            await api.delete(`/produtos/${id}`)
+
+            setNomeProduto('')
+            setNomeQuimico('')
+            setPreco('')
+            setEstoque('')
+            setLote('')
+            setImagem('')
+            setDescricao('')
+            Alert.alert('Sucesso', 'Produto deletado com sucesso.')
+            setLoading(false)
+            router.navigate('/pages/Lojas/Estoque')
+        } catch (error) {
+            Alert.alert('Erro', `Não foi possível deletar o produto: ${error}`)
+        } finally { setLoading(false) }
     }
 
     if (loadingScreen) {
@@ -296,6 +323,10 @@ const AdicionarProduto = () => {
                                 <Text>Editar</Text>
                             )}
                         </PrimaryButton>
+
+                        <DangerButton onPress={openDeleteModal}>
+                            <Text>Deletar produto</Text>
+                        </DangerButton>
                     </Form>
                 </ScrollView>
 
@@ -324,6 +355,30 @@ const AdicionarProduto = () => {
                             <PrimaryButton onPress={openModal}>
                                 Fechar
                             </PrimaryButton>
+                        </View>
+                    </View>
+                </Modal>
+
+                <Modal animationType='slide' transparent={false} visible={openDelete}>
+                    <View className='flex-1 justify-center items-center m-5'>
+
+                        <Heading2 className='text-center'>
+                            Deseja mesmo deletar este produto?
+                        </Heading2>                       
+
+                        <View className='flex flex-row items-center justify-center gap-20 mt-5 w-full'>
+                            <TouchableOpacity
+                                className='border-2 border-primaryBlue p-5 rounded-lg w-[30%] flex items-center justify-center text-center'
+                                onPress={openDeleteModal}
+                            >
+                                <Text className='text-primaryBlue font-bold'>Não</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity className='border-2 border-red-500 p-5 rounded-lg w-[30%] flex items-center justify-center text-center'
+                                onPress={deletarProduto}
+                            >
+                                <Text className='font-bold text-red-500'>Sim</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>
