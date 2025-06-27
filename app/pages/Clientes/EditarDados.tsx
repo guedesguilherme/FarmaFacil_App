@@ -66,23 +66,23 @@ const EditarDados = () => {
   if (loading) return null
 
   return (
-    <View>
-      <View className='flex-1'>
+    <View className="mt-5 flex-1 justify-end">
+      <View className="items-center justify-center">
         <TextInputComponent
           label='Nome:'
-          className='mb-5 mx-0'
+          className='mb-5'
           value={nome}
           onChangeText={setNome}
         />
         <TextInputComponent
           label='E-mail:'
-          className='mb-5 mx-0'
+          className='mb-5'
           value={email}
           onChangeText={setEmail}
         />
         <TextInputComponent
           label='Nova senha:'
-          className='mb-5 mx-0'
+          className='mb-5'
           value={senha}
           onChangeText={setSenha}
           secureTextEntry
