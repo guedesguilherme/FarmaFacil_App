@@ -5,6 +5,7 @@ import {
     View,
     ScrollView,
     Alert,
+    ActivityIndicator
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Image } from 'react-native'
@@ -13,43 +14,153 @@ import { Heading1, Heading2 } from '@/src/components/TextComponent'
 import * as Clipboard from 'expo-clipboard'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import GenericContainer from '@/src/components/ViewComponents'
+import * as Location from 'expo-location'
+import api from '@/src/services/api'
+import { getSecureItem } from '../../../utils/secureStore' // ajuste o caminho se necessário
 
 const FinalizarCompra = () => {
+    const { id } = useLocalSearchParams(); // id do produto
+    const [endereco1, setEndereco1] = useState('');
+    const [city, setCity] = useState('');
+    const [cep, setCep] = useState('');
+    const [pais, setPais] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [loadingEndereco, setLoadingEndereco] = useState(true);
+    const [farmaciaId, setFarmaciaId] = useState('');
+    const [usuarioId, setUsuarioId] = useState('');
+    const chavePix = 'Exemplo de chave pix...';
+    const router = useRouter();
 
-    const { id } = useLocalSearchParams();
+    // Busca dados do produto para pegar o id da farmácia
+    useEffect(() => {
+        async function fetchProduto() {
+            try {
+                const response = await api.get(`/produtos/${id}`);
+                setFarmaciaId(response.data.produto.farmacia?._id || response.data.produto.farmacia);
+            } catch (e) {
+                Alert.alert('Erro', 'Não foi possível obter a farmácia do produto.');
+            }
+        }
+        if (id) fetchProduto();
+    }, [id]);
 
-    const [copiedText, setCopiedText] = useState('');
+    // Busca localização e faz reverse geocode
+    useEffect(() => {
+        (async () => {
+            setLoadingEndereco(true)
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Permissão negada', 'Não foi possível acessar sua localização.');
+                setLoadingEndereco(false)
+                return;
+            }
+            let location = await Location.getCurrentPositionAsync({});
+            let [address] = await Location.reverseGeocodeAsync(location.coords);
+            setEndereco1(address.street || '');
+            setCity(address.city || address.subregion || address.region || 'Cidade não encontrada');
+            setCep(address.postalCode || '');
+            setPais(address.country || '');
+            setLoadingEndereco(false)
+        })();
+    }, []);
 
-    const chavePix = 'Exercitation veniam mollit officia consequat labore labore labore cupidatat nulla labore sunt. Anim duis id nostrud fugiat incididunt aliquip ea exercitation fugiat minim sunt proident adipisicing cupidatat. Non adipisicing velit nisi ipsum ex duis ipsum nulla eu ex voluptate elit. Irure aute est et velit minim reprehenderit adipisicing ullamco culpa id occaecat aliquip ea. Aliquip adipisicing minim mollit tempor pariatur ullamco ad aliquip excepteur anim. Qui ipsum aliqua amet sit sunt aute ullamco qui incididunt minim. Id nostrud sit exercitation nulla irure aliqua consectetur.'
+    // Busca o usuário logado do SecureStore
+    useEffect(() => {
+        (async () => {
+            const id = await getSecureItem('userId');
+            setUsuarioId(id);
+        })();
+    }, []);
 
     const copyToClipboard = async () => {
         await Clipboard.setStringAsync(chavePix);
     };
 
-    const fetchCopiedText = async () => {
-        const text = await Clipboard.getStringAsync();
-        setCopiedText(text);
+    const handleFinalizar = async () => {
+        if (!telefone) {
+            Alert.alert('Erro', 'Preencha o telefone!');
+            return;
+        }
+        if (!farmaciaId) {
+            Alert.alert('Erro', 'Não foi possível identificar a farmácia.');
+            return;
+        }
+        if (!usuarioId) {
+            Alert.alert('Erro', 'Usuário não identificado!');
+            return;
+        }
+        try {
+            const pedido = {
+                itensPedido: [
+                    {
+                        quantidade: 1,
+                        product: id // id do produto
+                    }
+                ],
+                endereco1,
+                city,
+                cep,
+                pais,
+                telefone,
+                usuario: usuarioId,
+                farmacia: farmaciaId,
+                status: 'Aguardando pagamento'
+            };
+
+            const response = await api.post('/pedidos', pedido);
+            const pedidoId = response.data.pedido?._id || response.data._id;
+
+            await copyToClipboard();
+            Alert.alert('Copiado', 'Chave pix copiada com sucesso!');
+            router.push({
+                pathname: '/pages/Produtos/MensagemFinal',
+                params: { id: pedidoId }
+            });
+        } catch (error) {
+            Alert.alert('Erro', 'Erro ao criar pedido.');
+            console.error(error);
+        }
     };
 
-    const router = useRouter()
+    if (loadingEndereco) {
+        return (
+            <GenericContainer className='justify-center items-center'>
+                <ActivityIndicator size={45} color='#2f88ff' />
+            </GenericContainer>
+        )
+    }
 
     return (
         <GenericContainer>
             <ReturnButton className='m-5' />
-            <View
-                className='flex-col mt-5'
-            >
+            <View className='flex-col mt-5'>
                 <Heading1 className='text-center mb-3'>
                     Pagamento
                 </Heading1>
                 <View className='justify-center items-center'>
                     <Image
-                        style={{ width: 200, height: 80, }}
+                        style={{ width: 200, height: 80 }}
                         source={{
                             uri: 'https://s2-techtudo.glbimg.com/8CYJpCx54gNyNrHWwm2x9-DHAiw=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2020/T/d/9KN7bBSd6UKk4hcitczA/marca-pix-1-.jpg'
                         }}
                     />
                 </View>
+                <Heading2 className='text-center mt-4 mb-2'>
+                    Dados de entrega detectados:
+                </Heading2>
+                <View className="border-2 border-primaryBlue rounded-lg p-2 mb-2 bg-gray-100">
+                    <Text>Endereço: {endereco1}</Text>
+                    <Text>Cidade: {city}</Text>
+                    <Text>CEP: {cep}</Text>
+                    <Text>País: {pais}</Text>
+                </View>
+                <TextInput
+                    placeholder="Telefone"
+                    value={telefone}
+                    onChangeText={setTelefone}
+                    keyboardType="phone-pad"
+                    className="border-2 border-primaryBlue rounded-lg p-2 mb-2"
+                />
                 <Heading1 className='text-center mt-2.5'>
                     Pedido aguardando pagamento
                 </Heading1>
@@ -68,35 +179,16 @@ const FinalizarCompra = () => {
                     '
                     horizontal={true}
                 >
-                    <Text
-                        className='font-bold'
-                    >
+                    <Text className='font-bold'>
                         {chavePix}
                     </Text>
                 </ScrollView>
-
             </View>
-            <View className='flex-1 justify-end mb-5'
-            >
+            <View className='flex-1 justify-end mb-5'>
                 <View className='justify-center items-center gap-3'>
-                    <PrimaryButton
-                        onPress={() => {
-                            copyToClipboard(),
-                                Alert.alert('Copiado', 'Chave pix copiada com sucesso!'),
-                                router.push({
-                                    pathname: '/pages/Produtos/MensagemFinal',
-                                    params: { id: id }
-                                })
-                            }
-                        }
-                    >
+                    <PrimaryButton onPress={handleFinalizar}>
                         <Heading1>
-                            Copiar código pix
-                        </Heading1>
-                    </PrimaryButton>
-                    <PrimaryButton onPress={fetchCopiedText}>
-                        <Heading1 className='text-center'>
-                            Compartilhar código pix
+                            Copiar código pix e finalizar pedido
                         </Heading1>
                     </PrimaryButton>
                 </View>
@@ -105,4 +197,4 @@ const FinalizarCompra = () => {
     )
 }
 
-export default FinalizarCompra
+export default FinalizarCompra;
