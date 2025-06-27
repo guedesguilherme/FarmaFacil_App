@@ -11,7 +11,7 @@ import {
   TextInputComponent
 } from '../../../src/components/TextInputComponents'
 import {
-  ErrorText,  
+  ErrorText,
   Heading1,
 } from "../../../src/components/TextComponent";
 import GenericContainer, { Form, ButtonsArea } from "@/src/components/ViewComponents";
@@ -22,7 +22,7 @@ import api from '@/src/services/api'
 import { saveSecureItem, getSecureItem } from "../../../utils/secureStore"
 
 
-const LoginClientes = () => { 
+const LoginClientes = () => {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [loading, setLoading] = useState(false)
@@ -36,19 +36,29 @@ const LoginClientes = () => {
       try {
         const token = await getSecureItem('token')
         if (token) {
-          const compativel = await LocalAuthentication.hasHardwareAsync()
-          const biometriaDisponivel = await LocalAuthentication.isEnrolledAsync()
-          if (compativel && biometriaDisponivel) {
-            const resultado = await LocalAuthentication.authenticateAsync({
-              promptMessage: 'Use biometria para entrar',
-              fallbackLabel: 'Use PIN ou senha',
-            })
-            if (resultado.success) {
-              router.replace('/pages/Clientes/HomeClientes')
-              return
-            } else {
-              Alert.alert('Login biométrico falhou', 'Use seu login e senha para continuar.')
+          // Valide o token antes de liberar a biometria
+          const response = await api.get('/usuarios/validar-token', {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          if (response.data?.valido) {
+            const compativel = await LocalAuthentication.hasHardwareAsync()
+            const biometriaDisponivel = await LocalAuthentication.isEnrolledAsync()
+            if (compativel && biometriaDisponivel) {
+              const resultado = await LocalAuthentication.authenticateAsync({
+                promptMessage: 'Use biometria para entrar',
+                fallbackLabel: 'Use PIN ou senha',
+              })
+              if (resultado.success) {
+                router.replace('/pages/Clientes/HomeClientes')
+                return
+              } else {
+                Alert.alert('Login biométrico falhou', 'Use seu login e senha para continuar.')
+              }
             }
+          } else {
+            // Token inválido, apague-o
+            await saveSecureItem('token', '')
+            await saveSecureItem('userId', '')
           }
         }
       } catch (error) {
@@ -70,7 +80,7 @@ const LoginClientes = () => {
     try {
       const response = await api.post('/usuarios/auth/login', { email, senha })
       if (response.data?.token) {
-        await saveSecureItem("token", JSON.stringify(response.data.token))
+        await saveSecureItem("token", response.data.token)
         await saveSecureItem("userId", response.data.userId);
         router.replace('/pages/Clientes/HomeClientes')
       } else {

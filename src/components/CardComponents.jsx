@@ -89,7 +89,7 @@ export const CardHomeLoja = ({
       p-5
       justify-between
       mx-[20px]
-      w-full 
+      w-[90%]
       max-h-[335px]
       rounded-lg
     '
