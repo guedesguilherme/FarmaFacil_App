@@ -92,9 +92,9 @@ const CadastroLoja2 = () => {
                 router.push('/auth/Loja/CadastroLoja3')
               }}
             >
-              <Heading1>
+              
                 Próxima
-              </Heading1>
+              
             </PrimaryButton>
           </ButtonsArea>
         </Form>

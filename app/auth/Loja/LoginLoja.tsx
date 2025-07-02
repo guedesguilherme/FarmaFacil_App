@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Alert } from 'react-native';
+import { ActivityIndicator, Alert, Text } from 'react-native';
 import "../../../global.css";
 import { useRouter } from "expo-router";
 import {
@@ -95,7 +95,7 @@ const LoginLoja = () => {
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Heading1>Login</Heading1>
+            <Text>Login</Text>
           )}
         </PrimaryButton>
 

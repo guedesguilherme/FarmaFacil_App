@@ -11,18 +11,17 @@ import {
   TextInputComponent
 } from '../../../src/components/TextInputComponents'
 import {
-  ErrorText,  
+  ErrorText,
   Heading1,
 } from "../../../src/components/TextComponent";
 import GenericContainer, { Form, ButtonsArea } from "@/src/components/ViewComponents";
-import { viacep } from '@/src/services/api.js'
 import GoogleLoginButton from '../../../src/components/userCliente/GoogleLoginButton'
 import * as LocalAuthentication from 'expo-local-authentication'
 import api from '@/src/services/api'
 import { saveSecureItem, getSecureItem } from "../../../utils/secureStore"
 
 
-const LoginClientes = () => { 
+const LoginClientes = () => {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [loading, setLoading] = useState(false)
@@ -70,7 +69,7 @@ const LoginClientes = () => {
     try {
       const response = await api.post('/usuarios/auth/login', { email, senha })
       if (response.data?.token) {
-        await saveSecureItem("token", JSON.stringify(response.data.token))
+        await saveSecureItem("token", response.data.token)
         await saveSecureItem("userId", response.data.userId);
         router.replace('/pages/Clientes/HomeClientes')
       } else {

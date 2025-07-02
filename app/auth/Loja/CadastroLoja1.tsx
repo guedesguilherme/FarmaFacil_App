@@ -5,7 +5,7 @@ import { TextInputComponent } from '@/src/components/TextInputComponents'
 import { useRouter } from 'expo-router'
 import GenericContainer, { ButtonsArea, Form } from '@/src/components/ViewComponents'
 import { validarCnpj } from '@/src/services/api'
-import { ActivityIndicator, Alert, ScrollView } from 'react-native'
+import { ActivityIndicator, Alert, ScrollView, Text } from 'react-native'
 
 import { saveSecureItem } from '../../../utils/secureStore'
 
@@ -53,6 +53,7 @@ const CadastroLoja1 = () => {
       // setEmail('')
       // setNomeRede('')
       await saveSecureItem('cadastroLojaParte1', JSON.stringify({ nome, cnpj, email, nomeRede}))
+      console.log(email)
       router.push('/auth/Loja/CadastroLoja2')
       setLoading(false)
     }
@@ -62,14 +63,13 @@ const CadastroLoja1 = () => {
 
   return (
     <GenericContainer>
-      <ReturnButton className='m-5' />
+      <ReturnButton />
 
-      <Heading1 className='text-center'>
+      <Heading1 className='text-center mt-5'>
         Cadastro de Lojas
       </Heading1>
 
-      <Form>
-        <ScrollView className='h-[55%]'>
+      <Form className='pt-3'>        
           <TextInputComponent
             label='Nome da sua loja:'
             value={nome}
@@ -95,20 +95,20 @@ const CadastroLoja1 = () => {
             onChangeText={setNomeRede}
           />
 
-        </ScrollView>
+        
         <ButtonsArea>
           <PrimaryButton onPress={navigate}>
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Heading1>Próxima</Heading1>
+              <Text>Próxima</Text>
             )}
           </PrimaryButton>
           <SecondaryButton>
-            <Heading1>
+            <Text>
               Já tenho cadastro
-            </Heading1>
-          </SecondaryButton>
+            </Text>
+          </SecondaryButton>          
         </ButtonsArea>
       </Form>
 
