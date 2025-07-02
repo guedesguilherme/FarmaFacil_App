@@ -48,7 +48,7 @@ const Estoque = () => {
           let vendidos = 0;
           pedidosConcluidos.forEach((pedido) => {
             pedido.itensPedido.forEach((item: any) => {
-              if (item.product._id === produto._id) {
+              if (item.product && produto && item.product._id === produto._id) {
                 vendidos += item.quantidade;
               }
             });
@@ -115,8 +115,8 @@ const Estoque = () => {
                 <Text className="flex-[2] text-slate-800">{produto.nome}</Text>
                 <Text className="flex-1 text-center text-slate-700">{produto.quantidade}</Text>
                 <Text className="flex-1 text-center text-slate-700">{produto.vendidos}</Text>
-                <TouchableOpacity 
-                  onPress={() => router.push({ pathname: '/pages/Lojas/EditarProduto', params: { id: produto._id }})}
+                <TouchableOpacity
+                  onPress={() => router.push({ pathname: '/pages/Lojas/EditarProduto', params: { id: produto._id } })}
                   className='flex bg-primaryBlue rounded-lg p-3 items-center justify-center'>
                   <FontAwesome name="pencil" size={24} color="white" />
                 </TouchableOpacity>

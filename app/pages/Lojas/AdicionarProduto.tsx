@@ -147,7 +147,7 @@ const AdicionarProduto = () => {
             setDescricao('')
             setPreco('')
             Alert.alert('Sucesso', response.data.msg)
-            router.push('/pages/Lojas/HomeLoja')
+            router.push('/pages/Lojas/HomeLojas')
         } catch (error: any) {
             console.error(error.response?.data || error.message)
             console.error(error)
