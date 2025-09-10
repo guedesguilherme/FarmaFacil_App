@@ -20,11 +20,7 @@ export default function Home() {
 
       <ButtonsArea>
         <PrimaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')} >
-            Sim, sou cliente.
-        </PrimaryButton>
-
-        <PrimaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')} >
-            Sim, sou cliente 2 teste.
+            Sim, sou teste.
         </PrimaryButton>
 
         <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
