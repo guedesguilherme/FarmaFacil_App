@@ -27,6 +27,10 @@ export default function Home() {
             Sim, sou cliente teste personalizado.
         </PrimaryButton>
 
+        <PrimaryButton onPress={() => router.push('/auth/Clientes/LoginClientes')} >
+            Sim, sou cliente 2 teste.
+        </PrimaryButton>
+
         <SecondaryButton onPress={() => router.push('/auth/Clientes/CadastroClientes')}>
           Não, quero me cadastrar!
         </SecondaryButton>
