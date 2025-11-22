@@ -105,7 +105,7 @@ export const ReturnButton = ({ className='' }) => (
   </TouchableOpacity>
 )
 
-export const PagamentoPix = ({ produtoId }) => (
+export const PagamentoPix = ({ produtoId, quantidade, valorTotal }) => (
   <TouchableOpacity
     className='
       w-[90%]
@@ -119,7 +119,7 @@ export const PagamentoPix = ({ produtoId }) => (
       gap-5
       bg-white     
     '
-    onPress={() => {console.log(produtoId), router.push({ pathname: '/pages/Produtos/FinalizarCompra', params: { id: produtoId }})}}
+    onPress={() => {console.log(produtoId), router.push({ pathname: '/pages/Produtos/FinalizarCompra', params: { id: produtoId, quantidade: quantidade, valorTotal: valorTotal }})}}
   >
     <FontAwesome6 name='pix' size={45} color='#2ebdaf' />
     <Heading1>
