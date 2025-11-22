@@ -2,7 +2,12 @@ import { StyleSheet, Text, View, TextInput } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo'
 import React from 'react'
 
-export const TextInputComponent = ({ className = '', label, rightIcon, ...props }) => (
+export const TextInputComponent = ({ 
+  className = '', 
+  label, 
+  rightIcon = null,
+  ...props 
+}) => (
   <View className={`flex-col w-full mx-0 ${className}`}>
     <Text className='font-poppins_bold text-xl'>
       {label}
@@ -12,6 +17,7 @@ export const TextInputComponent = ({ className = '', label, rightIcon, ...props 
         className="flex-1 font-poppins_semibold text-lg p-2 bg-white"
         {...props}
       />
+      
       {rightIcon && (
         <View className="pr-3">
           {rightIcon}

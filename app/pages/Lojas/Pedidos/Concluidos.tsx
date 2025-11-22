@@ -1,4 +1,4 @@
-import { ScrollView, ActivityIndicator } from 'react-native';
+import { ScrollView, ActivityIndicator, View } from 'react-native';
 import React, { useState, useCallback } from 'react';
 import GenericContainer from '@/src/components/ViewComponents';
 import { Heading1, Heading3 } from '@/src/components/TextComponent';
@@ -7,8 +7,9 @@ import api from '@/src/services/api';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { getSecureItem } from '@/utils/secureStore';
+import { Ionicons } from '@expo/vector-icons';
 
-// Tipos usados
+// Tipagem
 type Produto = {
   nome: string;
   imagem_url: string;
@@ -29,6 +30,7 @@ type PedidoDetalhado = {
   usuario: Usuario;
   itensPedido: ItemPedido[];
   status: string;
+  dataPedido?: string; // Adicionado para ordenação
 };
 
 const Concluidos = () => {
@@ -41,26 +43,45 @@ const Concluidos = () => {
       const loadPedidos = async () => {
         try {
           setLoading(true);
-
           const farmaciaId = await getSecureItem('id_farmacia');
-          const response = await api.get(`/pedidos/farmacia/${farmaciaId}`);
-          const pedidosList = Array.isArray(response.data) ? response.data : response.data.pedidos;
+          
+          let pedidosList = [];
 
-          if (!Array.isArray(pedidosList)) {
-            throw new Error("Formato inesperado da resposta da API");
+          try {
+            const response = await api.get(`/pedidos/farmacia/${farmaciaId}`);
+            pedidosList = Array.isArray(response.data) ? response.data : (response.data.pedidos || []);
+          } catch (error: any) {
+            if (error.response && error.response.status === 404) {
+              setPedidos([]);
+              return;
+            }
+            throw error;
           }
 
-          const detalhes = await Promise.all(
-            pedidosList.map((p: { _id: string }) => api.get(`/pedidos/${p._id}`))
-          );
+          if (pedidosList.length > 0) {
+            const detalhes = await Promise.all(
+              pedidosList.map((p: { _id: string }) => api.get(`/pedidos/${p._id}`))
+            );
 
-          const detalhesPedidos = detalhes
-            .map((res) => res.data.pedido)
-            .filter((pedido) => pedido.status === 'Concluido');
+            const todosPedidos = detalhes.map((res) => res.data.pedido);
 
-          setPedidos(detalhesPedidos);
+            // Filtra apenas Concluídos
+            const concluidos = todosPedidos.filter((p) => p && p.status === 'Concluido');
+
+            // Ordena do mais recente para o mais antigo (se houver data)
+            concluidos.sort((a, b) => {
+                const dateA = a.dataPedido ? new Date(a.dataPedido).getTime() : 0;
+                const dateB = b.dataPedido ? new Date(b.dataPedido).getTime() : 0;
+                return dateB - dateA;
+            });
+
+            setPedidos(concluidos);
+          } else {
+            setPedidos([]);
+          }
+
         } catch (error) {
-          console.error('Erro ao carregar pedidos concluídos:', error);
+          console.error('Erro ao carregar histórico:', error);
         } finally {
           setLoading(false);
         }
@@ -85,17 +106,21 @@ const Concluidos = () => {
 
   return (
     <GenericContainer>
-      <Heading1 className="m-5">Pedidos concluídos:</Heading1>
+      <Heading1 className="m-5">Histórico de Vendas</Heading1>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#2f88ff" />
+        <ActivityIndicator size="large" color="#2f88ff" className="mt-10" />
       ) : pedidos.length === 0 ? (
-        <Heading3 className="text-center text-gray-500 mt-10">
-          Não há pedidos concluídos
-        </Heading3>
+        // --- Estado Vazio (Ionicons) ---
+        <View className="flex-1 justify-center items-center mt-10 px-5">
+          <Ionicons name="checkmark-done-circle-outline" size={60} color="#cbd5e1" />
+          <Heading3 className="text-center text-gray-500 mt-4">
+            Nenhum pedido concluído ainda.
+          </Heading3>
+        </View>
       ) : (
-        <ScrollView>
-          {pedidos.map((pedido: PedidoDetalhado) => (
+        <ScrollView showsVerticalScrollIndicator={false} className="px-4">
+          {pedidos.map((pedido) => (
             <PedidoCard
               key={pedido._id}
               nome={pedido.itensPedido[0]?.product?.nome ?? 'Produto'}

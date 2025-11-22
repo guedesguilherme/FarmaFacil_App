@@ -1,4 +1,4 @@
-import { View, Text, Alert } from 'react-native'
+import { View, Text, Alert, ActivityIndicator, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import GenericContainer, { Form, ButtonsArea } from '../../../src/components/ViewComponents'
 import { PrimaryButton, ReturnButton } from '@/src/components/ButtonsComponent'
@@ -6,14 +6,46 @@ import { Heading1 } from '@/src/components/TextComponent'
 import { useRouter } from 'expo-router'
 import { TextInputComponent } from '@/src/components/TextInputComponents'
 import api from '@/src/services/api'
+import { Ionicons } from '@expo/vector-icons' // 1. Importação alterada
 
 import { getSecureItem, deleteSecureItem } from '../../../utils/secureStore'
+
+const PasswordRequirement = ({ met, label }: { met: boolean, label: string }) => (
+    <View className="flex-row items-center mb-1">
+        <View className="w-6 items-center justify-center mr-2">
+            {/* 2. Ícones de validação alterados */}
+            <Ionicons 
+                name={met ? "checkmark-circle" : "close-circle"} 
+                size={18} 
+                color={met ? "#16a34a" : "#ef4444"} 
+            />
+        </View>
+        <Text className={`text-sm ${met ? "text-green-600 font-bold" : "text-red-500"}`}>
+            {label}
+        </Text>
+    </View>
+)
 
 const CadastroLoja3 = () => {
 
     const [senha, setSenha] = useState('')
     const [confirmarSenha, setConfirmarSenha] = useState('')
+    
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+    const [loading, setLoading] = useState(false)
     const router = useRouter()
+
+    const requirements = {
+        length: senha.length >= 12,
+        upper: /[A-Z]/.test(senha),
+        lower: /[a-z]/.test(senha),
+        number: /\d/.test(senha),
+        special: /[\W_]/.test(senha)
+    }
+
+    const isPasswordValid = Object.values(requirements).every(Boolean)
 
     const handleSubmit = async () => {
         if (!senha || !confirmarSenha) {
@@ -21,10 +53,17 @@ const CadastroLoja3 = () => {
             return
         }
 
+        if (!isPasswordValid) {
+            Alert.alert('Senha Fraca', 'Por favor, atenda a todos os requisitos da senha antes de continuar.')
+            return
+        }
+
         if (senha !== confirmarSenha) {
             Alert.alert('Erro', 'As senhas não coincidem')
             return
         }
+
+        setLoading(true);
 
         try {
             const rawpart1 = await getSecureItem('cadastroLojaParte1')
@@ -38,29 +77,19 @@ const CadastroLoja3 = () => {
             const part1 = JSON.parse(rawpart1)
             const part2 = JSON.parse(rawpart2)
 
-            const payload = {
-                part1,
-                part2,
-                senha,
-                confirmarSenha
-            }
-
-            const page1 = payload.part1
-            const page2 = payload.part2
-
             const response = await api.post('/farma/auth/register', {
-                nome: page1.nome,
-                cnpj: page1.cnpj,
-                rede: page1.nomeRede,
-                cep: page2.cep,
-                rua: page2.rua,
-                bairro: page2.bairro,
-                numero: page2.numero,
-                uf: page2.estado,
-                cidade: page2.cidade,
-                email: page1.email,
+                nome: part1.nome,
+                cnpj: part1.cnpjNumerico, // Ajustado para bater com o salvo na parte 1
+                rede: part1.nomeRede,
+                cep: part2.cep,
+                rua: part2.rua,
+                bairro: part2.bairro,
+                numero: part2.numero,
+                uf: part2.estado,
+                cidade: part2.cidade,
+                email: part1.email,
                 senha,
-                confirmasenha: payload.confirmarSenha
+                confirmasenha: confirmarSenha
             })
 
             if (response.status === 201) {
@@ -68,59 +97,18 @@ const CadastroLoja3 = () => {
                 await deleteSecureItem('cadastroLojaParte2')
 
                 Alert.alert('Sucesso', 'Usuário criado com sucesso!')
-                console.log(response.data)
                 router.push('/auth/Loja/LoginLoja')
             }
 
-        } catch (error) {
-            Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o usuário.\n' + error)
+        } catch (error: any) {
             console.log(error)
             if (error.response && error.response.data && error.response.data.msg) {
                 Alert.alert('Erro', error.response.data.msg)
             } else {
-                Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o usuário.\n' + error)
+                Alert.alert('Erro', 'Ocorreu um erro ao cadastrar o usuário.')
             }
-
-            const rawpart1 = await getSecureItem('cadastroLojaParte1')
-            const rawpart2 = await getSecureItem('cadastroLojaParte2')
-
-            if (!rawpart1 || !rawpart2) {
-                Alert.alert('Erro', 'Informações incompletas. Volte e preencha os campos vazios.')
-                return
-            }
-
-            const part1 = JSON.parse(rawpart1)
-            const part2 = JSON.parse(rawpart2)
-
-            const payload = {
-                part1,
-                part2,
-                senha,
-                confirmarSenha
-            }
-
-            const page1 = payload.part1
-            const page2 = payload.part2
-
-            console.log('Nome: ' + page1.nome)
-            console.log('cnpj:' + page1.cnpj)
-            console.log('rede: ' + page1.nomeRede)
-            console.log('cep: ' + page2.cep)
-            console.log('rua: ' + page2.rua)
-            console.log('bairro: ' + page2.bairro)
-            console.log('numero: ' + page2.numero)
-            console.log('estado:' + page2.estado)
-            console.log('cidade: ' + page2.cidade)
-            console.log('email: ' + page1.email)
-            console.log('senha: ' + senha)
-            console.log('confirmarSenha: ' + confirmarSenha)
-
-            console.log('rawpart1: ' + rawpart1)
-            console.log('rawpart2: ' + rawpart2)
-            console.log('part1: ' + part1)
-            console.log('part2' + part2)
-
-
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -137,19 +125,54 @@ const CadastroLoja3 = () => {
                     label='Senha:'
                     value={senha}
                     onChangeText={setSenha}
-                    secureTextEntry={true}
+                    secureTextEntry={!showPassword} 
+                    rightIcon={
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                            {/* 3. Ícone de olho alterado */}
+                            <Ionicons 
+                                name={showPassword ? "eye" : "eye-off"} 
+                                size={24} 
+                                color="#64748b" 
+                            />
+                        </TouchableOpacity>
+                    }
                 />
+
+                {senha.length > 0 && (
+                    <View className="bg-slate-50 p-4 rounded-lg mb-4 border border-slate-200">
+                        <Text className="text-slate-700 font-bold mb-2 text-sm">Requisitos da senha:</Text>
+                        <PasswordRequirement met={requirements.length} label="Mínimo de 12 caracteres" />
+                        <PasswordRequirement met={requirements.upper} label="Pelo menos uma letra maiúscula" />
+                        <PasswordRequirement met={requirements.lower} label="Pelo menos uma letra minúscula" />
+                        <PasswordRequirement met={requirements.number} label="Pelo menos um número" />
+                        <PasswordRequirement met={requirements.special} label="Pelo menos um caractere especial" />
+                    </View>
+                )}
 
                 <TextInputComponent
                     label='Repita a senha:'
                     value={confirmarSenha}
                     onChangeText={setConfirmarSenha}
-                    secureTextEntry={true}
+                    secureTextEntry={!showConfirmPassword}
+                    rightIcon={
+                        <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            {/* 4. Ícone de olho alterado */}
+                            <Ionicons 
+                                name={showConfirmPassword ? "eye" : "eye-off"} 
+                                size={24} 
+                                color="#64748b" 
+                            />
+                        </TouchableOpacity>
+                    }
                 />
 
                 <ButtonsArea>
-                    <PrimaryButton onPress={handleSubmit}>
-                        Cadastrar Loja
+                    <PrimaryButton onPress={handleSubmit} disabled={loading}>
+                        {loading ? (
+                            <ActivityIndicator color="#fff" />
+                        ) : (
+                            <Text>Cadastrar Loja</Text>
+                        )}
                     </PrimaryButton>
                 </ButtonsArea>
             </Form>

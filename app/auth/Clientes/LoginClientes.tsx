@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { ActivityIndicator, Alert, View } from "react-native";
+import { ActivityIndicator, Alert, View, TouchableOpacity } from "react-native"; // 1. Adicionado TouchableOpacity
 import "../../../global.css";
 import { useRouter } from "expo-router";
+import { Ionicons } from '@expo/vector-icons'; // 2. Adicionado Ionicons
 import {
   PrimaryButton,
   ReturnButton,
@@ -24,6 +25,10 @@ import { saveSecureItem, getSecureItem } from "../../../utils/secureStore"
 const LoginClientes = () => {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+  
+  // 3. Estado para controlar a visibilidade da senha
+  const [showPassword, setShowPassword] = useState(false)
+
   const [loading, setLoading] = useState(false)
   const [loadingBiometria, setLoadingBiometria] = useState(true)
   const [error, setError] = useState('')
@@ -109,12 +114,26 @@ const LoginClientes = () => {
           label='E-mail:'
           value={email}
           onChangeText={setEmail}
+          keyboardType="email-address" // Boa prática para emails
+          autoCapitalize="none"
         />
+        
         <TextInputComponent
           label='Senha:'
           value={senha}
           onChangeText={setSenha}
-          secureTextEntry
+          // 4. Controla a visibilidade
+          secureTextEntry={!showPassword}
+          // 5. Adiciona o ícone clicável
+          rightIcon={
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Ionicons 
+                name={showPassword ? "eye" : "eye-off"} 
+                size={24} 
+                color="#64748b" 
+              />
+            </TouchableOpacity>
+          }
         />
 
         {error ? <ErrorText>{error}</ErrorText> : null}

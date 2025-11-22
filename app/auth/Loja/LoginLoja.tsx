@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Alert, Text } from 'react-native';
+import { ActivityIndicator, Alert, Text, TouchableOpacity } from 'react-native'; // 1. Adicionado TouchableOpacity
 import "../../../global.css";
 import { useRouter } from "expo-router";
+import { Ionicons } from '@expo/vector-icons' // 1. Importação alterada
 import {
   PrimaryButton,
   ReturnButton,
@@ -20,8 +21,11 @@ import * as SecureStore from 'expo-secure-store'
 
 const LoginLoja = () => {
   const [cnpj, setCnpj] = useState('');
-  const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  
+  // 3. Novo estado para controlar a visibilidade da senha
+  const [showPassword, setShowPassword] = useState(false);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -31,8 +35,10 @@ const LoginLoja = () => {
     
     setError('');
 
-    if (!cnpj || !email || !senha) {
-      const msg = 'Preencha todos os campos: CNPJ, Email e Senha.';
+    const cnpjLimpo = cnpj.replace(/\D/g, '');
+
+    if (!cnpjLimpo || !senha) {
+      const msg = 'Preencha todos os campos: CNPJ e Senha.';
       setError(msg);
       Alert.alert('Erro', msg);
       return;
@@ -41,12 +47,12 @@ const LoginLoja = () => {
     setLoading(true);
 
     try {
-      const response = await api.post('farma/auth/login', { cnpj, email, senha });
+      const response = await api.post('farma/auth/login', { cnpj: cnpjLimpo, senha });
+      
       await SecureStore.setItemAsync('token', response.data.token)
-      await SecureStore.setItemAsync('id_farmacia', response.data.farma_id)
+      await SecureStore.setItemAsync('id_farmacia', response.data.farma_id.toString())
 
       if (response.data?.msg) {
-        // Navega para a página da loja após login bem-sucedido
         router.replace('/pages/Lojas/HomeLojas');
       } else {
         const msg = response.data?.msg || 'Erro ao fazer login';
@@ -76,17 +82,26 @@ const LoginLoja = () => {
           label='CNPJ'
           value={cnpj}
           onChangeText={setCnpj}
+          placeholder="00.000.000/0000-00"
+          keyboardType="numeric" // Adicionado para facilitar digitação
         />
-        <TextInputComponent
-          label='Email'
-          value={email}
-          onChangeText={setEmail}
-        />
+        
         <TextInputComponent
           label='Senha'
           value={senha}
           onChangeText={setSenha}
-          secureTextEntry
+          // 4. secureTextEntry agora depende do estado
+          secureTextEntry={!showPassword}
+          // 5. Ícone do olho clicável
+          rightIcon={
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons 
+                    name={showPassword ? "eye" : "eye-off"} 
+                    size={20} 
+                    color="#64748b" 
+                />
+            </TouchableOpacity>
+          }
         />
 
         {error ? <ErrorText>{error}</ErrorText> : null}

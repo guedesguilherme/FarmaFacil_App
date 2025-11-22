@@ -19,8 +19,10 @@ const CadastroLoja1 = () => {
 
   const router = useRouter()
 
+  const cnpjNumerico = cnpj.replace(/\D/g, '');
+
   const check = async () => {
-    const cnpjNumerico = cnpj.replace(/\D/g, '');
+    
     try {
       const response = await validarCnpj.get(`${cnpjNumerico}`)
       console.log(cnpjNumerico)
@@ -37,7 +39,7 @@ const CadastroLoja1 = () => {
 
   const navigate = async () => {
 
-    if (!nome || !cnpj || !email || !nomeRede) {
+    if (!nome || !cnpjNumerico || !email || !nomeRede) {
       Alert.alert('Campos em branco', 'Todos os campos são obrigatórios')
       return
     }
@@ -47,12 +49,7 @@ const CadastroLoja1 = () => {
     const valido = await check()
 
     if (valido) {
-      // router.push('/auth/Loja/CadastroLoja2')
-      // setNome('')
-      // setCnpj('')
-      // setEmail('')
-      // setNomeRede('')
-      await saveSecureItem('cadastroLojaParte1', JSON.stringify({ nome, cnpj, email, nomeRede}))
+      await saveSecureItem('cadastroLojaParte1', JSON.stringify({ nome, cnpjNumerico, email, nomeRede}))
       console.log(email)
       router.push('/auth/Loja/CadastroLoja2')
       setLoading(false)
@@ -81,7 +78,6 @@ const CadastroLoja1 = () => {
             value={cnpj}
             onChangeText={setCnpj}
             className='mb-3'
-            keyboardType='numeric'
           />
           <TextInputComponent
             label='E-mail da sua loja:'

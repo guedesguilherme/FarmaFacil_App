@@ -3,6 +3,8 @@ import React from 'react'
 import { BodyText, DescText, Heading1, Heading2, Heading3 } from './TextComponent'
 import Entypo from '@expo/vector-icons/Entypo'
 import { PrimaryButton } from './ButtonsComponent'
+import { Ionicons } from '@expo/vector-icons';
+
 
 export const GenericCard = ({ label1, label2, label3 /*imgUrl*/ }) => (
   <TouchableOpacity
@@ -112,83 +114,186 @@ export const CardHomeLoja = ({
 );
 
 
-export const PedidoCard = ({ nome, preco, cliente, imgUrl, onPress }) => (
-  <TouchableOpacity
-    onPress={onPress}
-    className='
-      bg-white
-      border-2
-      border-primaryBlue
-      rounded-lg
-      p-3
-      flex-row
-      items-center
-      justify-between
-      mb-4
-    '
-  >
-    <Image
-      source={{ uri: imgUrl || 'https://picsum.photos/80' }}
-      className='w-[60px] h-[60px] rounded-md'
-      resizeMode='contain'
-    />
-    <View className='flex-1 px-4'>
-      <Heading3 className='mb-1'>{nome}</Heading3>
-      <Heading2 className='mb-1'>R$ {preco}</Heading2>
-      <BodyText>Cliente: {cliente}</BodyText>
-    </View>
-  </TouchableOpacity>
-)
+export const PedidoCard = ({ nome, preco, cliente, imgUrl, onPress }) => {
+  
+  // Formatação de preço
+  const precoFormatado = preco ? String(preco).replace('.', ',') : '0,00';
 
-const LinhaItem = ({ label, valor }) => (
-  <View className='flex-row justify-between py-2 px-4 bg-slate-100 border-b border-slate-200'>
-    <Text className='font-semibold'>{label}</Text>
-    <Text style={{ flexShrink: 1, flexWrap: 'wrap', maxWidth: '70%' }}>
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      className='
+        w-full
+        bg-white
+        p-3
+        rounded-2xl
+        shadow-sm
+        border
+        border-slate-100
+        flex-row
+        items-center
+        mb-3
+      '
+    >
+      {/* Container da Imagem */}
+      <View className="w-20 h-20 bg-slate-50 rounded-xl items-center justify-center mr-4 border border-slate-100">
+        <Image
+          source={{ uri: imgUrl || 'https://picsum.photos/80' }}
+          className='w-16 h-16'
+          resizeMode='contain'
+        />
+      </View>
+
+      {/* Informações */}
+      <View className='flex-1 py-1'>
+        <Text 
+          className='font-poppins_bold text-slate-800 text-base leading-5 mb-1' 
+          numberOfLines={2}
+        >
+          {nome}
+        </Text>
+
+        <View className="flex-row items-center mb-2">
+          <Ionicons name="person-outline" size={12} color="#64748b" style={{ marginRight: 4 }} />
+          <Text className='font-poppins_regular text-slate-500 text-xs'>
+            {cliente}
+          </Text>
+        </View>
+
+        <Text className='font-poppins_bold text-green-600 text-lg'>
+          R$ {precoFormatado}
+        </Text>
+      </View>
+
+      {/* Ícone de Seta */}
+      <View className="ml-2">
+         <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
+      </View>
+    </TouchableOpacity>
+  );
+}
+
+// Componente auxiliar interno para as linhas
+const LinhaItem = ({ label, valor, isLast = false, isPrice = false }) => (
+  <View 
+    className={`
+      flex-row 
+      justify-between 
+      items-start 
+      py-3 
+      ${isLast ? '' : 'border-b border-slate-100'}
+    `}
+  >
+    <Text className="font-poppins_medium text-slate-500 text-sm">
+      {label}
+    </Text>
+    <Text 
+      className={`
+        font-poppins_bold 
+        text-right 
+        flex-1 
+        ml-4 
+        ${isPrice ? 'text-green-600 text-base' : 'text-slate-800 text-sm'}
+      `}
+      numberOfLines={2}
+    >
       {valor}
     </Text>
   </View>
 );
 
 export const PedidoDetalhesCard = ({ pedido }) => {
+  // Tratamento seguro para o ID (caso venha undefined)
+  const numeroPedido = pedido.numero ? `#${String(pedido.numero).slice(-6).toUpperCase()}` : 'N/A';
+
   return (
-    <View className='border-2 border-primaryBlue rounded-xl m-4 overflow-hidden bg-white'>
-      <View className='px-4 py-3 border-b border-primaryBlue'>
-        <Heading2 className='font-bold'>{pedido.titulo}</Heading2>
+    <View className='bg-white rounded-2xl border border-slate-200 shadow-sm mx-1 mb-6 p-5'>
+      
+      {/* Cabeçalho do Card */}
+      <View className='flex-row items-center mb-2 pb-3 border-b border-slate-100'>
+        <View className="bg-blue-50 p-2 rounded-lg mr-3">
+          <Ionicons name="receipt-outline" size={20} color="#2f88ff" />
+        </View>
+        <Text className='font-poppins_bold text-slate-800 text-lg'>
+          {pedido.titulo || 'Resumo do Pedido'}
+        </Text>
       </View>
 
-      <LinhaItem label="Nº Pedido" valor={pedido.numero} />
-      <LinhaItem label="Produto" valor={pedido.produto} />
-      <LinhaItem label="Preço" valor={`R$ ${pedido.preco}`} />
-      <LinhaItem label="QTD" valor={`${pedido.quantidade}`} />
-      <LinhaItem label="Cliente" valor={pedido.cliente} />
+      {/* Lista de Detalhes */}
+      <View>
+        <LinhaItem label="Nº Pedido" valor={numeroPedido} />
+        <LinhaItem label="Produto" valor={pedido.produto} />
+        <LinhaItem label="Quantidade" valor={`${pedido.quantidade} un.`} />
+        <LinhaItem label="Cliente" valor={pedido.cliente} />
+        
+        {/* Preço com destaque */}
+        <LinhaItem 
+          label="Valor Total" 
+          valor={`R$ ${pedido.preco}`} 
+          isPrice={true} 
+          isLast={true} 
+        />
+      </View>
     </View>
   );
 };
 
-export const PedidoCardCliente = ({ nome, preco, dataPedido, imgUrl, onPress }) => (
-  <TouchableOpacity
-    onPress={onPress}
-    className='
-      bg-white
-      border-2
-      border-primaryBlue
-      rounded-lg
-      p-3
-      flex-row
-      items-center
-      justify-between
-      mb-4
-    '
-  >
-    <Image
-      source={{ uri: imgUrl || 'https://picsum.photos/80' }}
-      className='w-[60px] h-[60px] rounded-md'
-      resizeMode='contain'
-    />
-    <View className='flex-1 px-4'>
-      <Heading3 className='mb-1'>{nome}</Heading3>
-      <Heading2 className='mb-1'>R$ {preco}</Heading2>
-      <BodyText>Data do pedido: {dataPedido}</BodyText>
-    </View>
-  </TouchableOpacity>
-)
+export const PedidoCardCliente = ({ nome, preco, dataPedido, imgUrl, onPress, status }) => {
+  
+  // Garante a formatação do preço com vírgula
+  const precoFormatado = preco ? String(preco).replace('.', ',') : '0,00';
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      className='
+        w-full
+        bg-white
+        p-3
+        rounded-2xl
+        shadow-sm
+        border
+        border-slate-100
+        flex-row
+        items-center
+        mb-3
+      '
+    >
+      {/* Container da Imagem */}
+      <View className="w-20 h-20 bg-slate-50 rounded-xl items-center justify-center mr-4 border border-slate-100">
+        <Image
+          source={{ uri: imgUrl || 'https://picsum.photos/80' }}
+          className='w-16 h-16'
+          resizeMode='contain'
+        />
+      </View>
+
+      {/* Informações */}
+      <View className='flex-1 py-1'>
+        <View className="flex-row justify-between items-start">
+           <Text 
+             className='font-poppins_bold text-slate-800 text-base leading-5 mb-1 flex-1 mr-2' 
+             numberOfLines={2}
+           >
+             {nome}
+           </Text>
+        </View>
+
+        <Text className='font-poppins_regular text-slate-400 text-xs mb-2'>
+          {dataPedido}
+        </Text>
+
+        <Text className='font-poppins_bold text-green-600 text-lg'>
+          R$ {precoFormatado}
+        </Text>
+      </View>
+
+      {/* Ícone de Seta */}
+      <View className="ml-2">
+         <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
+      </View>
+    </TouchableOpacity>
+  );
+}
