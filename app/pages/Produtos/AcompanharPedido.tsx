@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { View, ActivityIndicator, Image, ScrollView } from 'react-native'
 import { useLocalSearchParams, router } from 'expo-router'
-import * as Location from 'expo-location'
 import api from '@/src/services/api'
 import GenericContainer from '@/src/components/ViewComponents'
 import { ReturnButton } from "@/src/components/ButtonsComponent";
 import { Heading1, Heading2, BodyText, Heading3 } from '@/src/components/TextComponent'
 import { Ionicons } from '@expo/vector-icons';
 
-const GOOGLE_API_KEY = 'AIzaSyCQ4GtwtrfiV_BdU1vEiy5Tyk8ZDzM0P10'
-
 const AcompanharPedido = () => {
     const { id } = useLocalSearchParams()
-    console.log(id)
     const pedidoId = id
 
-    const [tempoEntrega, setTempoEntrega] = useState<number | null>(null)
     const [loading, setLoading] = useState(true)
     const [pedido, setPedido] = useState<any>(null)
 
@@ -24,43 +19,9 @@ const AcompanharPedido = () => {
         
         async function carregarDados() {
             try {
-                // 1. Buscar pedido
                 const pedidoResponse = await api.get(`/pedidos/${pedidoId}`)
                 const pedidoData = pedidoResponse.data.pedido;
                 setPedido(pedidoData)
-
-                // Se já estiver concluído, não precisa calcular rota
-                if (pedidoData.status === 'Concluido') {
-                    setLoading(false)
-                    return
-                }
-
-                // 2. Localização do cliente para cálculo de tempo
-                let { status } = await Location.requestForegroundPermissionsAsync()
-                if (status !== 'granted') {
-                    setLoading(false)
-                    return
-                }
-                
-                let location = await Location.getCurrentPositionAsync({})
-                const { latitude: latCliente, longitude: lonCliente } = location.coords
-                const farmacia = pedidoData.farmacia;
-
-                // 3. Montar endereço completo da farmácia
-                const enderecoFarmacia = `${farmacia.rua || ''}, ${farmacia.numero || ''}, ${farmacia.bairro || ''}, ${farmacia.cidade || ''}, ${farmacia.uf || ''}, ${farmacia.cep || ''}, Brazil`
-                const origem = encodeURIComponent(enderecoFarmacia)
-                const destino = `${latCliente},${lonCliente}`
-
-                // 4. Buscar rota no Google Directions API
-                const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origem}&destination=${destino}&key=${GOOGLE_API_KEY}&mode=driving`
-                const response = await fetch(url)
-                const data = await response.json()
-                console.log(data)
-
-                if (data.status === 'OK' && data.routes.length) {
-                    const duration = data.routes[0].legs[0].duration
-                    setTempoEntrega(Math.ceil(duration.value / 60)) // minutos
-                }
             } catch (e) {
                 console.error("Erro ao carregar dados:", e)
             } finally {
@@ -87,7 +48,6 @@ const AcompanharPedido = () => {
     const imgFarmacia = farmacia.imagem_url || 'https://picsum.photos/100/100'
 
     // Lógica do Código de Entrega (4 últimos dígitos do telefone)
-    // Ex: (11) 91234-5678 -> pega "5678"
     const codigoEntrega = pedido.telefone ? pedido.telefone.slice(-4) : '----';
 
     return (
@@ -135,13 +95,6 @@ const AcompanharPedido = () => {
                             <BodyText className="text-center text-slate-500 mt-2">
                                 A farmácia está preparando seus itens.
                             </BodyText>
-                            {tempoEntrega && (
-                                <View className="mt-4 bg-white px-4 py-2 rounded-full border border-slate-200">
-                                    <BodyText className="text-slate-600">
-                                        Estimativa: {tempoEntrega} min
-                                    </BodyText>
-                                </View>
-                            )}
                         </View>
                     )}
 
@@ -156,12 +109,6 @@ const AcompanharPedido = () => {
                             {pedido.entregador && (
                                 <BodyText className="text-center text-slate-600 mt-1">
                                     Entregador: <BodyText className="font-bold">{pedido.entregador.nome}</BodyText>
-                                </BodyText>
-                            )}
-
-                            {tempoEntrega && (
-                                <BodyText className="text-center text-slate-500 mt-1 mb-4">
-                                    Chega em aproximadamente {tempoEntrega} min
                                 </BodyText>
                             )}
 
