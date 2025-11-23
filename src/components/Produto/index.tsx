@@ -1,42 +1,78 @@
 import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
-import { BodyText, BodyTextBold, Heading2, Heading3 } from "../TextComponent";
-import { router } from 'expo-router'
+import { View, Image, TouchableOpacity, Text } from "react-native";
+import { useRouter } from 'expo-router'; // 1. Importe o Hook useRouter
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Produtos({ data, className = '', ...props }) {
+  
+  const router = useRouter(); // 2. Inicialize o hook aqui dentro
+
+  const precoFormatado = data.preco 
+    ? Number(data.preco).toFixed(2).replace('.', ',') 
+    : '0,00';
+
   return (
     <TouchableOpacity 
-      className="
-        flex
+      activeOpacity={0.7}
+      className={`
         flex-row
         w-full 
-        mb-3
+        mb-4
         bg-white 
-        border-2 border-primaryBlue
-        py-4
-        px-3
-        rounded-lg 
-        items-center 
+        p-3
+        rounded-2xl
+        shadow-sm
+        elevation-sm
+        border border-slate-100
+        items-center
         ${className}
-      "
-      onPress={() => router.push({ pathname: '/pages/Produtos/Detalhes', params: { id: data._id } })}>
-      <Image 
-      className="
-        w-20
-        h-20
-        mr-3
-      "
-      source={{ uri: data.imagem_url }}/>
-      <View>
+      `}
+      // 3. Use a variável 'router' criada pelo hook
+      onPress={() => router.push({ pathname: '/pages/Produtos/Detalhes', params: { id: data._id } })}
+      {...props}
+    >
+      <View className="bg-slate-50 rounded-xl p-2 mr-4 border border-slate-100">
+        <Image 
+          className="w-16 h-16"
+          source={{ uri: data.imagem_url }}
+          resizeMode="contain"
+        />
+      </View>
+
+      <View className="flex-1 justify-between py-1">
         <View>
-          <Heading2>{data.nome}</Heading2>
-          <Heading3>{data.nome_quimico}</Heading3>
-          <BodyText>{data.label}</BodyText>
+          <Text 
+            className="font-poppins_bold text-slate-800 text-base leading-5 mb-1" 
+            numberOfLines={2}
+          >
+            {data.nome}
+          </Text>
+
+          <Text 
+            className="font-poppins_medium text-slate-400 text-xs uppercase tracking-wide mb-1" 
+            numberOfLines={1}
+          >
+            {data.nome_quimico}
+          </Text>
+
+          {data.label && (
+            <Text 
+              className="font-poppins_regular text-slate-500 text-xs mb-2" 
+              numberOfLines={1}
+            >
+              {data.label}
+            </Text>
+          )}
         </View>
 
-        <BodyTextBold className="color-green-600">R$ {parseFloat(data.preco).toFixed(2)}</BodyTextBold>
+        <View className="flex-row items-center justify-between mt-1">
+          <Text className="font-poppins_bold text-green-600 text-lg">
+            R$ {precoFormatado}
+          </Text>
+          
+          <Ionicons name="chevron-forward" size={20} color="#cbd5e1" />
+        </View>
       </View>
     </TouchableOpacity>
   );
 }
-

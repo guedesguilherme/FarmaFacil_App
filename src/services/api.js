@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'https://api-cadastro-farmacias.onrender.com/'
+    baseURL: 'https://farmafacil-api-bha3gbeedxbngahq.eastus2-01.azurewebsites.net/'
 })
 
 export const viacep = axios.create({

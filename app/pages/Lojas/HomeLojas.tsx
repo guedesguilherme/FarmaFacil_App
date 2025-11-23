@@ -26,24 +26,55 @@ const HomeLojas = () => {
   useFocusEffect(
     useCallback(() => {
       const fetchDados = async () => {
+        let farmaciaId;
+        
         try {
-          const farmaciaId = await getSecureItem('id_farmacia');
+          farmaciaId = await getSecureItem('id_farmacia');
+        } catch (e) {
+          console.error("Erro ao recuperar ID da farmácia", e);
+          return;
+        }
 
-          // --- PEDIDOS ---
+        // --- BLOCO 1: PEDIDOS (Isolado) ---
+        try {
           const resPedidos = await api.get(`/pedidos/farmacia/${farmaciaId}`);
-          const pedidos = Array.isArray(resPedidos.data) ? resPedidos.data : resPedidos.data.pedidos;
+          
+          // Verifica se retornou dados antes de tentar acessar
+          if (resPedidos.data) {
+            const pedidos = Array.isArray(resPedidos.data) ? resPedidos.data : resPedidos.data.pedidos || [];
 
-          const detalhesPedidos = await Promise.all(
-            pedidos.map((p: { _id: string }) => api.get(`/pedidos/${p._id}`))
-          );
+            // Se a lista de pedidos não estiver vazia, busca os detalhes
+            if (pedidos.length > 0) {
+              const detalhesPedidos = await Promise.all(
+                pedidos.map((p: { _id: string }) => api.get(`/pedidos/${p._id}`))
+              );
 
-          const todosPedidos = detalhesPedidos.map((res) => res.data.pedido);
-          setConcluidos(todosPedidos.filter(p => p.status === 'Concluido').length);
-          setPendentes(todosPedidos.filter(p => p.status === 'Pendente').length);
+              const todosPedidos = detalhesPedidos.map((res) => res.data.pedido);
+              setConcluidos(todosPedidos.filter((p: any) => p.status === 'Concluido').length);
+              setPendentes(todosPedidos.filter((p: any) => p.status === 'Pendente').length);
+            } else {
+              // Lista vazia (caso a API retorne 200 mas array vazio)
+              setConcluidos(0);
+              setPendentes(0);
+            }
+          }
+        } catch (error: any) {
+          // Se for erro 404, significa que não tem pedidos, então zeramos os contadores
+          if (error.response && error.response.status === 404) {
+            setConcluidos(0);
+            setPendentes(0);
+          } else {
+            console.error("Erro ao buscar pedidos:", error);
+          }
+        }
 
-          // --- PRODUTOS ---
+        // --- BLOCO 2: PRODUTOS (Isolado) ---
+        // O código continua aqui mesmo se o bloco de pedidos falhar
+        try {
           const resProdutos = await api.get(`/produtos/farmacia/${farmaciaId}`);
-          const produtos = resProdutos.data as Produto[];
+          
+          // Garante que é um array
+          const produtos = Array.isArray(resProdutos.data) ? resProdutos.data : [];
 
           const produtosDisponiveis = produtos.filter((p: Produto) => p.quantidade > 0);
           setProdutosEmEstoque(produtosDisponiveis.length);
@@ -56,9 +87,14 @@ const HomeLojas = () => {
           } else {
             setProdutoMenorEstoque('-');
           }
-
-        } catch (error) {
-          console.error("Erro ao buscar dados da home:", error);
+        } catch (error: any) {
+          // Tratamento específico para produtos (ex: 404 também)
+          if (error.response && error.response.status === 404) {
+             setProdutosEmEstoque(0);
+             setProdutoMenorEstoque('-');
+          } else {
+             console.error("Erro ao buscar produtos:", error);
+          }
         }
       };
 
