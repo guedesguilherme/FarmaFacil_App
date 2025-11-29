@@ -230,6 +230,7 @@ const FinalizarCompra = () => {
                             label="Telefone / WhatsApp"
                             value={telefone}
                             onChangeText={handleTelefoneChange}
+                            editable={false}
                             placeholder="(00) 00000-0000"
                             keyboardType="numeric"
                             maxLength={15}
